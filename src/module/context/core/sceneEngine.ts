@@ -23,7 +23,7 @@ export default class SceneEngine {
         this.canvasController.setMaximize();
         Global.getInstance().width = this.canvasController.getWidthCanvas();
         Global.getInstance().height = this.canvasController.getHeightCanvas();
-        this.makeWindowReactive();
+        
     }
     
     getCanvasController(){
@@ -40,16 +40,16 @@ export default class SceneEngine {
     start(){
         this.canvasController.setMaximize();
         setInterval(()=>this.update(), 1000/60);
-        requestAnimationFrame(()=>this.render());
+        requestAnimationFrame((time: Number)=>this.render(time));
     }
 
-    render() {
+    render(time: any) {
         this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
         this.gameobjects.forEach(go => {
             go.draw(this.ctx);
         });
         this.currentScene.render(this.ctx);
-        requestAnimationFrame(()=>this.render());
+        requestAnimationFrame((time: Number)=>this.render(time));
     }
 
     update(){

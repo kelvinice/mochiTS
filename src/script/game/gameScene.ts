@@ -1,7 +1,7 @@
-import Scene from "../context/core/scene"
-import Ball from '../ball';
-import { IGameObject } from '../context/core/gameObject';
-import Global from '../context/general/global';
+import Scene from "../../module/context/core/scene"
+import Ball from '../../module/ball';
+import { IGameObject } from '../../module/context/core/gameObject';
+import Global from '../../module/context/general/global';
 
 export default class GameScene extends Scene{
     balls: Ball[];
@@ -16,7 +16,18 @@ export default class GameScene extends Scene{
             x : 10,
             y : 10
         }))
-        
+        this.addBall(new Ball(<IGameObject>{
+            height : 100,
+            width : 100,
+            x : 600,
+            y : 100
+        }))
+        this.addBall(new Ball(<IGameObject>{
+            height : 150,
+            width : 150,
+            x : 300,
+            y : 400
+        }))
     }
 
     addBall(ball: Ball): void{
