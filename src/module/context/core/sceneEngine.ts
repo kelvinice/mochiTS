@@ -64,9 +64,9 @@ export default class SceneEngine {
         this.canvasController.makeWindowReactive();
     }
 
-    handleWindowListener(w: number, h: number){
-        Global.getInstance().width = w;
-        Global.getInstance().height = h;
+    handleWindowListener(width: number, height: number){
+        Global.getInstance().width = width;
+        Global.getInstance().height = height;
     }
 
     updateScene(nextScene: Scene){
