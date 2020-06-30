@@ -6,7 +6,7 @@ var tsify = require('tsify');
 var fancy_log = require('fancy-log');
 var browserSync = require('browser-sync').create();
 var paths = {
-    pages: ['src/*.html']
+    pages: ['src/*.html','src/*.css']
 };
 
 var watchedBrowserify = watchify(browserify({

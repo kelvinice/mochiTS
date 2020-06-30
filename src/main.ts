@@ -7,10 +7,9 @@ window.onload = () =>{
             
             var sceneEngine = SceneEngine.getInstance();
             sceneEngine.initCanvas(canv);
-            sceneEngine.makeWindowReactive();
+        //     sceneEngine.makeWindowReactive();
             sceneEngine.updateScene(new GameScene());
             sceneEngine.start();
-            
         }
         init();
 }
