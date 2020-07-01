@@ -1,5 +1,5 @@
 import SceneEngine from "./module/context/core/sceneEngine";
-import GameScene from './script/game/gameScene';
+import GameScene from './script/game/scenes/gameScene';
 import MapCreator from './script/handler/mapCreator';
 
 

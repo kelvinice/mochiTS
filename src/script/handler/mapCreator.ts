@@ -1,49 +1,143 @@
 import TrueRandom from './trueRandom';
-class Coord
-{
-    public x: Number;
-    y: Number;
-    public xfrom: Number;
-     yfrom: Number;
-    public prior: Number;
-    public Coord(y: Number, x: Number, yfrom: Number, xfrom: Number, prior: Number)
-    {
-        this.prior = prior;
-        this.y = y;
+import Tile from '../game/model/tile';
+
+// class Coord
+// {
+    // public x: Number;
+    // y: Number;
+    // public xfrom: Number;
+    //  yfrom: Number;
+    // public prior: Number;
+    // public Coord(y: Number, x: Number, yfrom: Number, xfrom: Number, prior: Number)
+    // {
+    //     this.prior = prior;
+    //     this.y = y;
+    //     this.x = x;
+    //     this.yfrom = yfrom;
+    //     this.xfrom = xfrom;
+    // }
+// };
+
+
+class Point{
+    x: number;
+    y: number;
+
+    constructor(x: number, y: number){
         this.x = x;
-        this.yfrom = yfrom;
-        this.xfrom = xfrom;
-    }
-};
+        this.y = y;
+    };
+}
 
 export default class MapCreator{
-    constructor(x: number, y: number){
-        this.init();
-        console.log(this.getMapFromBSP());
-    }
-
     HEIGHT: number = 20;
     WIDTH: number = 20;
     MIN_HEIGHT = 3;
     MIN_WIDTH = 3;
-    MAX_HEIGHT = 11;
-    MAX_WIDTH = 11;
+    MAX_HEIGHT = 10;
+    MAX_WIDTH = 10;
+    map: Tile[][];
+    queue : Point[];
+    trueRandom: TrueRandom;
+    lastOpen: Tile;
 
-    map: String[][];
-    trueRandom: TrueRandom = new TrueRandom(Math.floor(Math.random() * (10000)));
+    constructor(WIDTH: number, HEIGHT: number){
+        console.log("a");
+        this.WIDTH = WIDTH;
+        this.HEIGHT = HEIGHT;
+        this.trueRandom = new TrueRandom();
+        this.trueRandom.randSeed();
+        this.init();
+        
+        let res = this.getMapFromBSP();
+        
+        this.reconstructWall(res);
+
+        // console.log(res);
+        this.createHomeAndSpawner(res);
+        this.print(res);
+    }
+
+    print(map: Tile[][]){
+        for (let i = 0; i < this.HEIGHT; i++)
+        {
+            let temp: string = "";
+            for (let j = 0; j < this.WIDTH; j++)
+            {
+                temp= temp + map[i][j].getChar();
+            }
+            console.log(i+" "+temp);
+        }
+
+    }
+
+    recursiveSearch(){
+        let curr: Point = this.queue.shift();
+        
+        this.lastOpen = this.map[curr.x][curr.y];
+
+        if(this.map[curr.x-1][curr.y].poin > 0){
+            this.map[curr.x-1][curr.y].poin = 0;
+            this.queue.push(new Point(curr.x-1,curr.y));
+        }
+        if(this.map[curr.x+1][curr.y].poin > 0){
+            this.map[curr.x+1][curr.y].poin = 0;
+            this.queue.push(new Point(curr.x+1,curr.y));
+        }
+        if(this.map[curr.x][curr.y-1].poin > 0){
+            this.map[curr.x][curr.y-1].poin = 0;
+            this.queue.push(new Point(curr.x,curr.y-1));
+        }
+        if(this.map[curr.x][curr.y+1].poin > 0){
+            this.map[curr.x][curr.y+1].poin = 0;
+            this.queue.push(new Point(curr.x,curr.y+1));
+        }
+    }
+
+    createHomeAndSpawner(map: Tile[][]) {
+        this.queue = [];
+        for (let i = 1; i < this.HEIGHT-1; i++)
+        {
+            for (let j = 1; j < this.WIDTH-1; j++)
+            {
+                if ((i == 1 || j == 1 || i == this.HEIGHT - 2 || j == this.WIDTH - 2) && map[i][j].char == "#"){
+                    map[i][j] = new Tile('S');
+                    this.queue.push(
+                        new Point(i,j)
+                        );
+                }
+            }
+        }
+        console.log(this.queue);
+        
+        while(this.queue.length > 0)this.recursiveSearch();
+        this.lastOpen.setChar("H");
+        console.log(this.lastOpen);
+    }
+
+    
+    reconstructWall(map: Tile[][])
+    {
+        for (let i = 0; i < this.HEIGHT; i++)
+        {
+            for (let j = 0; j < this.WIDTH; j++)
+            {
+                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) map[i][j] = new Tile('W');
+            }
+        }
+    }
 
     init()
     {
         this.map = [];
 
-        for (var i = 0; i < this.HEIGHT; i++)
+        for (let i = 0; i < this.HEIGHT; i++)
         {
             this.map[i] = [];
-            for (var j = 0; j < this.WIDTH; j++)
+            for (let j = 0; j < this.WIDTH; j++)
             {
-                this.map[i][j] = "";
-                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = '#';
-                else this.map[i][j] = ' ';
+                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile('#');
+                else this.map[i][j] = new Tile(' ');
             }
         }
     }
@@ -59,7 +153,7 @@ export default class MapCreator{
         {
             for (let j = minX; j <= maxX; j++)
             {
-                if (i == minY || j == minX || i == maxY || j == maxX) this.map[i][j] = '#';
+                if (i == minY || j == minX || i == maxY || j == maxX) this.map[i][j].setChar('#');
             }
         }
     }
@@ -96,7 +190,7 @@ export default class MapCreator{
 
     }
 
-    getMapFromBSP() : String[][]
+    getMapFromBSP() : Tile[][]
     {
         this.init();
         this.BSP(0, 0, this.HEIGHT - 1, this.WIDTH - 1);
@@ -109,7 +203,7 @@ export default class MapCreator{
         {
             for (let j = 0; j < this.WIDTH; j++)
             {
-                this.map[i][j] = '#';
+                this.map[i][j].setChar('#');
             }
         }
     }

@@ -1,7 +1,8 @@
-import Scene from "../../module/context/core/scene"
-import Ball from '../../module/ball';
-import { IGameObject } from '../../module/context/core/gameObject';
-import Global from '../../module/context/general/global';
+import Global from '../../../module/context/general/global';
+import { IGameObject } from '../../../module/context/core/gameObject';
+import Ball from '../../../module/ball';
+import Scene from '../../../module/context/core/scene';
+
 
 export default class GameScene extends Scene{
     balls: Ball[];
