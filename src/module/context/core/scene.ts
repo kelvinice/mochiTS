@@ -1,13 +1,13 @@
 import SceneEngine from './sceneEngine';
 import GameObject from './gameObject';
 export default abstract class Scene{
-    constructor(){
-        
-    }
+    constructor(){}
 
-    abstract render(ctx: CanvasRenderingContext2D): void;
+    abstract onCreated(): void;
 
-    abstract update(): void;
+    abstract onRender(ctx: CanvasRenderingContext2D): void;
+
+    abstract onUpdate(): void;
 
     addGameObject(gameObject: GameObject){
         SceneEngine.getInstance().addGameObject(gameObject);

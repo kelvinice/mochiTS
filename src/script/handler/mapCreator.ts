@@ -42,7 +42,6 @@ export default class MapCreator{
     lastOpen: Tile;
 
     constructor(WIDTH: number, HEIGHT: number){
-        console.log("a");
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
         this.trueRandom = new TrueRandom();
@@ -53,9 +52,12 @@ export default class MapCreator{
         
         this.reconstructWall(res);
 
-        // console.log(res);
         this.createHomeAndSpawner(res);
-        this.print(res);
+        // this.print(res);
+    }
+
+    getMap(): Tile[][]{
+        return this.map;
     }
 
     print(map: Tile[][]){
@@ -108,11 +110,9 @@ export default class MapCreator{
                 }
             }
         }
-        console.log(this.queue);
         
         while(this.queue.length > 0)this.recursiveSearch();
         this.lastOpen.setChar("H");
-        console.log(this.lastOpen);
     }
 
     

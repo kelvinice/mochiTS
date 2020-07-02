@@ -1,27 +1,29 @@
+
+
 export default class AssetManager{
-    ipaths: Object[];
-    assetDoneListener: Function;
-    images: HTMLImageElement[];
+    ipaths;
+    assetDone: Function;
+    images;
     doneCount: number;
-    loadedImage: Object;
+    loadedImage;
 
     constructor(){
         this.ipaths = [];
-        this.assetDoneListener = null;
+        this.assetDone = null;
         this.images = [];
-        this.doneCount = 0;
+        this.doneCount =0;
         this.loadedImage = {};
     }
 
-    addPath(name: String,path: String){
+    addPath(name: string,path: string){
         this.ipaths.push({
             "name":name,
             "path":path
         });
     }
 
-    addAssetDoneListener(assetDoneListener: Function){
-        this.assetDoneListener = assetDoneListener;
+    addAssetDoneListener(assetDone: Function){
+        this.assetDone = assetDone;
     }
 
     loadAsset(){
@@ -35,6 +37,7 @@ export default class AssetManager{
             img.onload = () =>{
                 this.loadedImage[name] = img;
                 this.doneCount++;
+
                 this.check();
             }
         });
@@ -43,7 +46,7 @@ export default class AssetManager{
 
     check(){
         if(this.doneCount == this.ipaths.length){
-            this.assetDoneListener();
+            this.assetDone();
         }
     }
 
@@ -55,7 +58,7 @@ export default class AssetManager{
 
 }
 
-export function splitSprite(image: HTMLImageElement, horizontalCount: number, verticalCount: number){
+function splitSprite(image, horizontalCount, verticalCount){
     let spriteDatas = [];
     let spriteWidth = image.width/horizontalCount;
     let spriteHeight = image.height/verticalCount;
