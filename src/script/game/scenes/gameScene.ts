@@ -5,6 +5,15 @@ import Scene from '../../../module/context/core/scene';
 
 
 export default class GameScene extends Scene{
+    onCreated(): void {
+        throw new Error("Method not implemented.");
+    }
+    onRender(ctx: CanvasRenderingContext2D): void {
+        throw new Error("Method not implemented.");
+    }
+    onUpdate(): void {
+        throw new Error("Method not implemented.");
+    }
     balls: Ball[];
     
     constructor(){

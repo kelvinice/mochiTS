@@ -10,12 +10,10 @@ window.onload = () =>{
             
         var sceneEngine = SceneEngine.getInstance();
         sceneEngine.initCanvas(canv);
-        // sceneEngine.makeWindowReactive();
         
-
+        
         let assetManager: AssetManager = new AssetManager();
         
-
         assetManager.addPath("path","path.png");
         assetManager.addPath("stone","stone.png");
         assetManager.addPath("brick","brick.png");

@@ -1,33 +1,6 @@
 import TrueRandom from './trueRandom';
 import Tile from '../game/model/tile';
-
-// class Coord
-// {
-    // public x: Number;
-    // y: Number;
-    // public xfrom: Number;
-    //  yfrom: Number;
-    // public prior: Number;
-    // public Coord(y: Number, x: Number, yfrom: Number, xfrom: Number, prior: Number)
-    // {
-    //     this.prior = prior;
-    //     this.y = y;
-    //     this.x = x;
-    //     this.yfrom = yfrom;
-    //     this.xfrom = xfrom;
-    // }
-// };
-
-
-class Point{
-    x: number;
-    y: number;
-
-    constructor(x: number, y: number){
-        this.x = x;
-        this.y = y;
-    };
-}
+import Point from '../game/model/point';
 
 export default class MapCreator{
     HEIGHT: number = 20;
@@ -174,7 +147,6 @@ export default class MapCreator{
             let mid : number = this.randomNumber(minY + this.MIN_HEIGHT, maxY - this.MIN_WIDTH);
             this.BSP(minY, minX, mid, maxX);
             this.BSP(mid, minX, maxY, maxX);
-            
         }
         else
         {
@@ -185,9 +157,7 @@ export default class MapCreator{
             let mid: number = this.randomNumber(minX + this.MIN_HEIGHT, maxX - this.MIN_WIDTH);
             this.BSP(minY, mid, maxY, maxX);
             this.BSP(minY, minX, maxY, mid);
-            
         }
-
     }
 
     getMapFromBSP() : Tile[][]
@@ -196,18 +166,5 @@ export default class MapCreator{
         this.BSP(0, 0, this.HEIGHT - 1, this.WIDTH - 1);
         return this.map;
     }
-
-    init2()
-    {
-        for (let i = 0; i < this.HEIGHT; i++)
-        {
-            for (let j = 0; j < this.WIDTH; j++)
-            {
-                this.map[i][j].setChar('#');
-            }
-        }
-    }
-
-
 
 }

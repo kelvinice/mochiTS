@@ -1,22 +1,20 @@
 import Scene from '../../../module/context/core/scene';
 import AssetManager from '../../../module/context/general/asset';
 import MapCreator from '../../handler/mapCreator';
-import GameObject from '../../../module/context/core/gameObject';
 import GameTile from '../model/gameTile';
 import { IGameObject } from '../../../module/context/core/gameObject';
 import Tile from '../model/tile';
 
 export default class TestScene extends Scene{
-    pathImage;
-    stoneImage;
-    brickImage;
-    switchGreenImage;
-    playerImage;
+    pathImage: ImageBitmap;
+    stoneImage: ImageBitmap;
+    brickImage: ImageBitmap;
+    switchGreenImage: ImageBitmap;
+    playerImage: ImageBitmap;
     TILE_SIZE: number = 60;
 
     constructor(assetManager: AssetManager){
         super();
-        console.log(assetManager.loadedImage["stone"]);
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
         this.brickImage = assetManager.loadedImage["brick"];
@@ -30,7 +28,6 @@ export default class TestScene extends Scene{
 
         for (let i = 0; i < map.length; i++) {
             for (let j = 0; j < map[i].length; j++) {
-               console.log(map[i][j]);
                 let img;
                 if(map[i][j].char == '#'){
                     img = this.pathImage;
@@ -57,16 +54,6 @@ export default class TestScene extends Scene{
             
         }
 
-
-        // this.addGameObject(new GameTile(<IGameObject>{
-        //     x: 20,
-        //     y: 20,
-        //     width: 80,
-        //     height: 80
-        // }, this.pathImage));
-       
-        
-
     }
     onRender(ctx: CanvasRenderingContext2D): void {
        
@@ -75,7 +62,9 @@ export default class TestScene extends Scene{
         
     }
 
-   
+    mouseClick(e:Event){
+        console.log(e);
+    }
     
 
 }

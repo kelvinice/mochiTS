@@ -1,3 +1,4 @@
+import Point from '../../../script/game/model/point';
 export default abstract class GameObject {
     x: number;
     y: number;
@@ -25,6 +26,12 @@ export default abstract class GameObject {
     isIn(x: number, y: number) {
         return this.x <= x && this.x + this.width >= x
             && this.y <= y && this.y + this.height >= y;
+    }
+
+    getMiddlePoint(): Point{
+        let x = this.x + (this.width/2);
+        let y = this.y + (this.height/2);
+        return new Point(x,y);
     }
 }
 

@@ -1,11 +1,13 @@
-
+// interface IDictionary{
+//     [key: string]
+// }
 
 export default class AssetManager{
-    ipaths;
+    ipaths: any;
     assetDone: Function;
-    images;
+    images: any;
     doneCount: number;
-    loadedImage;
+    loadedImage: any;
 
     constructor(){
         this.ipaths = [];
@@ -50,7 +52,7 @@ export default class AssetManager{
         }
     }
 
-    loadImage(path){
+    loadImage(path: string){
         let img = new Image();
         img.src = "./assets/images/"+path;
         return img;
@@ -58,7 +60,7 @@ export default class AssetManager{
 
 }
 
-function splitSprite(image, horizontalCount, verticalCount){
+function splitSprite(image : any, horizontalCount: number, verticalCount: number){
     let spriteDatas = [];
     let spriteWidth = image.width/horizontalCount;
     let spriteHeight = image.height/verticalCount;
