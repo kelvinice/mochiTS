@@ -25,11 +25,11 @@ export default class SceneEngine {
         this.canvasController.setMaximize();
         Global.getInstance().width = this.canvasController.getWidthCanvas();
         Global.getInstance().height = this.canvasController.getHeightCanvas();
-        addEventListener("click", this.mouseClick);
+        addEventListener("click", (e)=>this.mouseClick(e));
     }
 
-    mouseClick(e: Event){
-        if(this.currentScene){
+    mouseClick(e: MouseEvent){
+        if(this.currentScene != null){
             this.currentScene.mouseClick(e);
         }
     }

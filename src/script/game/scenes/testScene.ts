@@ -62,8 +62,8 @@ export default class TestScene extends Scene{
         
     }
 
-    mouseClick(e:Event){
-        console.log(e);
+    mouseClick(e:MouseEvent){
+        console.log(e.x);
     }
     
 

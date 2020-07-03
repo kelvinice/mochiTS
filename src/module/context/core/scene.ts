@@ -13,6 +13,5 @@ export default abstract class Scene{
         SceneEngine.getInstance().addGameObject(gameObject);
     }
 
-    mouseClick(e: Event){}
-
+    mouseClick(e: MouseEvent){}
 }
