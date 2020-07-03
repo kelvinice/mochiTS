@@ -1,9 +1,9 @@
 import Scene from '../../../module/context/core/scene';
 import AssetManager from '../../../module/context/general/asset';
 import MapCreator from '../../handler/mapCreator';
-import GameTile from '../model/gameTile';
 import { IGameObject } from '../../../module/context/core/gameObject';
-import Tile from '../model/tile';
+import Tile from '../model/tile/tile';
+import GameTile from '../model/tile/gameTile';
 
 export default class TestScene extends Scene{
     pathImage: ImageBitmap;
@@ -64,6 +64,9 @@ export default class TestScene extends Scene{
 
     mouseClick(e:MouseEvent){
         console.log(e.x);
+        console.log();
+        
+
     }
     
 

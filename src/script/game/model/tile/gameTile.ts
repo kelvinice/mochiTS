@@ -1,5 +1,6 @@
-import GameObject from '../../../module/context/core/gameObject';
-import { IGameObject } from '../../../module/context/core/gameObject';
+import GameObject from '../../../../module/context/core/gameObject';
+import { IGameObject } from '../../../../module/context/core/gameObject';
+
 
 export default class GameTile extends GameObject{
     image: ImageBitmap;
