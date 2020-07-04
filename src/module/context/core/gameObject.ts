@@ -41,8 +41,8 @@ export default abstract class GameObject {
     }
 
     setMiddlePoint(point: Point): GameObject{
-        this.x = point.x-this.width;
-        this.y = point.y-this.height;
+        this.x = point.x-this.width/2;
+        this.y = point.y-this.height/2;
         return this;
     }
 
