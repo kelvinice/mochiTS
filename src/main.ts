@@ -1,7 +1,7 @@
 import SceneEngine from "./module/context/core/sceneEngine";
-import GameScene from './script/game/scenes/gameScene';
+import DummyScene from './script/game/scenes/dummyScene';
 import MapCreator from './script/handler/mapCreator';
-import TestScene from './script/game/scenes/testScene';
+import GameScene from './script/game/scenes/gameScene';
 import AssetManager from './module/context/general/asset';
 
 window.onload = () =>{
@@ -23,7 +23,7 @@ window.onload = () =>{
         assetManager.addPath("player","player_green.png");
 
         assetManager.addAssetDoneListener(()=>{
-                sceneEngine.updateScene(new TestScene(assetManager));
+                sceneEngine.updateScene(new GameScene(assetManager));
                 sceneEngine.start();
         });
 

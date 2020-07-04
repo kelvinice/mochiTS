@@ -4,7 +4,8 @@ export default abstract class GameObject {
     y: number;
     width: number;
     height: number;
-    constructor(iGameObject: IGameObject) {
+    zIndex: number = 0;
+    protected constructor(iGameObject: IGameObject) {
         this.x = iGameObject.x;
         this.y = iGameObject.y;
         this.width = iGameObject.width;
@@ -12,6 +13,11 @@ export default abstract class GameObject {
     }
     abstract draw(ctx: CanvasRenderingContext2D): void;
     abstract update(): void;
+
+    setZIndex(zIndex: number): GameObject{
+        this.zIndex = zIndex;
+        return this;
+    }
 
     isIntersect(g: GameObject) {
         return this.x <= g.x + g.width && this.x + this.width >= g.x

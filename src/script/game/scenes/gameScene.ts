@@ -1,56 +1,83 @@
-import Global from '../../../module/context/general/global';
-import { IGameObject } from '../../../module/context/core/gameObject';
-import Ball from '../../../module/ball';
 import Scene from '../../../module/context/core/scene';
-
+import AssetManager from '../../../module/context/general/asset';
+import MapCreator from '../../handler/mapCreator';
+import { IGameObject } from '../../../module/context/core/gameObject';
+import Tile from '../model/tile/tile';
+import GameTile from '../model/tile/gameTile';
+import Player from "../model/player";
 
 export default class GameScene extends Scene{
+    pathImage: ImageBitmap;
+    stoneImage: ImageBitmap;
+    brickImage: ImageBitmap;
+    switchGreenImage: ImageBitmap;
+    playerImage: ImageBitmap;
+    TILE_SIZE: number = 60;
+    player: Player;
+
+    constructor(assetManager: AssetManager){
+        super();
+        this.pathImage = assetManager.loadedImage["path"];
+        this.stoneImage = assetManager.loadedImage["stone"];
+        this.brickImage = assetManager.loadedImage["brick"];
+        this.switchGreenImage = assetManager.loadedImage["switchGreen"];
+        this.playerImage = assetManager.loadedImage["player"];
+    }
+
     onCreated(): void {
-        throw new Error("Method not implemented.");
+        let mc :MapCreator = new MapCreator(16,25);
+        let map: Tile[][] = mc.getMap();
+
+        for (let i = 0; i < map.length; i++) {
+            for (let j = 0; j < map[i].length; j++) {
+                let img;
+                if(map[i][j].char == '#'){
+                    img = this.pathImage;
+                }
+                else if(map[i][j].char == 'W'){
+                    img = this.stoneImage;
+                }else if(map[i][j].char == 'S'){
+                    img = this.switchGreenImage;
+                }else if(map[i][j].char == 'H'){
+                    img = this.pathImage;
+                    this.player = new Player(<IGameObject>{
+                        x: i*this.TILE_SIZE,
+                        y: j*this.TILE_SIZE,
+                        width: this.TILE_SIZE,
+                        height: this.TILE_SIZE
+                    }, this.playerImage);
+                    this.player.setZIndex(10);
+                    this.addGameObject(this.player);
+
+                }else{
+                    img = this.brickImage;
+                }
+
+               this.addGameObject(new GameTile(<IGameObject>{
+                    x: i*this.TILE_SIZE,
+                    y: j*this.TILE_SIZE,
+                    width: this.TILE_SIZE,
+                    height: this.TILE_SIZE
+                }, img));
+               
+                
+            }
+            
+        }
+
     }
     onRender(ctx: CanvasRenderingContext2D): void {
-        throw new Error("Method not implemented.");
+       
     }
     onUpdate(): void {
-        throw new Error("Method not implemented.");
-    }
-    balls: Ball[];
-    
-    constructor(){
-        super();
-       
-        this.balls = [];
-        this.addBall(new Ball(<IGameObject>{
-            height : 200,
-            width : 200,
-            x : 10,
-            y : 10
-        }))
-        this.addBall(new Ball(<IGameObject>{
-            height : 100,
-            width : 100,
-            x : 600,
-            y : 100
-        }))
-        this.addBall(new Ball(<IGameObject>{
-            height : 150,
-            width : 150,
-            x : 300,
-            y : 400
-        }))
-    }
-
-    addBall(ball: Ball): void{
-        this.balls.push(ball);
-        this.addGameObject(ball);
-    }
-
-    render(ctx: CanvasRenderingContext2D): void {
         
     }
-    update(): void {
-        // console.log(Global.getInstance().height);
+
+    mouseClick(e:MouseEvent){
+        console.log(e.x);
+        console.log();
         
+
     }
     
 

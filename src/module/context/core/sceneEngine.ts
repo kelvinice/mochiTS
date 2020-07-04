@@ -1,9 +1,7 @@
-
 import Global from '../general/global';
 import Scene from './scene';
 import CanvasController from '../../canvasController';
 import GameObject from './gameObject';
-
 
 export default class SceneEngine {
     canvas: HTMLCanvasElement;
@@ -92,6 +90,9 @@ export default class SceneEngine {
 
     addGameObject(gameObject: GameObject){
         this.gameobjects.push(gameObject);
+        this.gameobjects.sort((a:GameObject,b:GameObject)=>{
+           return a.zIndex -  b.zIndex;
+        });
     }
 
 }
