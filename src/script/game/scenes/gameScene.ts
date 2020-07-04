@@ -5,6 +5,8 @@ import { IGameObject } from '../../../module/context/core/gameObject';
 import Tile from '../model/tile/tile';
 import GameTile from '../model/tile/gameTile';
 import Player from "../model/player";
+import Point from "../model/point";
+import Projectile from "../model/Projectile";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -48,7 +50,6 @@ export default class GameScene extends Scene{
                     }, this.playerImage);
                     this.player.setZIndex(10);
                     this.addGameObject(this.player);
-
                 }else{
                     img = this.brickImage;
                 }
@@ -74,9 +75,30 @@ export default class GameScene extends Scene{
     }
 
     mouseClick(e:MouseEvent){
-        console.log(e.x);
-        console.log();
-        
+        let p: Point = this.player.getMiddlePoint();
+
+        let xDif = e.x - p.x;
+        let yDif = e.y - p.y;
+        // console.log("X Dif: "+xDif);
+        // console.log("Y dif: "+yDif);
+
+
+        let dif = Math.abs(xDif)+ Math.abs(yDif);
+        let maxVel= 2;
+
+        let xVel = xDif/dif * maxVel;
+        let yVel = yDif/dif * maxVel;
+        console.log("X Vel: "+xVel);
+        console.log("Y Vel: "+yVel);
+
+    //TODO know bug: kurangin 1/2 height & 1/2 with supaya cocok sama middle point
+        let projectile = new Projectile(<IGameObject>{
+            x: p.x,
+            y: p.y,
+            width: 20,
+            height: 20
+        }, new Point(xVel, yVel)).setZIndex(20);
+        this.addGameObject(projectile);
 
     }
     
