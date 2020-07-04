@@ -39,6 +39,13 @@ export default abstract class GameObject {
         let y = this.y + (this.height/2);
         return new Point(x,y);
     }
+
+    setMiddlePoint(point: Point): GameObject{
+        this.x = point.x-this.width;
+        this.y = point.y-this.height;
+        return this;
+    }
+
 }
 
 export interface IGameObject{

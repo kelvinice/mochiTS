@@ -6,7 +6,7 @@ import Tile from '../model/tile/tile';
 import GameTile from '../model/tile/gameTile';
 import Player from "../model/player";
 import Point from "../model/point";
-import Projectile from "../model/Projectile";
+import Projectile from "../model/projectile";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
