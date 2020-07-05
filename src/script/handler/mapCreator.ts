@@ -7,8 +7,8 @@ export default class MapCreator{
     WIDTH: number = 20;
     MIN_HEIGHT = 3;
     MIN_WIDTH = 3;
-    MAX_HEIGHT = 10;
-    MAX_WIDTH = 10;
+    MAX_HEIGHT = 9;
+    MAX_WIDTH = 9;
     map: Tile[][];
     queue : Point[];
     trueRandom: TrueRandom;

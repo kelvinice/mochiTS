@@ -3,10 +3,16 @@ import Point from "./point";
 
 export default class Projectile extends GameObject{
     velocity: Point;
+    speed: number = 1;
 
     constructor(iGameObject: IGameObject, velocity: Point) {
         super(iGameObject);
         this.velocity = velocity;
+    }
+
+    setSpeed(speed: number): Projectile{
+        this.speed = speed;
+        return this;
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
@@ -14,8 +20,8 @@ export default class Projectile extends GameObject{
     }
 
     update(): void {
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
+        this.x += this.velocity.x * this.speed;
+        this.y += this.velocity.y * this.speed;
     }
 
 

@@ -5,6 +5,7 @@ export default abstract class GameObject {
     width: number;
     height: number;
     zIndex: number = 0;
+
     protected constructor(iGameObject: IGameObject) {
         this.x = iGameObject.x;
         this.y = iGameObject.y;

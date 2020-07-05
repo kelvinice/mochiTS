@@ -91,14 +91,12 @@ export default class GameScene extends Scene{
         console.log("X Vel: "+xVel);
         console.log("Y Vel: "+yVel);
 
-    //TODO know bug: kurangin 1/2 height & 1/2 with supaya cocok sama middle point
         let projectile = new Projectile(<IGameObject>{
             x: p.x,
             y: p.y,
             width: 20,
             height: 20
-        }, new Point(xVel, yVel)).setZIndex(20)
-        // ;
+        }, new Point(xVel, yVel)).setSpeed(3).setZIndex(20)
             .setMiddlePoint(p);
         this.addGameObject(projectile);
 
