@@ -23,7 +23,7 @@ export default class SceneEngine {
         this.canvasController.setMaximize();
         Global.getInstance().width = this.canvasController.getWidthCanvas();
         Global.getInstance().height = this.canvasController.getHeightCanvas();
-        addEventListener("click", (e)=>this.mouseClick(e));
+        canvas.addEventListener("click", (e)=>this.mouseClick(e));
     }
 
     mouseClick(e: MouseEvent){
@@ -31,6 +31,8 @@ export default class SceneEngine {
             this.currentScene.mouseClick(e);
         }
     }
+
+
     
     getCanvasController(){
         return this.canvasController;
@@ -51,7 +53,6 @@ export default class SceneEngine {
 
     render(time: any) {
         if(this.readyStatus == true){
-            
             this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
             this.gameobjects.forEach(go => {
                 go.draw(this.ctx);

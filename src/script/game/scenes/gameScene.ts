@@ -79,10 +79,6 @@ export default class GameScene extends Scene{
 
         let xDif = e.x - p.x;
         let yDif = e.y - p.y;
-        // console.log("X Dif: "+xDif);
-        // console.log("Y dif: "+yDif);
-
-
         let dif = Math.abs(xDif)+ Math.abs(yDif);
         let maxVel= 2;
 
@@ -96,7 +92,9 @@ export default class GameScene extends Scene{
             y: p.y,
             width: 20,
             height: 20
-        }, new Point(xVel, yVel)).setSpeed(3).setZIndex(20)
+        }, new Point(xVel, yVel))
+            .setSpeed(3)
+            .setZIndex(20)
             .setMiddlePoint(p);
         this.addGameObject(projectile);
 
