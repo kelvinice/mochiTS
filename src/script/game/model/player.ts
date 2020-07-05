@@ -1,5 +1,5 @@
-import GameObject, {IGameObject} from "../../../module/context/core/gameObject";
-import ImageGameObject from "../../../module/context/core/imageGameObject";
+import GameObject, {IGameObject} from "../../../module/context/core/gameObject/gameObject";
+import ImageGameObject from "../../../module/context/core/gameObject/imageGameObject";
 
 export default class Player extends ImageGameObject{
 

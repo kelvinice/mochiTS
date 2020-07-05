@@ -1,4 +1,4 @@
-import GameObject, {IGameObject} from "../../../module/context/core/gameObject";
+import GameObject, {IGameObject} from "../../../module/context/core/gameObject/gameObject";
 import Point from "./point";
 
 export default class Projectile extends GameObject{

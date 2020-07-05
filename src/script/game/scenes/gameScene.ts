@@ -1,7 +1,7 @@
-import Scene from '../../../module/context/core/scene';
+import Scene from '../../../module/context/core/scene/scene';
 import AssetManager from '../../../module/context/general/asset';
 import MapCreator from '../../handler/mapCreator';
-import { IGameObject } from '../../../module/context/core/gameObject';
+import { IGameObject } from '../../../module/context/core/gameObject/gameObject';
 import Tile from '../model/tile/tile';
 import GameTile from '../model/tile/gameTile';
 import Player from "../model/player";

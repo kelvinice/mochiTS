@@ -1,7 +1,7 @@
-import Global from '../general/global';
+import Global from '../../general/global';
 import Scene from './scene';
-import CanvasController from '../../canvasController';
-import GameObject from './gameObject';
+import CanvasController from '../../../canvasController';
+import GameObject from '../gameObject/gameObject';
 
 export default class SceneEngine {
     canvas: HTMLCanvasElement;
@@ -32,8 +32,6 @@ export default class SceneEngine {
         }
     }
 
-
-    
     getCanvasController(){
         return this.canvasController;
     }

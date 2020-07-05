@@ -1,7 +1,7 @@
 import Global from '../../../module/context/general/global';
-import { IGameObject } from '../../../module/context/core/gameObject';
+import { IGameObject } from '../../../module/context/core/gameObject/gameObject';
 import Ball from '../../../module/ball';
-import Scene from "../../../module/context/core/scene";
+import Scene from "../../../module/context/core/scene/scene";
 
 
 export default class DummyScene extends Scene{

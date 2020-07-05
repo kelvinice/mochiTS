@@ -1,6 +1,6 @@
-import GameObject from "./context/core/gameObject";
+import GameObject from "./context/core/gameObject/gameObject";
 import Global from "./context/general/global";
-import { IGameObject } from './context/core/gameObject';
+import { IGameObject } from './context/core/gameObject/gameObject';
 
 
 export default class Ball extends GameObject{

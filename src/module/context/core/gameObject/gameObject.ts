@@ -1,4 +1,4 @@
-import Point from '../../../script/game/model/point';
+import Point from '../../../../script/game/model/point';
 export default abstract class GameObject {
     x: number;
     y: number;

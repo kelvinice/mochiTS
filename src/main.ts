@@ -1,4 +1,4 @@
-import SceneEngine from "./module/context/core/sceneEngine";
+import SceneEngine from "./module/context/core/scene/sceneEngine";
 import DummyScene from './script/game/scenes/dummyScene';
 import MapCreator from './script/handler/mapCreator';
 import GameScene from './script/game/scenes/gameScene';

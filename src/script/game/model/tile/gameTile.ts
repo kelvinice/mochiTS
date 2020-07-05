@@ -1,12 +1,12 @@
-import GameObject from '../../../../module/context/core/gameObject';
-import { IGameObject } from '../../../../module/context/core/gameObject';
-import ImageGameObject from "../../../../module/context/core/imageGameObject";
+import GameObject from '../../../../module/context/core/gameObject/gameObject';
+import { IGameObject } from '../../../../module/context/core/gameObject/gameObject';
+import ImageGameObject from "../../../../module/context/core/gameObject/imageGameObject";
 
 
 export default class GameTile extends ImageGameObject{
     image: ImageBitmap;
     constructor(iGameObject: IGameObject, image: ImageBitmap){
-        super(iGameObject,image);
+        super(iGameObject, image);
     }
 
     draw(ctx: CanvasRenderingContext2D): void {

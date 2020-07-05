@@ -26,7 +26,6 @@ export default class MapCreator{
         this.reconstructWall(res);
 
         this.createHomeAndSpawner(res);
-        // this.print(res);
     }
 
     getMap(): Tile[][]{
