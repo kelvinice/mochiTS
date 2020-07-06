@@ -1,5 +1,5 @@
-import GameObject from "./module/game/gameObject";
-import { splitSprite } from "./module/general/asset";
+import GameObject from "./module/game/gameObjects";
+import {splitSprite} from "../script/handlers/imageHandler";
 
 export default class PersonAnimation extends GameObject{
     constructor(img, ...args){

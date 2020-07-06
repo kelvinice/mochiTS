@@ -1,5 +1,5 @@
 import TrueRandom from './trueRandom';
-import Tile from '../game/model/tile/tile';
+import Tile from '../game/model/tiles/tile';
 import Point from '../game/model/point';
 
 export default class MapCreator{

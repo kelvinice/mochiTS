@@ -1,6 +1,6 @@
-import GameObject from '../../../../module/context/core/gameObject/gameObject';
-import { IRectangle } from '../../../../module/context/core/gameObject/gameObject';
-import ImageGameObject from "../../../../module/context/core/gameObject/imageGameObject";
+import GameObject from '../../../../module/context/core/gameObjects/gameObject';
+import { IRectangle } from '../../../../module/context/core/gameObjects/gameObject';
+import ImageGameObject from "../../../../module/context/core/gameObjects/imageGameObject";
 
 
 export default class GameTile extends ImageGameObject{

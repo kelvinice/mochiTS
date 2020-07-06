@@ -7,6 +7,24 @@ export default class AnimationController{
     counter: number;
     constructor() {
         this.animations = [];
+        this.counter = 0;
+
+    }
+
+    public addAnimation(name: string, begin: number, end: number, delay: number): void{
+        this.animations.push(new Animation(name, begin, end, delay));
+    }
+
+    public setAnim(name: string): void{
+        if(this.activeAnimation != null && this.activeAnimation.name === name)return;
+        for (const animation of this.animations) {
+            if(animation.name === name){
+                this.activeAnimation = animation;
+                this.index = animation.begin;
+                return;
+            }
+        }
+        console.log("Animation name not found")
     }
 
     public updateAnimation(frameTime: number = 1000/60): void
@@ -15,6 +33,7 @@ export default class AnimationController{
             return;
         }
         this.counter+=frameTime;
+
         if(this.counter >= this.activeAnimation.delay){
             this.counter%=this.activeAnimation.delay;
             // this.counter=0;
@@ -26,6 +45,7 @@ export default class AnimationController{
         //     return;
         // }
         this.index++;
+
 
         if(this.index > this.activeAnimation.end){
             this.index = this.activeAnimation.begin;

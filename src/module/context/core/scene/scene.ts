@@ -1,5 +1,5 @@
 import SceneEngine from './sceneEngine';
-import GameObject from '../gameObject/gameObject';
+import GameObject from '../gameObjects/gameObject';
 export default abstract class Scene{
 
     abstract onCreated(): void;

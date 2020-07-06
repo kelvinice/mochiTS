@@ -1,7 +1,7 @@
-import Global from '../../general/global';
+import Global from '../../generals/global';
 import Scene from './scene';
 import CanvasController from '../../../canvasController';
-import GameObject from '../gameObject/gameObject';
+import GameObject from '../gameObjects/gameObject';
 
 export default class SceneEngine {
     canvas: HTMLCanvasElement;
@@ -49,14 +49,16 @@ export default class SceneEngine {
         requestAnimationFrame((time: Number)=>this.render(time));
     }
 
-    render(time: any) {
+    render(time: Number) {
+
         if(this.readyStatus == true){
             this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
             this.gameobjects.forEach(go => {
-                go.draw(this.ctx);
+                go.draw(this.ctx, time);
             });
             this.currentScene.onRender(this.ctx);
         }
+
         requestAnimationFrame((time: Number)=>this.render(time));
     }
 

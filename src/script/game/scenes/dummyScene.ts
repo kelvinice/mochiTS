@@ -1,5 +1,5 @@
-import Global from '../../../module/context/general/global';
-import { IRectangle } from '../../../module/context/core/gameObject/gameObject';
+import Global from '../../../module/context/generals/global';
+import { IRectangle } from '../../../module/context/core/gameObjects/gameObject';
 import Ball from '../../../module/ball';
 import Scene from "../../../module/context/core/scene/scene";
 

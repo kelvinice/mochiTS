@@ -3,16 +3,19 @@ import ImageGameObject from "./imageGameObject";
 import AnimationController from "../animations/animationController";
 
 export default class AnimateGameObject extends ImageGameObject{
-    animationController: AnimationController;
+    protected animationController: AnimationController;
+    protected rectangles: IRectangle[];
+    protected previousTime: number;
 
     constructor(iGameObject: IRectangle, image: ImageBitmap) {
         super(iGameObject, image);
         this.animationController = new AnimationController();
+        this.previousTime = Number(0);
     }
 
-    draw(ctx: CanvasRenderingContext2D): void {
-        let animation = this.animationController.activeAnimation;
-        let rect = animation.rect;
+    draw(ctx: CanvasRenderingContext2D, time: Number): void {
+        // let animation = this.animationController.activeAnimation;
+        let rect = this.rectangles[this.animationController.index];
 
         ctx.drawImage(this.image,
             rect.x,
@@ -24,10 +27,12 @@ export default class AnimateGameObject extends ImageGameObject{
             this.width,
             this.height
         )
-
+        this.animationController.updateAnimation(time.valueOf() - this.previousTime.valueOf());
+        this.previousTime = Number(time);
     }
 
     update(): void {
+
     }
 
 }

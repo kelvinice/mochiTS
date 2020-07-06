@@ -1,8 +1,8 @@
 import SceneEngine from "./module/context/core/scene/sceneEngine";
 import DummyScene from './script/game/scenes/dummyScene';
-import MapCreator from './script/handler/mapCreator';
+import MapCreator from './script/handlers/mapCreator';
 import GameScene from './script/game/scenes/gameScene';
-import AssetManager from './module/context/general/asset';
+import AssetManager from './module/context/generals/asset';
 
 window.onload = () =>{
     	function init() {

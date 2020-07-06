@@ -1,14 +1,15 @@
 import Scene from '../../../module/context/core/scene/scene';
-import AssetManager from '../../../module/context/general/asset';
-import MapCreator from '../../handler/mapCreator';
-import { IRectangle } from '../../../module/context/core/gameObject/gameObject';
-import Tile from '../model/tile/tile';
-import GameTile from '../model/tile/gameTile';
+import AssetManager from '../../../module/context/generals/asset';
+import MapCreator from '../../handlers/mapCreator';
+import { IRectangle } from '../../../module/context/core/gameObjects/gameObject';
+import Tile from '../model/tiles/tile';
+import GameTile from '../model/tiles/gameTile';
 import Player from "../model/player";
 import Point from "../model/point";
 import Projectile from "../model/projectile";
-import {splitSprite} from "../../handler/imageHandler";
-import Enemy from "../model/enemy";
+import {splitSprite} from "../../handlers/imageHandler";
+import Enemy from "../model/enemies/enemy";
+import Slime from "../model/enemies/slime";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -33,7 +34,6 @@ export default class GameScene extends Scene{
     onCreated(): void {
         let mc :MapCreator = new MapCreator(16,25);
         let map: Tile[][] = mc.getMap();
-        let slimes = splitSprite(this.slimeImage, 4, 4);
 
         for (let i = 0; i < map.length; i++) {
             for (let j = 0; j < map[i].length; j++) {
@@ -45,7 +45,15 @@ export default class GameScene extends Scene{
                     img = this.stoneImage;
                 }else if(map[i][j].char == 'S'){
                     img = this.switchGreenImage;
-                    // let enemy = new Enemy()
+
+                    let enemy = new Slime(<IRectangle>{
+                        x: i*this.TILE_SIZE,
+                        y: j*this.TILE_SIZE,
+                        width: this.TILE_SIZE,
+                        height: this.TILE_SIZE
+                    }, this.slimeImage);
+                    enemy.setZIndex(15);
+                    this.addGameObject(enemy);
 
                 }else if(map[i][j].char == 'H'){
                     img = this.pathImage;
@@ -76,6 +84,7 @@ export default class GameScene extends Scene{
        
     }
     onUpdate(): void {
+
         
     }
 
