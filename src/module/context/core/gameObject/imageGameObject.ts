@@ -1,8 +1,8 @@
-import GameObject, {IGameObject} from "./gameObject";
+import GameObject, {IRectangle} from "./gameObject";
 
 export default class ImageGameObject extends GameObject{
     image: ImageBitmap;
-    constructor(iGameObject: IGameObject, image: ImageBitmap){
+    constructor(iGameObject: IRectangle, image: ImageBitmap){
         super(iGameObject);
         this.image = image;
     }

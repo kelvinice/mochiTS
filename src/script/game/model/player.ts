@@ -1,9 +1,9 @@
-import GameObject, {IGameObject} from "../../../module/context/core/gameObject/gameObject";
+import GameObject, {IRectangle} from "../../../module/context/core/gameObject/gameObject";
 import ImageGameObject from "../../../module/context/core/gameObject/imageGameObject";
 
 export default class Player extends ImageGameObject{
 
-    constructor(iGameObject: IGameObject, image: ImageBitmap) {
+    constructor(iGameObject: IRectangle, image: ImageBitmap) {
         super(iGameObject,image);
     }
 

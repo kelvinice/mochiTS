@@ -6,7 +6,7 @@ export default abstract class GameObject {
     height: number;
     zIndex: number = 0;
 
-    protected constructor(iGameObject: IGameObject) {
+    protected constructor(iGameObject: IRectangle) {
         this.x = iGameObject.x;
         this.y = iGameObject.y;
         this.width = iGameObject.width;
@@ -49,6 +49,6 @@ export default abstract class GameObject {
 
 }
 
-export interface IGameObject{
+export interface IRectangle{
     x: number, y: number, width: number, height: number;
 }

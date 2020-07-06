@@ -1,12 +1,14 @@
 import Scene from '../../../module/context/core/scene/scene';
 import AssetManager from '../../../module/context/general/asset';
 import MapCreator from '../../handler/mapCreator';
-import { IGameObject } from '../../../module/context/core/gameObject/gameObject';
+import { IRectangle } from '../../../module/context/core/gameObject/gameObject';
 import Tile from '../model/tile/tile';
 import GameTile from '../model/tile/gameTile';
 import Player from "../model/player";
 import Point from "../model/point";
 import Projectile from "../model/projectile";
+import {splitSprite} from "../../handler/imageHandler";
+import Enemy from "../model/enemy";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -14,7 +16,8 @@ export default class GameScene extends Scene{
     brickImage: ImageBitmap;
     switchGreenImage: ImageBitmap;
     playerImage: ImageBitmap;
-    TILE_SIZE: number = 60;
+    slimeImage: ImageBitmap
+    TILE_SIZE: number = 40;
     player: Player;
 
     constructor(assetManager: AssetManager){
@@ -24,11 +27,13 @@ export default class GameScene extends Scene{
         this.brickImage = assetManager.loadedImage["brick"];
         this.switchGreenImage = assetManager.loadedImage["switchGreen"];
         this.playerImage = assetManager.loadedImage["player"];
+        this.slimeImage = assetManager.loadedImage["slime"];
     }
 
     onCreated(): void {
         let mc :MapCreator = new MapCreator(16,25);
         let map: Tile[][] = mc.getMap();
+        let slimes = splitSprite(this.slimeImage, 4, 4);
 
         for (let i = 0; i < map.length; i++) {
             for (let j = 0; j < map[i].length; j++) {
@@ -40,9 +45,11 @@ export default class GameScene extends Scene{
                     img = this.stoneImage;
                 }else if(map[i][j].char == 'S'){
                     img = this.switchGreenImage;
+                    // let enemy = new Enemy()
+
                 }else if(map[i][j].char == 'H'){
                     img = this.pathImage;
-                    this.player = new Player(<IGameObject>{
+                    this.player = new Player(<IRectangle>{
                         x: i*this.TILE_SIZE,
                         y: j*this.TILE_SIZE,
                         width: this.TILE_SIZE,
@@ -54,14 +61,12 @@ export default class GameScene extends Scene{
                     img = this.brickImage;
                 }
 
-               this.addGameObject(new GameTile(<IGameObject>{
+               this.addGameObject(new GameTile(<IRectangle>{
                     x: i*this.TILE_SIZE,
                     y: j*this.TILE_SIZE,
                     width: this.TILE_SIZE,
                     height: this.TILE_SIZE
                 }, img));
-               
-                
             }
             
         }
@@ -87,7 +92,7 @@ export default class GameScene extends Scene{
         console.log("X Vel: "+xVel);
         console.log("Y Vel: "+yVel);
 
-        let projectile = new Projectile(<IGameObject>{
+        let projectile = new Projectile(<IRectangle>{
             x: p.x,
             y: p.y,
             width: 20,

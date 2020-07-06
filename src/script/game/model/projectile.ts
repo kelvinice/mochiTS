@@ -1,11 +1,11 @@
-import GameObject, {IGameObject} from "../../../module/context/core/gameObject/gameObject";
+import GameObject, {IRectangle} from "../../../module/context/core/gameObject/gameObject";
 import Point from "./point";
 
 export default class Projectile extends GameObject{
     velocity: Point;
     speed: number = 1;
 
-    constructor(iGameObject: IGameObject, velocity: Point) {
+    constructor(iGameObject: IRectangle, velocity: Point) {
         super(iGameObject);
         this.velocity = velocity;
     }

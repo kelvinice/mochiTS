@@ -1,6 +1,6 @@
 import GameObject from "./context/core/gameObject/gameObject";
 import Global from "./context/general/global";
-import { IGameObject } from './context/core/gameObject/gameObject';
+import { IRectangle } from './context/core/gameObject/gameObject';
 
 
 export default class Ball extends GameObject{
@@ -8,7 +8,7 @@ export default class Ball extends GameObject{
     velY: number;
     isCollide: boolean;
 
-    constructor(iGameObject: IGameObject){
+    constructor(iGameObject: IRectangle){
         super(iGameObject);
         this.velX = 1;
         this.velY = 1;

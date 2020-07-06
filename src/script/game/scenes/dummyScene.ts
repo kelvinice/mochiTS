@@ -1,5 +1,5 @@
 import Global from '../../../module/context/general/global';
-import { IGameObject } from '../../../module/context/core/gameObject/gameObject';
+import { IRectangle } from '../../../module/context/core/gameObject/gameObject';
 import Ball from '../../../module/ball';
 import Scene from "../../../module/context/core/scene/scene";
 
@@ -20,19 +20,19 @@ export default class DummyScene extends Scene{
         super();
        
         this.balls = [];
-        this.addBall(new Ball(<IGameObject>{
+        this.addBall(new Ball(<IRectangle>{
             height : 200,
             width : 200,
             x : 10,
             y : 10
         }))
-        this.addBall(new Ball(<IGameObject>{
+        this.addBall(new Ball(<IRectangle>{
             height : 100,
             width : 100,
             x : 600,
             y : 100
         }))
-        this.addBall(new Ball(<IGameObject>{
+        this.addBall(new Ball(<IRectangle>{
             height : 150,
             width : 150,
             x : 300,

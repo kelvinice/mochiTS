@@ -1,14 +1,18 @@
+import {IRectangle} from "../gameObject/gameObject";
+
 export default class Animation{
     private _name: string;
     private _begin: number;
     private _end: number;
     private _delay: number;
+    private _rect: IRectangle;
 
-    constructor(name: string, begin: number, end: number, delay: number) {
+    constructor(name: string, begin: number, end: number, delay: number, rect: IRectangle) {
         this._name = name;
         this._begin = begin;
         this._end = end;
         this._delay = delay;
+        this._rect = rect;
     }
 
     get name(): string {
@@ -41,5 +45,13 @@ export default class Animation{
 
     set delay(value: number) {
         this._delay = value;
+    }
+
+    get rect(): IRectangle {
+        return this._rect;
+    }
+
+    set rect(value: IRectangle) {
+        this._rect = value;
     }
 }
