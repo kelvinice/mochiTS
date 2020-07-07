@@ -35,6 +35,7 @@ export default abstract class Enemy extends AnimateGameObject{
         ctx.fillRect(this.x, this.y+this.height, this.width, 8);
         ctx.fillStyle = "red";
         ctx.fillRect(this.x+sideSize/2, this.y+this.height+sideSize/2, barWidth, 8-sideSize);
+
     }
 
     update(): void {
@@ -66,87 +67,87 @@ export default abstract class Enemy extends AnimateGameObject{
 
         start.totalWeight = 0;
 
-        let end: Tile = maps[this.x/GameScene.TILE_SIZE][this.y/GameScene.TILE_SIZE];
-        queue.push(start);
 
+        let end: Tile = maps[Math.floor(this.x/GameScene.TILE_SIZE)][Math.floor(this.y/GameScene.TILE_SIZE)];
+        queue.push(start);
         while(queue.length > 0 && end.parentX == -1){
             queue.sort((a:Tile, b: Tile)=>{
                return a.totalWeight - b.totalWeight;
             });
 
             let curr: Tile = queue.shift();
-            if(curr.baseWeight == Tile.WALL)continue;
+            if(curr.baseWeight == Tile.WALL || curr.baseWeight == Tile.GRASS)continue;
             curr.isOpen = true;
 
-
-            if(!maps[curr.x][curr.y+1].isOpen){
-                let currWeight = curr.totalWeight + maps[curr.x][curr.y+1].baseWeight;
-                if(currWeight <= maps[curr.x][curr.y+1].totalWeight){
-                    maps[curr.x][curr.y+1].totalWeight = currWeight;
-                    maps[curr.x][curr.y+1].parentX = curr.x;
-                    maps[curr.x][curr.y+1].parentY = curr.y;
-                    queue.push(maps[curr.x][curr.y+1]);
-                    maps[curr.x][curr.y+1].isOpen = true;
-                }
-                if(!maps[curr.x-1][curr.y].isOpen ){
-                    let currWeight = curr.totalWeight + maps[curr.x-1][curr.y].baseWeight;
-                    if(currWeight <= maps[curr.x-1][curr.y].totalWeight){
-                        maps[curr.x-1][curr.y].totalWeight = currWeight;
-                        maps[curr.x-1][curr.y].parentX = curr.x;
-                        maps[curr.x-1][curr.y].parentY = curr.y;
-                        queue.push(maps[curr.x-1][curr.y]);
-                        maps[curr.x-1][curr.y].isOpen = true;
-                    }
-                }
-
-                if(  !maps[curr.x+1][curr.y].isOpen  ){
-                    let currWeight = curr.totalWeight + maps[curr.x+1][curr.y].baseWeight;
-                    if(currWeight <= maps[curr.x+1][curr.y].totalWeight){
-                        maps[curr.x+1][curr.y].totalWeight = currWeight;
-                        maps[curr.x+1][curr.y].parentX = curr.x;
-                        maps[curr.x+1][curr.y].parentY = curr.y;
-                        queue.push(maps[curr.x+1][curr.y]);
-                        maps[curr.x+1][curr.y].isOpen = true;
-                    }
-                }
-
-                if(!maps[curr.x][curr.y-1].isOpen ){
-                    let currWeight = curr.totalWeight + maps[curr.x][curr.y-1].baseWeight;
-                    if(currWeight <= maps[curr.x][curr.y-1].totalWeight){
-                        maps[curr.x][curr.y-1].totalWeight = currWeight;
-                        maps[curr.x][curr.y-1].parentX = curr.x;
-                        maps[curr.x][curr.y-1].parentY = curr.y;
-                        queue.push(maps[curr.x][curr.y-1]);
-                        maps[curr.x][curr.y-1].isOpen = true;
-                    }
+            if(!maps[curr.x][curr.y+1].isOpen) {
+                let currWeight = curr.totalWeight + maps[curr.x][curr.y + 1].baseWeight;
+                if (currWeight <= maps[curr.x][curr.y + 1].totalWeight) {
+                    maps[curr.x][curr.y + 1].totalWeight = currWeight;
+                    maps[curr.x][curr.y + 1].parentX = curr.x;
+                    maps[curr.x][curr.y + 1].parentY = curr.y;
+                    queue.push(maps[curr.x][curr.y + 1]);
+                    maps[curr.x][curr.y + 1].isOpen = true;
                 }
             }
-            let targetX = -1;
-            let targetY = -1;
-
-            if(end.parentY != -1){
-
-                targetX = end.parentX * GameScene.TILE_SIZE;
-                targetY = end.parentY * GameScene.TILE_SIZE;
-                if(this.x < targetX){
-                    this.velX = 1;
-                }else if(this.x > targetX){
-                    this.velX = -1;
+            if(!maps[curr.x-1][curr.y].isOpen ){
+                let currWeight = curr.totalWeight + maps[curr.x-1][curr.y].baseWeight;
+                if(currWeight <= maps[curr.x-1][curr.y].totalWeight){
+                    maps[curr.x-1][curr.y].totalWeight = currWeight;
+                    maps[curr.x-1][curr.y].parentX = curr.x;
+                    maps[curr.x-1][curr.y].parentY = curr.y;
+                    queue.push(maps[curr.x-1][curr.y]);
+                    maps[curr.x-1][curr.y].isOpen = true;
                 }
-
-                if(this.y < targetY){
-                    this.velY = 1;
-                }else if(this.y > targetY){
-                    this.velY = -1;
-                }
-
-            }else{
-                console.log("path not found");
             }
 
+            if(  !maps[curr.x+1][curr.y].isOpen  ){
+                let currWeight = curr.totalWeight + maps[curr.x+1][curr.y].baseWeight;
+                if(currWeight <= maps[curr.x+1][curr.y].totalWeight){
+                    maps[curr.x+1][curr.y].totalWeight = currWeight;
+                    maps[curr.x+1][curr.y].parentX = curr.x;
+                    maps[curr.x+1][curr.y].parentY = curr.y;
+                    queue.push(maps[curr.x+1][curr.y]);
+                    maps[curr.x+1][curr.y].isOpen = true;
+                }
+            }
+
+            if(!maps[curr.x][curr.y-1].isOpen ){
+                let currWeight = curr.totalWeight + maps[curr.x][curr.y-1].baseWeight;
+                if(currWeight <= maps[curr.x][curr.y-1].totalWeight){
+                    maps[curr.x][curr.y-1].totalWeight = currWeight;
+                    maps[curr.x][curr.y-1].parentX = curr.x;
+                    maps[curr.x][curr.y-1].parentY = curr.y;
+                    queue.push(maps[curr.x][curr.y-1]);
+                    maps[curr.x][curr.y-1].isOpen = true;
+                }
+            }
 
         }
 
+
+        let targetX = -1;
+        let targetY = -1;
+        if(end.parentY != -1){
+            targetX = end.parentX * GameScene.TILE_SIZE;
+            targetY = end.parentY * GameScene.TILE_SIZE;
+            if(this.x < targetX){
+                this.velX = 1;
+            }else if(this.x > targetX){
+                this.velX = -1;
+            }else{
+                this.velX = 0;
+            }
+
+            if(this.y < targetY){
+                this.velY = 1;
+            }else if(this.y > targetY){
+                this.velY = -1;
+            }else{
+                this.velY = 0;
+            }
+        }else{
+            console.log("path not found");
+        }
 
 
     }

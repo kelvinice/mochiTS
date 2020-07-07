@@ -35,6 +35,8 @@ export default class GameScene extends Scene{
         this.enemies = [];
     }
 
+
+    isOne = true;
     onCreated(): void {
         let mc :MapCreator = new MapCreator(16,25);
         this.maps = mc.getMap();
@@ -59,6 +61,7 @@ export default class GameScene extends Scene{
                     enemy.setZIndex(15);
                     this.enemies.push(enemy);
                     this.addGameObject(enemy);
+
 
                 }else if(this.maps[i][j].char == 'H'){
                     img = this.pathImage;

@@ -14,7 +14,7 @@ export default class SceneEngine {
 
     lapseTime = 0;
     previousTime = -1;
-    fps = 60;
+    fps = 1;
     frameTime = 1000/this.fps;
 
     private constructor(){}
@@ -50,8 +50,12 @@ export default class SceneEngine {
 
     start(){
         this.canvasController.setMaximize();
-        setInterval(()=>this.update(), 0);
+        setInterval(()=>this.update(), 1000/60);
+
         requestAnimationFrame((time: Number)=>this.render(time));
+        // while(true){
+        //     this.update();
+        // }
     }
 
     render(time: Number) {
@@ -61,27 +65,32 @@ export default class SceneEngine {
                 go.draw(this.ctx, time);
             });
             this.currentScene.onRender(this.ctx);
+
         }
 
         requestAnimationFrame((time: Number)=>this.render(time));
     }
 
     update(){
-        let currTime = window.performance.now();
-        if(this.readyStatus == true){
-            this.lapseTime += currTime - this.previousTime;
-            this.currentScene.onUpdate();
-        }else{
-            this.lapseTime = 0;
-        }
-        if(this.lapseTime >= this.frameTime){
-            this.lapseTime%= this.frameTime;
-            this.previousTime = currTime;
+
+        // let currTime = new Date().getTime();
+        // if(this.readyStatus == true){
+        //     this.lapseTime += (currTime - this.previousTime)/1000;
+        //
+        // }else{
+        //     this.lapseTime = 0;
+        // }
+        // if(this.lapseTime >= this.frameTime){
+        //     this.lapseTime%= this.frameTime;
+        //     this.previousTime = currTime;
             this.gameObjects.forEach(go => {
                 go.update();
             });
+            this.currentScene.onUpdate();
 
-        }
+
+        // }
+
 
         
     }
