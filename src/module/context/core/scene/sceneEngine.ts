@@ -14,7 +14,7 @@ export default class SceneEngine {
 
     lapseTime = 0;
     previousTime = -1;
-    fps = 1;
+    fps = 30;
     frameTime = 1000/this.fps;
 
     private constructor(){}
@@ -50,7 +50,7 @@ export default class SceneEngine {
 
     start(){
         this.canvasController.setMaximize();
-        setInterval(()=>this.update(), 1000/60);
+        setInterval(()=>this.update(), this.frameTime);
 
         requestAnimationFrame((time: Number)=>this.render(time));
         // while(true){
