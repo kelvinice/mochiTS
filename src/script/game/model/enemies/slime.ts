@@ -18,6 +18,7 @@ export default class Slime extends Enemy{
 
     update() {
         super.update();
+        this.x++;
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number) {

@@ -10,7 +10,12 @@ export default class SceneEngine {
     currentScene: Scene;
     readyStatus: boolean;
     private static instance: SceneEngine = null;
-    private gameobjects : GameObject[] = [];
+    private gameObjects : GameObject[] = [];
+
+    lapseTime = 0;
+    previousTime = -1;
+    fps = 60;
+    frameTime = 1000/this.fps;
 
     private constructor(){}
 
@@ -45,15 +50,14 @@ export default class SceneEngine {
 
     start(){
         this.canvasController.setMaximize();
-        setInterval(()=>this.update(), 1000/60);
+        setInterval(()=>this.update(), 0);
         requestAnimationFrame((time: Number)=>this.render(time));
     }
 
     render(time: Number) {
-
         if(this.readyStatus == true){
             this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
-            this.gameobjects.forEach(go => {
+            this.gameObjects.forEach(go => {
                 go.draw(this.ctx, time);
             });
             this.currentScene.onRender(this.ctx);
@@ -63,12 +67,22 @@ export default class SceneEngine {
     }
 
     update(){
+        let currTime = window.performance.now();
         if(this.readyStatus == true){
-            this.gameobjects.forEach(go => {
+            this.lapseTime += currTime - this.previousTime;
+            this.currentScene.onUpdate();
+        }else{
+            this.lapseTime = 0;
+        }
+        if(this.lapseTime >= this.frameTime){
+            this.lapseTime%= this.frameTime;
+            this.previousTime = currTime;
+            this.gameObjects.forEach(go => {
                 go.update();
             });
-            this.currentScene.onUpdate();
+
         }
+
         
     }
 
@@ -90,8 +104,8 @@ export default class SceneEngine {
     }
 
     addGameObject(gameObject: GameObject){
-        this.gameobjects.push(gameObject);
-        this.gameobjects.sort((a:GameObject,b:GameObject)=>{
+        this.gameObjects.push(gameObject);
+        this.gameObjects.sort((a:GameObject,b:GameObject)=>{
            return a.zIndex -  b.zIndex;
         });
     }
