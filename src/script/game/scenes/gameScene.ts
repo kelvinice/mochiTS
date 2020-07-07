@@ -18,8 +18,11 @@ export default class GameScene extends Scene{
     switchGreenImage: ImageBitmap;
     playerImage: ImageBitmap;
     slimeImage: ImageBitmap
-    TILE_SIZE: number = 40;
+    public static TILE_SIZE: number = 40;
     player: Player;
+    enemies: Enemy[];
+    maps: Tile[][];
+
 
     constructor(assetManager: AssetManager){
         super();
@@ -29,51 +32,54 @@ export default class GameScene extends Scene{
         this.switchGreenImage = assetManager.loadedImage["switchGreen"];
         this.playerImage = assetManager.loadedImage["player"];
         this.slimeImage = assetManager.loadedImage["slime"];
+        this.enemies = [];
     }
 
     onCreated(): void {
         let mc :MapCreator = new MapCreator(16,25);
-        let map: Tile[][] = mc.getMap();
+        this.maps = mc.getMap();
 
-        for (let i = 0; i < map.length; i++) {
-            for (let j = 0; j < map[i].length; j++) {
+        for (let i = 0; i < this.maps.length; i++) {
+            for (let j = 0; j < this.maps[i].length; j++) {
                 let img;
-                if(map[i][j].char == '#'){
+                if(this.maps[i][j].char == '#'){
                     img = this.pathImage;
                 }
-                else if(map[i][j].char == 'W'){
+                else if(this.maps[i][j].char == 'W'){
                     img = this.stoneImage;
-                }else if(map[i][j].char == 'S'){
+                }else if(this.maps[i][j].char == 'S'){
                     img = this.switchGreenImage;
 
                     let enemy = new Slime(<IRectangle>{
-                        x: i*this.TILE_SIZE,
-                        y: j*this.TILE_SIZE,
-                        width: this.TILE_SIZE,
-                        height: this.TILE_SIZE
+                        x: i*GameScene.TILE_SIZE,
+                        y: j*GameScene.TILE_SIZE,
+                        width: GameScene.TILE_SIZE,
+                        height: GameScene.TILE_SIZE
                     }, this.slimeImage);
                     enemy.setZIndex(15);
+                    this.enemies.push(enemy);
                     this.addGameObject(enemy);
 
-                }else if(map[i][j].char == 'H'){
+                }else if(this.maps[i][j].char == 'H'){
                     img = this.pathImage;
                     this.player = new Player(<IRectangle>{
-                        x: i*this.TILE_SIZE,
-                        y: j*this.TILE_SIZE,
-                        width: this.TILE_SIZE,
-                        height: this.TILE_SIZE
+                        x: i*GameScene.TILE_SIZE,
+                        y: j*GameScene.TILE_SIZE,
+                        width: GameScene.TILE_SIZE,
+                        height: GameScene.TILE_SIZE
                     }, this.playerImage);
                     this.player.setZIndex(10);
+                    this.player.setTile(j, i);
                     this.addGameObject(this.player);
                 }else{
                     img = this.brickImage;
                 }
 
                this.addGameObject(new GameTile(<IRectangle>{
-                    x: i*this.TILE_SIZE,
-                    y: j*this.TILE_SIZE,
-                    width: this.TILE_SIZE,
-                    height: this.TILE_SIZE
+                    x: i*GameScene.TILE_SIZE,
+                    y: j*GameScene.TILE_SIZE,
+                    width: GameScene.TILE_SIZE,
+                    height: GameScene.TILE_SIZE
                 }, img));
             }
             
@@ -84,7 +90,9 @@ export default class GameScene extends Scene{
        
     }
     onUpdate(): void {
-
+        for (let enemy of this.enemies) {
+            enemy.pathFind(this.maps, this.player.tileY, this.player.tileX);
+        }
         
     }
 
@@ -98,8 +106,6 @@ export default class GameScene extends Scene{
 
         let xVel = xDif/dif * maxVel;
         let yVel = yDif/dif * maxVel;
-        console.log("X Vel: "+xVel);
-        console.log("Y Vel: "+yVel);
 
         let projectile = new Projectile(<IRectangle>{
             x: p.x,
@@ -111,7 +117,6 @@ export default class GameScene extends Scene{
             .setZIndex(20)
             .setMiddlePoint(p);
         this.addGameObject(projectile);
-
     }
     
 

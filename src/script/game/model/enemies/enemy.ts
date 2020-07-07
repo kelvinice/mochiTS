@@ -1,9 +1,16 @@
 import GameObject, {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
 import AnimateGameObject from "../../../../module/context/core/gameObjects/animateGameObject";
+import Tile from "../tiles/tile";
+import GameScene from "../../scenes/gameScene";
 
 export default abstract class Enemy extends AnimateGameObject{
     private _hp: number;
     private _maxHp: number;
+    velX: number = 0;
+    velY: number = 0;
+
+    tileX: number;
+    tileY: number;
 
     get maxHp(): number {
         return this._maxHp;
@@ -32,6 +39,10 @@ export default abstract class Enemy extends AnimateGameObject{
 
     update(): void {
         super.update();
+        this.x+=this.velX;
+        this.y+=this.velY;
+
+
     }
 
     get hp(): number {
@@ -40,6 +51,104 @@ export default abstract class Enemy extends AnimateGameObject{
 
     set hp(value: number) {
         this._hp = value;
+    }
+
+    public pathFind(maps: Tile[][], fromY: number, fromX: number){
+        let queue: Tile[] = [];
+
+        for (let i = 0; i < maps.length; i++) {
+            for (let j = 0; j < maps[i].length; j++) {
+                maps[i][j].init();
+            }
+        }
+
+        let start: Tile = maps[fromY][fromX];
+
+        start.totalWeight = 0;
+
+        let end: Tile = maps[this.x/GameScene.TILE_SIZE][this.y/GameScene.TILE_SIZE];
+        queue.push(start);
+
+        while(queue.length > 0 && end.parentX == -1){
+            queue.sort((a:Tile, b: Tile)=>{
+               return a.totalWeight - b.totalWeight;
+            });
+
+            let curr: Tile = queue.shift();
+            if(curr.baseWeight == Tile.WALL)continue;
+            curr.isOpen = true;
+
+
+            if(!maps[curr.x][curr.y+1].isOpen){
+                let currWeight = curr.totalWeight + maps[curr.x][curr.y+1].baseWeight;
+                if(currWeight <= maps[curr.x][curr.y+1].totalWeight){
+                    maps[curr.x][curr.y+1].totalWeight = currWeight;
+                    maps[curr.x][curr.y+1].parentX = curr.x;
+                    maps[curr.x][curr.y+1].parentY = curr.y;
+                    queue.push(maps[curr.x][curr.y+1]);
+                    maps[curr.x][curr.y+1].isOpen = true;
+                }
+                if(!maps[curr.x-1][curr.y].isOpen ){
+                    let currWeight = curr.totalWeight + maps[curr.x-1][curr.y].baseWeight;
+                    if(currWeight <= maps[curr.x-1][curr.y].totalWeight){
+                        maps[curr.x-1][curr.y].totalWeight = currWeight;
+                        maps[curr.x-1][curr.y].parentX = curr.x;
+                        maps[curr.x-1][curr.y].parentY = curr.y;
+                        queue.push(maps[curr.x-1][curr.y]);
+                        maps[curr.x-1][curr.y].isOpen = true;
+                    }
+                }
+
+                if(  !maps[curr.x+1][curr.y].isOpen  ){
+                    let currWeight = curr.totalWeight + maps[curr.x+1][curr.y].baseWeight;
+                    if(currWeight <= maps[curr.x+1][curr.y].totalWeight){
+                        maps[curr.x+1][curr.y].totalWeight = currWeight;
+                        maps[curr.x+1][curr.y].parentX = curr.x;
+                        maps[curr.x+1][curr.y].parentY = curr.y;
+                        queue.push(maps[curr.x+1][curr.y]);
+                        maps[curr.x+1][curr.y].isOpen = true;
+                    }
+                }
+
+                if(!maps[curr.x][curr.y-1].isOpen ){
+                    let currWeight = curr.totalWeight + maps[curr.x][curr.y-1].baseWeight;
+                    if(currWeight <= maps[curr.x][curr.y-1].totalWeight){
+                        maps[curr.x][curr.y-1].totalWeight = currWeight;
+                        maps[curr.x][curr.y-1].parentX = curr.x;
+                        maps[curr.x][curr.y-1].parentY = curr.y;
+                        queue.push(maps[curr.x][curr.y-1]);
+                        maps[curr.x][curr.y-1].isOpen = true;
+                    }
+                }
+            }
+            let targetX = -1;
+            let targetY = -1;
+
+            if(end.parentY != -1){
+
+                targetX = end.parentX * GameScene.TILE_SIZE;
+                targetY = end.parentY * GameScene.TILE_SIZE;
+                if(this.x < targetX){
+                    this.velX = 1;
+                }else if(this.x > targetX){
+                    this.velX = -1;
+                }
+
+                if(this.y < targetY){
+                    this.velY = 1;
+                }else if(this.y > targetY){
+                    this.velY = -1;
+                }
+
+            }else{
+                console.log("path not found");
+            }
+
+
+        }
+
+
+
     }
 
 }

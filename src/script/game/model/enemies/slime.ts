@@ -13,7 +13,6 @@ export default class Slime extends Enemy{
         this.animationController.addAnimation("right", 8, 11, 200);
         this.animationController.addAnimation("up", 12, 15, 200);
 
-
         this.animationController.setAnim("down");
     }
 

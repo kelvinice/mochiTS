@@ -2,6 +2,8 @@ import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/g
 import ImageGameObject from "../../../module/context/core/gameObjects/imageGameObject";
 
 export default class Player extends ImageGameObject{
+    tileX: number;
+    tileY: number;
 
     constructor(iGameObject: IRectangle, image: ImageBitmap) {
         super(iGameObject,image);
@@ -12,6 +14,11 @@ export default class Player extends ImageGameObject{
     }
 
     update(): void {
+    }
+
+    setTile(tileX: number, tileY: number){
+        this.tileX = tileX;
+        this.tileY = tileY;
     }
 
 }
