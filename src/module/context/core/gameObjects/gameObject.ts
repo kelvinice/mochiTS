@@ -5,12 +5,14 @@ export default abstract class GameObject {
     width: number;
     height: number;
     zIndex: number = 0;
+    private _isDestroyed: boolean;
 
     protected constructor(iGameObject: IRectangle) {
         this.x = iGameObject.x;
         this.y = iGameObject.y;
         this.width = iGameObject.width;
         this.height = iGameObject.height;
+        this._isDestroyed = false;
     }
     abstract draw(ctx: CanvasRenderingContext2D, time: Number): void;
     abstract update(): void;
@@ -19,7 +21,6 @@ export default abstract class GameObject {
         this.zIndex = zIndex;
         return this;
     }
-
 
     isIntersect(g: GameObject) {
         return this.x <= g.x + g.width && this.x + this.width >= g.x
@@ -48,6 +49,13 @@ export default abstract class GameObject {
         return this;
     }
 
+    destroy(){
+        this._isDestroyed = true;
+    }
+
+    get isDestroyed(): boolean {
+        return this._isDestroyed;
+    }
 }
 
 export interface IRectangle{

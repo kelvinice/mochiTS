@@ -36,15 +36,13 @@ export default abstract class Enemy extends AnimateGameObject{
         ctx.fillStyle = "black";
         ctx.fillRect(this.x, this.y+this.height, this.width, 8);
         ctx.fillStyle = "red";
-        ctx.fillRect(this.x+sideSize/2, this.y+this.height+sideSize/2, barWidth, 8-sideSize);
+        ctx.fillRect(this.x+sideSize/2, this.y+this.height+sideSize/2, remainHPWidth, 8-sideSize);
     }
 
     update(): void {
         super.update();
         this.x+=this.velX * this.movementSpeed;
         this.y+=this.velY * this.movementSpeed;
-
-
     }
 
     get hp(): number {
@@ -53,6 +51,19 @@ export default abstract class Enemy extends AnimateGameObject{
 
     set hp(value: number) {
         this._hp = value;
+    }
+
+    public initHP(hp: number){
+        this.maxHp = hp;
+        this.hp = hp;
+    }
+
+    public reduceHP(value: number){
+        this.hp -= value;
+        if(this.hp <= 0){
+            this.hp = 0;
+            this.destroy();
+        }
     }
 
     public pathFind(maps: Tile[][], fromY: number, fromX: number){
@@ -67,7 +78,6 @@ export default abstract class Enemy extends AnimateGameObject{
         let start: Tile = maps[fromY][fromX];
 
         start.totalWeight = 0;
-
 
         let end: Tile = maps[Math.round(this.x/GameScene.TILE_SIZE)][Math.round(this.y/GameScene.TILE_SIZE)];
         queue.push(start);
@@ -122,9 +132,7 @@ export default abstract class Enemy extends AnimateGameObject{
                     maps[curr.x][curr.y-1].isOpen = true;
                 }
             }
-
         }
-
 
         let targetX = -1;
         let targetY = -1;
@@ -149,7 +157,6 @@ export default abstract class Enemy extends AnimateGameObject{
         }else{
             console.log("path not found");
         }
-
 
     }
 

@@ -10,7 +10,7 @@ export default class SceneEngine {
     currentScene: Scene;
     readyStatus: boolean;
     private static instance: SceneEngine = null;
-    private gameObjects : GameObject[] = [];
+
 
     lapseTime = 0;
     previousTime = -1;
@@ -61,38 +61,14 @@ export default class SceneEngine {
     render(time: Number) {
         if(this.readyStatus == true){
             this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
-            this.gameObjects.forEach(go => {
-                go.draw(this.ctx, time);
-            });
-            this.currentScene.onRender(this.ctx);
-
+            this.currentScene.processRender(this.ctx, time);
         }
 
         requestAnimationFrame((time: Number)=>this.render(time));
     }
 
     update(){
-
-        // let currTime = new Date().getTime();
-        // if(this.readyStatus == true){
-        //     this.lapseTime += (currTime - this.previousTime)/1000;
-        //
-        // }else{
-        //     this.lapseTime = 0;
-        // }
-        // if(this.lapseTime >= this.frameTime){
-        //     this.lapseTime%= this.frameTime;
-        //     this.previousTime = currTime;
-            this.gameObjects.forEach(go => {
-                go.update();
-            });
-            this.currentScene.onUpdate();
-
-
-        // }
-
-
-        
+        this.currentScene.processUpdate();
     }
 
     makeWindowReactive(){
@@ -110,13 +86,6 @@ export default class SceneEngine {
         this.currentScene = nextScene;
         this.currentScene.onCreated();
         this.readyStatus = true;
-    }
-
-    addGameObject(gameObject: GameObject){
-        this.gameObjects.push(gameObject);
-        this.gameObjects.sort((a:GameObject,b:GameObject)=>{
-           return a.zIndex -  b.zIndex;
-        });
     }
 
 }

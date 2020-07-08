@@ -19,10 +19,13 @@ export default class GameScene extends Scene{
     playerImage: ImageBitmap;
     slimeImage: ImageBitmap
     public static TILE_SIZE: number = 40;
-    player: Player;
-    enemies: Enemy[];
+
+
     maps: Tile[][];
 
+    player: Player;
+    enemies: Enemy[];
+    projectiles: Projectile[];
 
     constructor(assetManager: AssetManager){
         super();
@@ -33,6 +36,7 @@ export default class GameScene extends Scene{
         this.playerImage = assetManager.loadedImage["player"];
         this.slimeImage = assetManager.loadedImage["slime"];
         this.enemies = [];
+        this.projectiles = [];
     }
 
 
@@ -58,6 +62,7 @@ export default class GameScene extends Scene{
                         width: GameScene.TILE_SIZE,
                         height: GameScene.TILE_SIZE
                     }, this.slimeImage);
+                    enemy.initHP(100);
                     enemy.setZIndex(15);
                     this.enemies.push(enemy);
                     this.addGameObject(enemy);
@@ -97,7 +102,14 @@ export default class GameScene extends Scene{
             enemy.pathFind(this.maps, this.player.tileY, this.player.tileX);
         }
 
+        for (const projectile of this.projectiles) {
+            for (const enemy of this.enemies) {
+                if(projectile.isIntersect(enemy)){
+                    projectile.onHit(enemy);
+                }
 
+            }
+        }
         
     }
 
@@ -112,15 +124,17 @@ export default class GameScene extends Scene{
         let xVel = xDif/dif * maxVel;
         let yVel = yDif/dif * maxVel;
 
-        let projectile = new Projectile(<IRectangle>{
+        let projectile: Projectile = new Projectile(<IRectangle>{
             x: p.x,
             y: p.y,
             width: 20,
             height: 20
-        }, new Point(xVel, yVel))
-            .setSpeed(3)
-            .setZIndex(20)
-            .setMiddlePoint(p);
+        }, new Point(xVel, yVel));
+        projectile.setSpeed(3);
+        projectile.setZIndex(20);
+        projectile.setMiddlePoint(p);
+
+        this.projectiles.push(projectile);
         this.addGameObject(projectile);
     }
     

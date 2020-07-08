@@ -27,7 +27,9 @@ export default class Projectile extends GameObject{
     }
 
     onHit(enemy: Enemy){
-
+        if(this.isDestroyed)return;
+        enemy.reduceHP(50);
+        this.destroy();
     }
 
 
