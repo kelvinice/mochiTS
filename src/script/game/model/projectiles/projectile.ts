@@ -1,6 +1,6 @@
-import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
-import Point from "./point";
-import Enemy from "./enemies/enemy";
+import GameObject, {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
+import Point from "../point";
+import Enemy from "../enemies/enemy";
 
 export default class Projectile extends GameObject{
     velocity: Point;
@@ -17,8 +17,8 @@ export default class Projectile extends GameObject{
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
-        ctx.fillStyle = "blue";
-        ctx.fillRect(this.x,this.y,this.width,this.height);
+        // ctx.fillStyle = "blue";
+        // ctx.fillRect(this.x,this.y,this.width,this.height);
     }
 
     update(): void {

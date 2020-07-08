@@ -1,4 +1,4 @@
-import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
+import {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import ImageGameObject from "../../../module/context/core/gameObjects/imageGameObject";
 
 export default class Player extends ImageGameObject{

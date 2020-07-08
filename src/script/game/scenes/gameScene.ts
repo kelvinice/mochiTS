@@ -1,15 +1,16 @@
 import Scene from '../../../module/context/core/scene/scene';
 import AssetManager from '../../../module/context/generals/asset';
 import MapCreator from '../../handlers/mapCreator';
-import { IRectangle } from '../../../module/context/core/gameObjects/gameObject';
+import GameObject, { IRectangle } from '../../../module/context/core/gameObjects/gameObject';
 import Tile from '../model/tiles/tile';
 import GameTile from '../model/tiles/gameTile';
 import Player from "../model/player";
 import Point from "../model/point";
-import Projectile from "../model/projectile";
+import Projectile from "../model/projectiles/projectile";
 import {splitSprite} from "../../handlers/imageHandler";
 import Enemy from "../model/enemies/enemy";
 import Slime from "../model/enemies/slime";
+import Arrow from "../model/projectiles/arrow";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -17,7 +18,9 @@ export default class GameScene extends Scene{
     brickImage: ImageBitmap;
     switchGreenImage: ImageBitmap;
     playerImage: ImageBitmap;
-    slimeImage: ImageBitmap
+    slimeImage: ImageBitmap;
+    arrowImage: ImageBitmap;
+
     public static TILE_SIZE: number = 40;
 
 
@@ -35,6 +38,7 @@ export default class GameScene extends Scene{
         this.switchGreenImage = assetManager.loadedImage["switchGreen"];
         this.playerImage = assetManager.loadedImage["player"];
         this.slimeImage = assetManager.loadedImage["slime"];
+        this.arrowImage = assetManager.loadedImage["arrow"];
         this.enemies = [];
         this.projectiles = [];
     }
@@ -107,7 +111,6 @@ export default class GameScene extends Scene{
                 if(projectile.isIntersect(enemy)){
                     projectile.onHit(enemy);
                 }
-
             }
         }
         
@@ -119,24 +122,39 @@ export default class GameScene extends Scene{
         let xDif = e.x - p.x;
         let yDif = e.y - p.y;
         let dif = Math.abs(xDif)+ Math.abs(yDif);
-        let maxVel= 2;
+        let maxVel= 1;
 
         let xVel = xDif/dif * maxVel;
         let yVel = yDif/dif * maxVel;
+        // console.log("Xvel: "+ xVel);
+        // console.log("Yvel: "+ yVel);
 
-        let projectile: Projectile = new Projectile(<IRectangle>{
+        let projectile: Projectile = new Arrow(<IRectangle>{
             x: p.x,
             y: p.y,
             width: 20,
             height: 20
-        }, new Point(xVel, yVel));
-        projectile.setSpeed(3);
+        }, new Point(xVel, yVel), this.arrowImage);
+        projectile.setSpeed(5);
         projectile.setZIndex(20);
+
+        p.x += xVel * 40;
+        p.y += yVel * 40;
         projectile.setMiddlePoint(p);
 
         this.projectiles.push(projectile);
         this.addGameObject(projectile);
     }
-    
+
+    noticeDelete(gameObject: GameObject) {
+        super.noticeDelete(gameObject);
+        if(gameObject instanceof Enemy){
+            this.enemies.splice(this.enemies.indexOf(gameObject) , 1);
+        }else if(gameObject instanceof Projectile){
+            this.projectiles.splice(this.projectiles.indexOf(gameObject) , 1);
+        }
+
+    }
+
 
 }

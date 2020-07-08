@@ -1,11 +1,16 @@
 import Point from '../../../../script/game/model/point';
+import Guid from "../../../../script/general/guid";
 export default abstract class GameObject {
+    get id(): string {
+        return this._id;
+    }
     x: number;
     y: number;
     width: number;
     height: number;
     zIndex: number = 0;
     private _isDestroyed: boolean;
+    private readonly _id: string;
 
     protected constructor(iGameObject: IRectangle) {
         this.x = iGameObject.x;
@@ -13,6 +18,7 @@ export default abstract class GameObject {
         this.width = iGameObject.width;
         this.height = iGameObject.height;
         this._isDestroyed = false;
+        this._id = Guid.newGuid();
     }
     abstract draw(ctx: CanvasRenderingContext2D, time: Number): void;
     abstract update(): void;

@@ -9,8 +9,6 @@ export default abstract class Enemy extends AnimateGameObject{
     velX: number = 0;
     velY: number = 0;
 
-    tileX: number;
-    tileY: number;
     movementSpeed: number;
 
     get maxHp(): number {
@@ -28,6 +26,14 @@ export default abstract class Enemy extends AnimateGameObject{
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
         super.draw(ctx, time);
+
+        // ctx.fillStyle = "yellow";
+        // ctx.fillRect(
+        //     this.x,
+        //     this.y,
+        //     this.width,
+        //     this.height
+        // )
 
         let sideSize = 3;
         let barWidth = this.width-sideSize;
@@ -80,6 +86,7 @@ export default abstract class Enemy extends AnimateGameObject{
         start.totalWeight = 0;
 
         let end: Tile = maps[Math.round(this.x/GameScene.TILE_SIZE)][Math.round(this.y/GameScene.TILE_SIZE)];
+
         queue.push(start);
         while(queue.length > 0 && end.parentX == -1){
             queue.sort((a:Tile, b: Tile)=>{

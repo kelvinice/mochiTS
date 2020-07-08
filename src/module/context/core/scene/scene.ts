@@ -2,6 +2,7 @@ import SceneEngine from './sceneEngine';
 import GameObject from '../gameObjects/gameObject';
 export default abstract class Scene{
     private gameObjects : GameObject[] = [];
+    private willClearTrash = false;
 
     abstract onCreated(): void;
 
@@ -24,18 +25,36 @@ export default abstract class Scene{
         });
         this.onRender(ctx);
 
-
     }
 
     processUpdate(): void{
-        this.gameObjects = this.gameObjects.filter(value => {
-            return !value.isDestroyed;
-        })
+
 
         this.gameObjects.forEach(go => {
             go.update();
         });
         this.onUpdate();
+
+        this.deleteTrash();
     }
+
+
+
+    deleteTrash(): void{
+        let destroyeds = this.gameObjects.filter(value => {
+            return value.isDestroyed;
+        });
+
+        for (const gameObject of destroyeds) {
+            this.noticeDelete(gameObject);
+        }
+
+        this.gameObjects = this.gameObjects.filter(value => {
+            return !value.isDestroyed;
+        });
+
+    }
+
+    noticeDelete(gameObject: GameObject){}
 
 }
