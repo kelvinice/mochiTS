@@ -14,10 +14,20 @@ export default class Slime extends Enemy{
         this.animationController.addAnimation("up", 12, 15, 200);
 
         this.animationController.setAnim("down");
+        this.movementSpeed = 0.5;
     }
 
     update() {
         super.update();
+        if(this.velX > 0){
+            this.animationController.setAnim("right");
+        }else if(this.velX < 0){
+            this.animationController.setAnim("left");
+        }else if(this.velY < 0){
+            this.animationController.setAnim("up");
+        }else if(this.velY > 0){
+            this.animationController.setAnim("down");
+        }
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number) {

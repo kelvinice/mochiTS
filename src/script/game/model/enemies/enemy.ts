@@ -11,6 +11,7 @@ export default abstract class Enemy extends AnimateGameObject{
 
     tileX: number;
     tileY: number;
+    movementSpeed: number;
 
     get maxHp(): number {
         return this._maxHp;
@@ -22,6 +23,7 @@ export default abstract class Enemy extends AnimateGameObject{
 
     constructor(iGameObject: IRectangle, image: ImageBitmap= null) {
         super(iGameObject, image);
+        this.movementSpeed = 1;
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
@@ -35,13 +37,12 @@ export default abstract class Enemy extends AnimateGameObject{
         ctx.fillRect(this.x, this.y+this.height, this.width, 8);
         ctx.fillStyle = "red";
         ctx.fillRect(this.x+sideSize/2, this.y+this.height+sideSize/2, barWidth, 8-sideSize);
-
     }
 
     update(): void {
         super.update();
-        this.x+=this.velX;
-        this.y+=this.velY;
+        this.x+=this.velX * this.movementSpeed;
+        this.y+=this.velY * this.movementSpeed;
 
 
     }
@@ -68,7 +69,7 @@ export default abstract class Enemy extends AnimateGameObject{
         start.totalWeight = 0;
 
 
-        let end: Tile = maps[Math.floor(this.x/GameScene.TILE_SIZE)][Math.floor(this.y/GameScene.TILE_SIZE)];
+        let end: Tile = maps[Math.round(this.x/GameScene.TILE_SIZE)][Math.round(this.y/GameScene.TILE_SIZE)];
         queue.push(start);
         while(queue.length > 0 && end.parentX == -1){
             queue.sort((a:Tile, b: Tile)=>{

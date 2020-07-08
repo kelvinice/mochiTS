@@ -1,5 +1,6 @@
 import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import Point from "./point";
+import Enemy from "./enemies/enemy";
 
 export default class Projectile extends GameObject{
     velocity: Point;
@@ -23,6 +24,10 @@ export default class Projectile extends GameObject{
     update(): void {
         this.x += this.velocity.x * this.speed;
         this.y += this.velocity.y * this.speed;
+    }
+
+    onHit(enemy: Enemy){
+
     }
 
 

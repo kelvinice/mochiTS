@@ -96,6 +96,8 @@ export default class GameScene extends Scene{
         for (let enemy of this.enemies) {
             enemy.pathFind(this.maps, this.player.tileY, this.player.tileX);
         }
+
+
         
     }
 

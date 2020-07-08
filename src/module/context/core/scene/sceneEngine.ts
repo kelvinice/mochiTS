@@ -14,7 +14,7 @@ export default class SceneEngine {
 
     lapseTime = 0;
     previousTime = -1;
-    fps = 30;
+    fps = 60;
     frameTime = 1000/this.fps;
 
     private constructor(){}
