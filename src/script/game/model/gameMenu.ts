@@ -22,8 +22,8 @@ export default class GameMenu extends GameObject{
         this.hearts = [];
         this.numbers = [];
         this.heartImage = heartImage;
-        this.heartYPosition = 100;
-        this.numberYPosition = 300;
+        this.heartYPosition = 0;
+        this.numberYPosition = 0;
         let heartWidth = 100;
         let heartHeight = 100;
         this.hp = 3;
@@ -31,7 +31,7 @@ export default class GameMenu extends GameObject{
 
         for(let i=0;i<this.hp;i++){
             let heart = new Heart(<IRectangle>{
-               x: this.x + (heartWidth * i),
+               x: this.width - (heartWidth * (i + 1)),
                 y: this.heartYPosition,
                 width: heartWidth,
                 height: heartHeight
@@ -59,8 +59,8 @@ export default class GameMenu extends GameObject{
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
-        ctx.fillStyle = "blue"
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        // ctx.fillStyle = "blue"
+        // ctx.fillRect(this.x, this.y, this.width, this.height);
 
     }
 
@@ -79,7 +79,6 @@ export default class GameMenu extends GameObject{
             pad+="0";
         }
         let score = (pad + number).slice(-1 * this.digit);
-        console.log(score);
         this.score = number;
         for(let i=0;i<score.length;i++){
             this.numbers[i].setNumber(+score[i]);

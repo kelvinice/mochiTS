@@ -73,7 +73,7 @@ export default class GameScene extends Scene{
 
     isOne = true;
     onCreated(): void {
-        let size = SizeCalculator.calculateSize(GameScene.TILE_SIZE, Global.getInstance().width - Global.getInstance().menuWidth, Global.getInstance().height);
+        let size = SizeCalculator.calculateSize(GameScene.TILE_SIZE, Global.getInstance().width , Global.getInstance().height);
         let mc : MapCreator = new MapCreator(size.y, size.x);
         this.maps = mc.getMap();
         this.cursor = new Cursor(<IRectangle>{
@@ -133,9 +133,9 @@ export default class GameScene extends Scene{
 
         this.gameMenu = new GameMenu(
             <IRectangle>{
-                x: this.maps.length * GameScene.TILE_SIZE,
+                x: 0,
                 y: 0,
-                width: Global.getInstance().menuWidth,
+                width: Global.getInstance().width,
                 height: this.maps[0].length * GameScene.TILE_SIZE
             }, this.heartImage, this.numberImages
         );
@@ -166,7 +166,6 @@ export default class GameScene extends Scene{
             }
         }
 
-        console.log(this.player.x)
         for (const wall of this.obstacles) {
             let obs = new RectangleGameObject(<IRectangle>{
                 x: wall.x * GameScene.TILE_SIZE,
