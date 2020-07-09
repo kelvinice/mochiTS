@@ -79,6 +79,7 @@ export default class SceneEngine {
     handleWindowListener(width: number, height: number){
         Global.getInstance().width = width;
         Global.getInstance().height = height;
+        window.location.reload();
     }
 
     updateScene(nextScene: Scene){

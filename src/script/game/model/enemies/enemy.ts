@@ -10,6 +10,7 @@ export default abstract class Enemy extends AnimateGameObject{
     velY: number = 0;
 
     movementSpeed: number;
+    damagedHP: number;
 
     get maxHp(): number {
         return this._maxHp;
@@ -22,27 +23,28 @@ export default abstract class Enemy extends AnimateGameObject{
     constructor(iGameObject: IRectangle, image: ImageBitmap= null) {
         super(iGameObject, image);
         this.movementSpeed = 1;
+        this.damagedHP = 0;
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
         super.draw(ctx, time);
 
-        // ctx.fillStyle = "yellow";
-        // ctx.fillRect(
-        //     this.x,
-        //     this.y,
-        //     this.width,
-        //     this.height
-        // )
-
         let sideSize = 3;
         let barWidth = this.width-sideSize;
         let remainHPWidth = this.hp/this.maxHp * barWidth;
+        let damagedHPWidth = this.damagedHP/this.maxHp * barWidth;
 
         ctx.fillStyle = "black";
         ctx.fillRect(this.x, this.y+this.height, this.width, 8);
         ctx.fillStyle = "red";
         ctx.fillRect(this.x+sideSize/2, this.y+this.height+sideSize/2, remainHPWidth, 8-sideSize);
+        ctx.fillStyle = "#971500";
+        ctx.fillRect( this.x+sideSize/2 + remainHPWidth, this.y+this.height+sideSize/2, damagedHPWidth, 8-sideSize);
+
+        if(this.damagedHP> 0){
+            this.damagedHP -= 1.5;
+            if(this.damagedHP < 0)this.damagedHP = 0;
+        }
     }
 
     update(): void {
@@ -66,6 +68,8 @@ export default abstract class Enemy extends AnimateGameObject{
 
     public reduceHP(value: number){
         this.hp -= value;
+        this.damagedHP += value;
+        // this.setZIndex(this.zIndex+1);
         if(this.hp <= 0){
             this.hp = 0;
             this.destroy();

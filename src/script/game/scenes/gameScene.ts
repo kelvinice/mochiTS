@@ -11,6 +11,11 @@ import {splitSprite} from "../../handlers/imageHandler";
 import Enemy from "../model/enemies/enemy";
 import Slime from "../model/enemies/slime";
 import Arrow from "../model/projectiles/arrow";
+import GameMenu from "../model/gameMenu";
+import SceneEngine from "../../../module/context/core/scene/sceneEngine";
+import Global from "../../../module/context/generals/global";
+import SizeCalculator from "../../handlers/sizeCalculator";
+import global from "../../../module/context/generals/global";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -21,7 +26,7 @@ export default class GameScene extends Scene{
     slimeImage: ImageBitmap;
     arrowImage: ImageBitmap;
 
-    public static TILE_SIZE: number = 40;
+    public static TILE_SIZE: number = 50;
 
 
     maps: Tile[][];
@@ -29,6 +34,7 @@ export default class GameScene extends Scene{
     player: Player;
     enemies: Enemy[];
     projectiles: Projectile[];
+    gameMenu: GameMenu;
 
     constructor(assetManager: AssetManager){
         super();
@@ -46,7 +52,8 @@ export default class GameScene extends Scene{
 
     isOne = true;
     onCreated(): void {
-        let mc :MapCreator = new MapCreator(16,25);
+        let size = SizeCalculator.calculateSize(GameScene.TILE_SIZE, Global.getInstance().width - Global.getInstance().menuWidth, Global.getInstance().height);
+        let mc : MapCreator = new MapCreator(size.y, size.x);
         this.maps = mc.getMap();
 
         for (let i = 0; i < this.maps.length; i++) {
@@ -94,8 +101,18 @@ export default class GameScene extends Scene{
                     height: GameScene.TILE_SIZE
                 }, img));
             }
-            
         }
+
+        this.gameMenu = new GameMenu(
+            <IRectangle>{
+                x: this.maps.length * GameScene.TILE_SIZE,
+                y: 0,
+                width: Global.getInstance().menuWidth,
+                height: this.maps[0].length * GameScene.TILE_SIZE
+            }
+        );
+
+        this.addGameObject(this.gameMenu);
 
     }
     onRender(ctx: CanvasRenderingContext2D): void {

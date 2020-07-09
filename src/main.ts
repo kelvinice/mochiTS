@@ -10,6 +10,7 @@ window.onload = () =>{
             
         var sceneEngine = SceneEngine.getInstance();
         sceneEngine.initCanvas(canv);
+        // sceneEngine.makeWindowReactive();
         
         
         let assetManager: AssetManager = new AssetManager();
