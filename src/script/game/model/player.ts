@@ -7,11 +7,15 @@ export default class Player extends ImageGameObject{
     tileY: number;
     bowImage: ImageBitmap;
     mousePoint: Point;
+    velX: number = 0;
+    velY: number = 0;
+    movementSpeed: number;
 
     constructor(iGameObject: IRectangle, image: ImageBitmap, bowImage: ImageBitmap) {
         super(iGameObject, image);
         this.bowImage = bowImage;
         this.mousePoint = new Point();
+        this.movementSpeed = 1;
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
@@ -47,6 +51,9 @@ export default class Player extends ImageGameObject{
     }
 
     update(): void {
+        super.update();
+        this.x+=this.velX * this.movementSpeed;
+        this.y+=this.velY * this.movementSpeed;
     }
 
     setTile(tileX: number, tileY: number){
@@ -58,5 +65,7 @@ export default class Player extends ImageGameObject{
         this.mousePoint = point;
 
     }
+
+
 
 }

@@ -33,6 +33,11 @@ export default abstract class GameObject {
             && this.y <= g.y + g.height && this.y + this.height >= g.y;
     }
 
+    isIntersectSoft(g: GameObject) {
+        return this.x < g.x + g.width && this.x + this.width > g.x
+            && this.y < g.y + g.height && this.y + this.height > g.y;
+    }
+
     isHorizontalLinearIntersect(g: GameObject) {
         return this.x <= g.x + g.width && this.x + this.width >= g.x
             && this.y <= g.y + g.height / 2 && this.y + this.height >= g.y + g.height / 2;

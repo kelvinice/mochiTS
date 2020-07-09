@@ -25,6 +25,8 @@ export default abstract class Scene{
 
     mouseMove(e: MouseEvent){}
 
+    keyUp(e: KeyboardEvent){}
+
     processRender(ctx: CanvasRenderingContext2D, time: Number): void{
         this.gameObjects.forEach(go => {
             go.draw(ctx, time);

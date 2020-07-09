@@ -19,6 +19,7 @@ import global from "../../../module/context/generals/global";
 import point from "../model/point";
 import gameMenu from "../model/gameMenu";
 import Cursor from "../model/cursors/cursor";
+import RectangleGameObject from "../../../module/context/core/gameObjects/rectangleGameObject";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -43,12 +44,14 @@ export default class GameScene extends Scene{
     enemies: Enemy[];
     projectiles: Projectile[];
     gameMenu: GameMenu;
+    obstacles: Tile[];
 
     constructor(assetManager: AssetManager){
         super();
         this.enemies = [];
         this.projectiles = [];
         this.numberImages = [];
+        this.obstacles = [];
 
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
@@ -87,6 +90,7 @@ export default class GameScene extends Scene{
                 }
                 else if(this.maps[i][j].char == 'W'){
                     img = this.stoneImage;
+
                 }else if(this.maps[i][j].char == 'S'){
                     img = this.switchGreenImage;
 
@@ -115,6 +119,7 @@ export default class GameScene extends Scene{
                     this.addGameObject(this.player);
                 }else{
                     img = this.brickImage;
+                    this.obstacles.push(this.maps[i][j]);
                 }
 
                this.addGameObject(new GameTile(<IRectangle>{
@@ -160,6 +165,46 @@ export default class GameScene extends Scene{
                 enemy.destroy();
             }
         }
+
+        console.log(this.player.x)
+        for (const wall of this.obstacles) {
+            let obs = new RectangleGameObject(<IRectangle>{
+                x: wall.x * GameScene.TILE_SIZE,
+                y: wall.y * GameScene.TILE_SIZE,
+                width: GameScene.TILE_SIZE,
+                height: GameScene.TILE_SIZE
+            });
+            if(this.player.isIntersectSoft(obs)){
+                let dx1 = Math.abs(this.player.x - (obs.x + GameScene.TILE_SIZE));
+                let dx2 = Math.abs((this.player.x + this.player.width) - obs.x);
+                let dx = Math.min(dx1, dx2);
+
+                let dy1 = Math.abs(this.player.y - (obs.y + GameScene.TILE_SIZE));
+                let dy2 = Math.abs((this.player.y + this.player.height) - obs.y);
+                let dy = Math.min(dy1, dy2);
+
+                if (dx < dy) {
+                    if (dx == dx1) {
+                        this.player.x = this.player.x + dx;
+                    }
+                    else {
+                        this.player.x = this.player.x -dx;
+                    }
+                }
+                else if (dy < dx) {
+                    if (dy == dy1) {
+                        this.player.y = this.player.y + dy;
+                    }
+                    else {
+                        this.player.y = this.player.y - dy;
+                    }
+                }
+            }
+
+
+        }
+
+
     }
 
     mouseClick(e:MouseEvent){
@@ -205,6 +250,35 @@ export default class GameScene extends Scene{
         super.mouseMove(e);
         this.player.setMousePoint(new Point(e.x, e.y));
         this.cursor.setMiddlePoint(new Point(e.x, e.y))
+    }
+
+
+
+    keyUp(e: KeyboardEvent) {
+        super.keyUp(e);
+
+        switch(e.key){
+            case 'w':
+                this.player.velX=0;
+                this.player.velY=-1;
+
+                break;
+            case 'a':
+                this.player.velX=-1;
+                this.player.velY=0;
+
+                break;
+            case 's':
+                this.player.velX=0;
+                this.player.velY=1;
+
+                break;
+            case 'd':
+                this.player.velX=1;
+                this.player.velY=0;
+
+                break;
+        }
     }
 
 
