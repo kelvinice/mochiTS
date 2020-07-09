@@ -18,6 +18,7 @@ import SizeCalculator from "../../handlers/sizeCalculator";
 import global from "../../../module/context/generals/global";
 import point from "../model/point";
 import gameMenu from "../model/gameMenu";
+import Cursor from "../model/cursors/cursor";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -29,12 +30,15 @@ export default class GameScene extends Scene{
     arrowImage: ImageBitmap;
     bowImage: ImageBitmap;
     heartImage: ImageBitmap;
+    crosshairImage: ImageBitmap;
+    numberImages: ImageBitmap[];
 
     public static TILE_SIZE: number = 50;
 
 
     maps: Tile[][];
 
+    cursor: Cursor;
     player: Player;
     enemies: Enemy[];
     projectiles: Projectile[];
@@ -42,6 +46,10 @@ export default class GameScene extends Scene{
 
     constructor(assetManager: AssetManager){
         super();
+        this.enemies = [];
+        this.projectiles = [];
+        this.numberImages = [];
+
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
         this.brickImage = assetManager.loadedImage["brick"];
@@ -51,8 +59,12 @@ export default class GameScene extends Scene{
         this.arrowImage = assetManager.loadedImage["arrow"];
         this.bowImage = assetManager.loadedImage["bow"];
         this.heartImage = assetManager.loadedImage["heart"];
-        this.enemies = [];
-        this.projectiles = [];
+        this.crosshairImage = assetManager.loadedImage["crosshair"];
+
+        for (let i = 0; i < 10; i++) {
+            this.numberImages.push(assetManager.loadedImage["hud"+i]);
+        }
+
     }
 
 
@@ -61,6 +73,11 @@ export default class GameScene extends Scene{
         let size = SizeCalculator.calculateSize(GameScene.TILE_SIZE, Global.getInstance().width - Global.getInstance().menuWidth, Global.getInstance().height);
         let mc : MapCreator = new MapCreator(size.y, size.x);
         this.maps = mc.getMap();
+        this.cursor = new Cursor(<IRectangle>{
+            x:0,y:0,width:GameScene.TILE_SIZE/2,height:GameScene.TILE_SIZE/2
+        }, this.crosshairImage);
+        this.cursor.setZIndex(100000);
+        this.addGameObject(this.cursor)
 
         for (let i = 0; i < this.maps.length; i++) {
             for (let j = 0; j < this.maps[i].length; j++) {
@@ -115,7 +132,7 @@ export default class GameScene extends Scene{
                 y: 0,
                 width: Global.getInstance().menuWidth,
                 height: this.maps[0].length * GameScene.TILE_SIZE
-            }, this.heartImage
+            }, this.heartImage, this.numberImages
         );
 
         this.addGameObject(this.gameMenu);
@@ -125,7 +142,6 @@ export default class GameScene extends Scene{
        
     }
     onUpdate(): void {
-
         for (let enemy of this.enemies) {
             enemy.pathFind(this.maps, Math.round(this.player.x/GameScene.TILE_SIZE),Math.round(this.player.y/GameScene.TILE_SIZE));
         }
@@ -144,9 +160,6 @@ export default class GameScene extends Scene{
                 enemy.destroy();
             }
         }
-
-
-        
     }
 
     mouseClick(e:MouseEvent){
@@ -159,8 +172,6 @@ export default class GameScene extends Scene{
 
         let xVel = xDif/dif * maxVel;
         let yVel = yDif/dif * maxVel;
-        // console.log("Xvel: "+ xVel);
-        // console.log("Yvel: "+ yVel);
 
         let projectile: Projectile = new Arrow(<IRectangle>{
             x: p.x,
@@ -183,6 +194,7 @@ export default class GameScene extends Scene{
         super.noticeDelete(gameObject);
         if(gameObject instanceof Enemy){
             this.enemies.splice(this.enemies.indexOf(gameObject) , 1);
+            this.gameMenu.setScore(this.gameMenu.score+1);
         }else if(gameObject instanceof Projectile){
             this.projectiles.splice(this.projectiles.indexOf(gameObject) , 1);
         }
@@ -192,6 +204,7 @@ export default class GameScene extends Scene{
     mouseMove(e: MouseEvent) {
         super.mouseMove(e);
         this.player.setMousePoint(new Point(e.x, e.y));
+        this.cursor.setMiddlePoint(new Point(e.x, e.y))
     }
 
 

@@ -11,6 +11,7 @@ window.onload = () =>{
         var sceneEngine = SceneEngine.getInstance();
         sceneEngine.initCanvas(canv);
         // sceneEngine.makeWindowReactive();
+        sceneEngine.hideCursor();
         
         
         let assetManager: AssetManager = new AssetManager();
@@ -26,6 +27,11 @@ window.onload = () =>{
         assetManager.addPath("arrow","arrow.png");
         assetManager.addPath("bow","bow.png");
         assetManager.addPath("heart","hudHeart_full.png");
+        assetManager.addPath("crosshair","crosshair.png");
+
+        for (let i = 0; i < 10; i++) {
+                assetManager.addPath("hud"+i,"hud"+i+".png");
+        }
 
         assetManager.addAssetDoneListener(()=>{
                 sceneEngine.updateScene(new GameScene(assetManager));

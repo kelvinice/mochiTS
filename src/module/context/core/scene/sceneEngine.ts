@@ -12,7 +12,6 @@ export default class SceneEngine {
     readyStatus: boolean;
     private static instance: SceneEngine = null;
 
-
     lapseTime = 0;
     previousTime = -1;
     fps = 60;
@@ -109,5 +108,11 @@ export default class SceneEngine {
             this.currentScene.reorderZIndex();
         }
     }
+
+    hideCursor(){
+        this.canvas.style.cursor = "none";
+    }
+
+
 
 }
