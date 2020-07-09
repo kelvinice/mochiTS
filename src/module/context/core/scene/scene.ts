@@ -12,12 +12,18 @@ export default abstract class Scene{
 
     addGameObject(gameObject: GameObject){
         this.gameObjects.push(gameObject);
+        this.reorderZIndex();
+    }
+
+    reorderZIndex(){
         this.gameObjects.sort((a:GameObject,b:GameObject)=>{
             return a.zIndex -  b.zIndex;
         });
     }
 
     mouseClick(e: MouseEvent){}
+
+    mouseMove(e: MouseEvent){}
 
     processRender(ctx: CanvasRenderingContext2D, time: Number): void{
         this.gameObjects.forEach(go => {

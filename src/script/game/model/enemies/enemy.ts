@@ -2,6 +2,7 @@ import GameObject, {IRectangle} from "../../../../module/context/core/gameObject
 import AnimateGameObject from "../../../../module/context/core/gameObjects/animateGameObject";
 import Tile from "../tiles/tile";
 import GameScene from "../../scenes/gameScene";
+import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
 
 export default abstract class Enemy extends AnimateGameObject{
     private _hp: number;
@@ -36,9 +37,9 @@ export default abstract class Enemy extends AnimateGameObject{
 
         ctx.fillStyle = "black";
         ctx.fillRect(this.x, this.y+this.height, this.width, 8);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "green";
         ctx.fillRect(this.x+sideSize/2, this.y+this.height+sideSize/2, remainHPWidth, 8-sideSize);
-        ctx.fillStyle = "#971500";
+        ctx.fillStyle = "red";
         ctx.fillRect( this.x+sideSize/2 + remainHPWidth, this.y+this.height+sideSize/2, damagedHPWidth, 8-sideSize);
 
         if(this.damagedHP> 0){
@@ -69,18 +70,23 @@ export default abstract class Enemy extends AnimateGameObject{
     public reduceHP(value: number){
         this.hp -= value;
         this.damagedHP += value;
-        // this.setZIndex(this.zIndex+1);
+        this.setZIndex(this.zIndex+1);
+        SceneEngine.getInstance().reorderZIndex();
         if(this.hp <= 0){
             this.hp = 0;
             this.destroy();
         }
     }
 
+    isWalkAble(tile: Tile){
+        return tile.baseWeight != Tile.WALL && tile.baseWeight != Tile.GRASS;
+    }
+
     public pathFind(maps: Tile[][], fromY: number, fromX: number){
         let queue: Tile[] = [];
 
-        for (let i = 0; i < maps.length; i++) {
-            for (let j = 0; j < maps[i].length; j++) {
+        for (let i = 1; i < maps.length-1; i++) {
+            for (let j = 1; j < maps[i].length-1; j++) {
                 maps[i][j].init();
             }
         }
@@ -98,10 +104,8 @@ export default abstract class Enemy extends AnimateGameObject{
             });
 
             let curr: Tile = queue.shift();
-            if(curr.baseWeight == Tile.WALL || curr.baseWeight == Tile.GRASS)continue;
-            curr.isOpen = true;
 
-            if(!maps[curr.x][curr.y+1].isOpen) {
+            if(!maps[curr.x][curr.y+1].isOpen && this.isWalkAble(maps[curr.x][curr.y+1])) {
                 let currWeight = curr.totalWeight + maps[curr.x][curr.y + 1].baseWeight;
                 if (currWeight <= maps[curr.x][curr.y + 1].totalWeight) {
                     maps[curr.x][curr.y + 1].totalWeight = currWeight;
@@ -111,7 +115,7 @@ export default abstract class Enemy extends AnimateGameObject{
                     maps[curr.x][curr.y + 1].isOpen = true;
                 }
             }
-            if(!maps[curr.x-1][curr.y].isOpen ){
+            if(!maps[curr.x-1][curr.y].isOpen && this.isWalkAble(maps[curr.x-1][curr.y])){
                 let currWeight = curr.totalWeight + maps[curr.x-1][curr.y].baseWeight;
                 if(currWeight <= maps[curr.x-1][curr.y].totalWeight){
                     maps[curr.x-1][curr.y].totalWeight = currWeight;
@@ -122,7 +126,7 @@ export default abstract class Enemy extends AnimateGameObject{
                 }
             }
 
-            if(  !maps[curr.x+1][curr.y].isOpen  ){
+            if(  !maps[curr.x+1][curr.y].isOpen  && this.isWalkAble(maps[curr.x+1][curr.y])){
                 let currWeight = curr.totalWeight + maps[curr.x+1][curr.y].baseWeight;
                 if(currWeight <= maps[curr.x+1][curr.y].totalWeight){
                     maps[curr.x+1][curr.y].totalWeight = currWeight;
@@ -133,7 +137,7 @@ export default abstract class Enemy extends AnimateGameObject{
                 }
             }
 
-            if(!maps[curr.x][curr.y-1].isOpen ){
+            if(!maps[curr.x][curr.y-1].isOpen && this.isWalkAble(maps[curr.x][curr.y-1])){
                 let currWeight = curr.totalWeight + maps[curr.x][curr.y-1].baseWeight;
                 if(currWeight <= maps[curr.x][curr.y-1].totalWeight){
                     maps[curr.x][curr.y-1].totalWeight = currWeight;

@@ -16,6 +16,8 @@ import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import Global from "../../../module/context/generals/global";
 import SizeCalculator from "../../handlers/sizeCalculator";
 import global from "../../../module/context/generals/global";
+import point from "../model/point";
+import gameMenu from "../model/gameMenu";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -25,6 +27,8 @@ export default class GameScene extends Scene{
     playerImage: ImageBitmap;
     slimeImage: ImageBitmap;
     arrowImage: ImageBitmap;
+    bowImage: ImageBitmap;
+    heartImage: ImageBitmap;
 
     public static TILE_SIZE: number = 50;
 
@@ -45,6 +49,8 @@ export default class GameScene extends Scene{
         this.playerImage = assetManager.loadedImage["player"];
         this.slimeImage = assetManager.loadedImage["slime"];
         this.arrowImage = assetManager.loadedImage["arrow"];
+        this.bowImage = assetManager.loadedImage["bow"];
+        this.heartImage = assetManager.loadedImage["heart"];
         this.enemies = [];
         this.projectiles = [];
     }
@@ -86,7 +92,7 @@ export default class GameScene extends Scene{
                         y: j*GameScene.TILE_SIZE,
                         width: GameScene.TILE_SIZE,
                         height: GameScene.TILE_SIZE
-                    }, this.playerImage);
+                    }, this.playerImage, this.bowImage);
                     this.player.setZIndex(10);
                     this.player.setTile(j, i);
                     this.addGameObject(this.player);
@@ -109,7 +115,7 @@ export default class GameScene extends Scene{
                 y: 0,
                 width: Global.getInstance().menuWidth,
                 height: this.maps[0].length * GameScene.TILE_SIZE
-            }
+            }, this.heartImage
         );
 
         this.addGameObject(this.gameMenu);
@@ -119,8 +125,9 @@ export default class GameScene extends Scene{
        
     }
     onUpdate(): void {
+
         for (let enemy of this.enemies) {
-            enemy.pathFind(this.maps, this.player.tileY, this.player.tileX);
+            enemy.pathFind(this.maps, Math.round(this.player.x/GameScene.TILE_SIZE),Math.round(this.player.y/GameScene.TILE_SIZE));
         }
 
         for (const projectile of this.projectiles) {
@@ -130,6 +137,15 @@ export default class GameScene extends Scene{
                 }
             }
         }
+
+        for (const enemy of this.enemies) {
+            if(this.player.isIntersect(enemy)){
+                this.gameMenu.reduceHeart();
+                enemy.destroy();
+            }
+        }
+
+
         
     }
 
@@ -171,6 +187,11 @@ export default class GameScene extends Scene{
             this.projectiles.splice(this.projectiles.indexOf(gameObject) , 1);
         }
 
+    }
+
+    mouseMove(e: MouseEvent) {
+        super.mouseMove(e);
+        this.player.setMousePoint(new Point(e.x, e.y));
     }
 
 

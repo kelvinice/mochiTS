@@ -24,6 +24,8 @@ window.onload = () =>{
         assetManager.addPath("player","player_green.png");
         assetManager.addPath("slime","slime.png");
         assetManager.addPath("arrow","arrow.png");
+        assetManager.addPath("bow","bow.png");
+        assetManager.addPath("heart","hudHeart_full.png");
 
         assetManager.addAssetDoneListener(()=>{
                 sceneEngine.updateScene(new GameScene(assetManager));

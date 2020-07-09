@@ -2,6 +2,7 @@ import Global from '../../generals/global';
 import Scene from './scene';
 import CanvasController from '../../../canvasController';
 import GameObject from '../gameObjects/gameObject';
+import scene from "./scene";
 
 export default class SceneEngine {
     canvas: HTMLCanvasElement;
@@ -29,6 +30,14 @@ export default class SceneEngine {
         Global.getInstance().width = this.canvasController.getWidthCanvas();
         Global.getInstance().height = this.canvasController.getHeightCanvas();
         canvas.addEventListener("click", (e)=>this.mouseClick(e));
+        canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
+
+    }
+
+    mouseMove(e: MouseEvent){
+        if(this.currentScene != null){
+            this.currentScene.mouseMove(e);
+        }
     }
 
     mouseClick(e: MouseEvent){
@@ -87,6 +96,18 @@ export default class SceneEngine {
         this.currentScene = nextScene;
         this.currentScene.onCreated();
         this.readyStatus = true;
+    }
+
+    injectGameObject(gameObject: GameObject){
+        if(this.currentScene != null){
+            this.currentScene.addGameObject(gameObject);
+        }
+    }
+
+    reorderZIndex(){
+        if(this.currentScene != null){
+            this.currentScene.reorderZIndex();
+        }
     }
 
 }
