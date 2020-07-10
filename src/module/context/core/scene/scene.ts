@@ -25,6 +25,8 @@ export default abstract class Scene{
 
     mouseMove(e: MouseEvent){}
 
+    keyDown(e: KeyboardEvent){}
+
     keyUp(e: KeyboardEvent){}
 
     processRender(ctx: CanvasRenderingContext2D, time: Number): void{

@@ -17,8 +17,8 @@ import Cursor from "../model/cursors/cursor";
 import RectangleGameObject from "../../../module/context/core/gameObjects/rectangleGameObject";
 import Spawner from "../model/enemies/spawner";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
-import spawnHandler from "../../handlers/spawnHandler";
 import SpawnHandler from "../../handlers/spawnHandler";
+import ProjectileHandler from "../../handlers/projectileHandler";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -44,9 +44,9 @@ export default class GameScene extends Scene{
     gameMenu: GameMenu;
     obstacles: Tile[];
     spawners: Spawner[];
-    walls: Tile[];
 
     spawnHandler: SpawnHandler;
+    projectileHandler: ProjectileHandler;
 
     nextVelX = 0;
     nextVelY = 0;
@@ -58,9 +58,6 @@ export default class GameScene extends Scene{
         this.numberImages = [];
         this.obstacles = [];
         this.spawners = [];
-        this.walls = [];
-
-        this.spawnHandler = new SpawnHandler(this.spawners);
 
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
@@ -72,6 +69,9 @@ export default class GameScene extends Scene{
         this.bowImage = assetManager.loadedImage["bow"];
         this.heartImage = assetManager.loadedImage["heart"];
         this.crosshairImage = assetManager.loadedImage["crosshair"];
+
+        this.spawnHandler = new SpawnHandler(this.spawners);
+        this.projectileHandler = new ProjectileHandler(this.arrowImage);
 
         for (let i = 0; i < 10; i++) {
             this.numberImages.push(assetManager.loadedImage["hud"+i]);
@@ -98,7 +98,6 @@ export default class GameScene extends Scene{
                 else if(this.maps[i][j].char == 'W'){
                     img = this.stoneImage;
                     this.obstacles.push(this.maps[i][j]);
-                    this.walls.push(this.maps[i][j]);
                 }else if(this.maps[i][j].char == 'S'){
                     img = null;
                     let spawner = new Spawner(<IRectangle>{
@@ -148,9 +147,11 @@ export default class GameScene extends Scene{
         this.addGameObject(this.gameMenu);
 
     }
+
     onRender(ctx: CanvasRenderingContext2D): void {
        
     }
+
     onUpdate(): void {
         let enemy = this.spawnHandler.update(SceneEngine.getInstance().deltaTime());
         if(enemy){
@@ -179,8 +180,6 @@ export default class GameScene extends Scene{
                     projectile.onHit(enemy);
                 }
             }
-
-
         }
 
         for (const enemy of this.enemies) {
@@ -241,21 +240,13 @@ export default class GameScene extends Scene{
         let xVel = xDif/dif * maxVel;
         let yVel = yDif/dif * maxVel;
 
-        let projectile: Projectile = new Arrow(<IRectangle>{
-            x: p.x,
-            y: p.y,
-            width: 20,
-            height: 20
-        }, new Point(xVel, yVel), this.arrowImage);
-        projectile.setSpeed(5);
-        projectile.setZIndex(20);
 
-        p.x += xVel * 40;
-        p.y += yVel * 40;
-        projectile.setMiddlePoint(p);
+        let projectile = this.projectileHandler.createProjectile(p.x, p.y, xVel, yVel);
+        if(projectile != null){
+            this.projectiles.push(projectile);
+        }
 
-        this.projectiles.push(projectile);
-        this.addGameObject(projectile);
+
     }
 
     noticeDelete(gameObject: GameObject) {
@@ -275,7 +266,7 @@ export default class GameScene extends Scene{
         this.cursor.setMiddlePoint(new Point(e.x, e.y))
     }
 
-    keyUp(e: KeyboardEvent) {
+    keyDown(e: KeyboardEvent) {
         super.keyUp(e);
 
         switch(e.key){
