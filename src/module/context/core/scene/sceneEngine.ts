@@ -12,12 +12,23 @@ export default class SceneEngine {
     readyStatus: boolean;
     private static instance: SceneEngine = null;
 
-    lapseTime = 0;
-    previousTime = -1;
-    fps = 60;
-    frameTime = 1000/this.fps;
+    private lapseTime = 0;
+    private previousTime = -1;
+    private fps = 60;
+    private frameTime = 1000/this.fps;
+
+    private last_time: number = this.getTime();
 
     private constructor(){}
+
+    public deltaTime(): number{
+        let time = this.getTime();
+        return ((time - this.last_time) / 1000);
+    }
+
+    getTime(): number{
+        return new Date().getTime();
+    }
 
     initCanvas(canvas: HTMLCanvasElement){
         this.readyStatus = false;
@@ -83,6 +94,7 @@ export default class SceneEngine {
 
     update(){
         this.currentScene.processUpdate();
+        this.last_time = this.getTime();
     }
 
     makeWindowReactive(){

@@ -10,7 +10,10 @@ export default class GameTile extends ImageGameObject{
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
-        ctx.drawImage(this.image, this.x,this.y,this.width,this.height);
+        if(this.image != null){
+            ctx.drawImage(this.image, this.x,this.y,this.width,this.height);
+        }
+
     }
     update(): void {
     

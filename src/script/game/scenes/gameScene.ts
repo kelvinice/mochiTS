@@ -15,6 +15,10 @@ import Global from "../../../module/context/generals/global";
 import SizeCalculator from "../../handlers/sizeCalculator";
 import Cursor from "../model/cursors/cursor";
 import RectangleGameObject from "../../../module/context/core/gameObjects/rectangleGameObject";
+import Spawner from "../model/enemies/spawner";
+import SceneEngine from "../../../module/context/core/scene/sceneEngine";
+import spawnHandler from "../../handlers/spawnHandler";
+import SpawnHandler from "../../handlers/spawnHandler";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -39,6 +43,9 @@ export default class GameScene extends Scene{
     projectiles: Projectile[];
     gameMenu: GameMenu;
     obstacles: Tile[];
+    spawners: Spawner[];
+
+    spawnHandler: SpawnHandler;
 
     nextVelX = 0;
     nextVelY = 0;
@@ -49,6 +56,9 @@ export default class GameScene extends Scene{
         this.projectiles = [];
         this.numberImages = [];
         this.obstacles = [];
+        this.spawners = [];
+
+        this.spawnHandler = new SpawnHandler(this.spawners);
 
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
@@ -89,19 +99,16 @@ export default class GameScene extends Scene{
                     img = this.stoneImage;
 
                 }else if(this.maps[i][j].char == 'S'){
-                    img = this.switchGreenImage;
-
-                    let enemy = new Slime(<IRectangle>{
+                    img = null;
+                    let spawner = new Spawner(<IRectangle>{
                         x: i*GameScene.TILE_SIZE,
                         y: j*GameScene.TILE_SIZE,
                         width: GameScene.TILE_SIZE,
                         height: GameScene.TILE_SIZE
-                    }, this.slimeImage);
-                    enemy.initHP(100);
-                    enemy.setZIndex(15);
-                    this.enemies.push(enemy);
-                    this.addGameObject(enemy);
-
+                    }, this.switchGreenImage, this.slimeImage);
+                    spawner.setZIndex(10);
+                    this.spawners.push(spawner);
+                    this.addGameObject(spawner);
 
                 }else if(this.maps[i][j].char == 'H'){
                     img = this.pathImage;
@@ -144,6 +151,14 @@ export default class GameScene extends Scene{
        
     }
     onUpdate(): void {
+        console.log(SceneEngine.getInstance().deltaTime())
+
+        let enemy = this.spawnHandler.update(SceneEngine.getInstance().deltaTime());
+        if(enemy){
+            this.enemies.push(enemy);
+            this.addGameObject(enemy);
+        }
+
         for (let enemy of this.enemies) {
             enemy.pathFind(this.maps, Math.round(this.player.x/GameScene.TILE_SIZE),Math.round(this.player.y/GameScene.TILE_SIZE));
         }

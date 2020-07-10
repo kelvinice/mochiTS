@@ -36,8 +36,6 @@ export default abstract class Scene{
     }
 
     processUpdate(): void{
-
-
         this.gameObjects.forEach(go => {
             go.update();
         });
