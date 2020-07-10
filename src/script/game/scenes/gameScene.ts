@@ -128,9 +128,7 @@ export default class GameScene extends Scene{
                             width: GameScene.TILE_SIZE,
                             height: GameScene.TILE_SIZE
                         }, this.switchRedImage, this.skeletonImage);
-
                     }
-
 
                     spawner.setZIndex(10);
                     this.spawners.push(spawner);
@@ -334,7 +332,6 @@ export default class GameScene extends Scene{
                     this.nextVelX = 0;
                     this.nextVelY = 0;
                 }
-
                 break;
             case 'd':
                 if(!this.isCanWalk(new RectangleGameObject(<IRectangle>{
