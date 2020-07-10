@@ -24,32 +24,30 @@ export default class GameMenu extends GameObject{
         this.heartImage = heartImage;
         this.heartYPosition = 0;
         this.numberYPosition = 0;
-        let heartWidth = 100;
-        let heartHeight = 100;
+        let heartSize = 80;
         this.hp = 3;
         this.score = 0;
 
         for(let i=0;i<this.hp;i++){
             let heart = new Heart(<IRectangle>{
-               x: this.width - (heartWidth * (i + 1)),
+               x: this.width - (heartSize * (i + 1)),
                 y: this.heartYPosition,
-                width: heartWidth,
-                height: heartHeight
+                width: heartSize,
+                height: heartSize
             }, heartImage);
             heart.setZIndex(this.zIndex + 1);
             this.hearts.push(heart);
             SceneEngine.getInstance().injectGameObject(heart);
         }
 
-        let numberWidth = 100;
-        let numberHeight = 100;
+        let numberSize = 80;
 
         for (let i = 0; i < this.digit; i++) {
             let number = new NumberHUD(<IRectangle>{
-                x:this.x+(numberWidth * i),
+                x:this.x+(numberSize * i),
                 y: this.numberYPosition,
-                width: numberWidth,
-                height: numberHeight
+                width: numberSize,
+                height: numberSize
             }, numberImages);
             this.numbers[i] = number;
             number.setZIndex(this.zIndex+1);
