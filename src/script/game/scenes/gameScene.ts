@@ -44,6 +44,7 @@ export default class GameScene extends Scene{
     gameMenu: GameMenu;
     obstacles: Tile[];
     spawners: Spawner[];
+    walls: Tile[];
 
     spawnHandler: SpawnHandler;
 
@@ -57,6 +58,7 @@ export default class GameScene extends Scene{
         this.numberImages = [];
         this.obstacles = [];
         this.spawners = [];
+        this.walls = [];
 
         this.spawnHandler = new SpawnHandler(this.spawners);
 
@@ -77,8 +79,6 @@ export default class GameScene extends Scene{
 
     }
 
-
-    isOne = true;
     onCreated(): void {
         let size = SizeCalculator.calculateSize(GameScene.TILE_SIZE, Global.getInstance().width , Global.getInstance().height);
         let mc : MapCreator = new MapCreator(size.y, size.x);
@@ -97,7 +97,8 @@ export default class GameScene extends Scene{
                 }
                 else if(this.maps[i][j].char == 'W'){
                     img = this.stoneImage;
-
+                    this.obstacles.push(this.maps[i][j]);
+                    this.walls.push(this.maps[i][j]);
                 }else if(this.maps[i][j].char == 'S'){
                     img = null;
                     let spawner = new Spawner(<IRectangle>{
@@ -151,8 +152,6 @@ export default class GameScene extends Scene{
        
     }
     onUpdate(): void {
-        console.log(SceneEngine.getInstance().deltaTime())
-
         let enemy = this.spawnHandler.update(SceneEngine.getInstance().deltaTime());
         if(enemy){
             this.enemies.push(enemy);
@@ -180,6 +179,8 @@ export default class GameScene extends Scene{
                     projectile.onHit(enemy);
                 }
             }
+
+
         }
 
         for (const enemy of this.enemies) {
@@ -274,8 +275,6 @@ export default class GameScene extends Scene{
         this.cursor.setMiddlePoint(new Point(e.x, e.y))
     }
 
-
-
     keyUp(e: KeyboardEvent) {
         super.keyUp(e);
 
@@ -332,7 +331,6 @@ export default class GameScene extends Scene{
                     this.nextVelX = 0;
                     this.nextVelY = 0;
                 }
-
                 break;
         }
     }
@@ -351,6 +349,5 @@ export default class GameScene extends Scene{
         }
         return true;
     }
-
 
 }
