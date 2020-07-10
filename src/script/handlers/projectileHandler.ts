@@ -6,19 +6,37 @@ import SceneEngine from "../../module/context/core/scene/sceneEngine";
 
 export default class ProjectileHandler {
     projectileImage: ImageBitmap;
+    currentValue: number;
+    valueToSpawn: number;
 
     constructor(projectileImage: ImageBitmap) {
         this.projectileImage = projectileImage;
+        this.currentValue = 0;
+        this.valueToSpawn = 1;
     }
 
-    createProjectile(x: number, y: number, xVel: number, yVel: number): Projectile{
+    createProjectile(x: number, y: number, xVel: number, yVel: number, value: number): Projectile{
+        this.currentValue+=value;
+        if(this.currentValue >= this.valueToSpawn){
+            this.currentValue-=this.valueToSpawn;
+            return this.spawn(x,y,xVel,yVel);
+        }
+    }
+
+    update(value: number){
+        if(this.currentValue < this.valueToSpawn){
+            this.currentValue+=value;
+        }
+    }
+
+    spawn(x: number, y: number, xVel: number, yVel: number){
         let projectileSize = 20;
 
         let projectile: Projectile = new Arrow(<IRectangle>{
             x: x,
             y: y,
-            width: 20,
-            height: 20
+            width: projectileSize,
+            height: projectileSize
         }, new Point(xVel, yVel), this.projectileImage);
         projectile.setSpeed(5);
         projectile.setZIndex(20);
@@ -30,7 +48,6 @@ export default class ProjectileHandler {
         SceneEngine.getInstance().injectGameObject(projectile);
 
         return projectile;
-
     }
 
 }

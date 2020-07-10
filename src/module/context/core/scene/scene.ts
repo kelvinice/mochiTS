@@ -25,6 +25,10 @@ export default abstract class Scene{
 
     mouseMove(e: MouseEvent){}
 
+    mouseDown(e: MouseEvent){}
+
+    mouseUp(e: MouseEvent){}
+
     keyDown(e: KeyboardEvent){}
 
     keyUp(e: KeyboardEvent){}

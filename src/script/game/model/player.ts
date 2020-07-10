@@ -1,20 +1,25 @@
 import {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import ImageGameObject from "../../../module/context/core/gameObjects/imageGameObject";
 import Point from "./point";
+import Calculator from "../../handlers/calculator";
 
 export default class Player extends ImageGameObject{
     tileX: number;
     tileY: number;
     bowImage: ImageBitmap;
-    mousePoint: Point;
+    private _mousePoint: Point;
     velX: number = 0;
     velY: number = 0;
     movementSpeed: number;
 
+    get mousePoint(): Point {
+        return this._mousePoint;
+    }
+
     constructor(iGameObject: IRectangle, image: ImageBitmap, bowImage: ImageBitmap) {
         super(iGameObject, image);
         this.bowImage = bowImage;
-        this.mousePoint = new Point();
+        this._mousePoint = new Point();
         this.movementSpeed = 1;
     }
 
@@ -22,20 +27,13 @@ export default class Player extends ImageGameObject{
         super.draw(ctx, time);
 
         let p: Point = new Point(this.x, this.y);
-        // let p: Point = this.getMiddlePoint();
 
-        let xDif = this.mousePoint.x - p.x;
-        let yDif = this.mousePoint.y - p.y;
-        let dif = Math.abs(xDif)+ Math.abs(yDif);
-        let maxVel= 1;
+        let vel = Calculator.calculateVelocity(p, this.mousePoint);
 
-        let xVel = xDif/dif * maxVel;
-        let yVel = yDif/dif * maxVel;
+        let rotation= 180+(Math.atan2(vel.x,vel.y) / (2* Math.PI) * 360 *-1);
 
-        let rotation= 180+(Math.atan2(xVel,yVel) / (2* Math.PI) * 360 *-1);
-
-        p.x += xVel * 20;
-        p.y += yVel * 20;
+        p.x += vel.x * 20;
+        p.y += vel.y * 20;
 
         let cx     = p.x + 0.5 * this.width;   // x of shape center
         let cy     = p.y + 0.5 * this.height;  // y of shape center
@@ -62,10 +60,7 @@ export default class Player extends ImageGameObject{
     }
 
     setMousePoint(point: Point): void{
-        this.mousePoint = point;
-
+        this._mousePoint = point;
     }
-
-
 
 }

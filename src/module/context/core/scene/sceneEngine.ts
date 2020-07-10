@@ -41,7 +41,10 @@ export default class SceneEngine {
         Global.getInstance().height = this.canvasController.getHeightCanvas();
         canvas.addEventListener("click", (e)=>this.mouseClick(e));
         canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
+        canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
+        canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
         window.addEventListener("keydown", (e)=>this.keyDown(e), false);
+
     }
 
     keyDown(e: KeyboardEvent){
@@ -56,8 +59,15 @@ export default class SceneEngine {
         }
     }
 
-    mouseDown(){
-
+    mouseDown(e: MouseEvent){
+        if(this.currentScene != null){
+            this.currentScene.mouseDown(e);
+        }
+    }
+    mouseUp(e: MouseEvent){
+        if(this.currentScene != null){
+            this.currentScene.mouseUp(e);
+        }
     }
 
     mouseMove(e: MouseEvent){

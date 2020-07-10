@@ -12,13 +12,14 @@ import Slime from "../model/enemies/slime";
 import Arrow from "../model/projectiles/arrow";
 import GameMenu from "../model/gameMenu";
 import Global from "../../../module/context/generals/global";
-import SizeCalculator from "../../handlers/sizeCalculator";
+import Calculator from "../../handlers/calculator";
 import Cursor from "../model/cursors/cursor";
 import RectangleGameObject from "../../../module/context/core/gameObjects/rectangleGameObject";
 import Spawner from "../model/enemies/spawner";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import SpawnHandler from "../../handlers/spawnHandler";
 import ProjectileHandler from "../../handlers/projectileHandler";
+import calculator from "../../handlers/calculator";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -51,6 +52,8 @@ export default class GameScene extends Scene{
     nextVelX = 0;
     nextVelY = 0;
 
+    mouseHold: boolean = false;
+
     constructor(assetManager: AssetManager){
         super();
         this.enemies = [];
@@ -80,7 +83,7 @@ export default class GameScene extends Scene{
     }
 
     onCreated(): void {
-        let size = SizeCalculator.calculateSize(GameScene.TILE_SIZE, Global.getInstance().width , Global.getInstance().height);
+        let size = Calculator.calculateSize(GameScene.TILE_SIZE, Global.getInstance().width , Global.getInstance().height);
         let mc : MapCreator = new MapCreator(size.y, size.x);
         this.maps = mc.getMap();
         this.cursor = new Cursor(<IRectangle>{
@@ -149,10 +152,20 @@ export default class GameScene extends Scene{
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
-       
     }
 
     onUpdate(): void {
+        if(this.mouseHold){
+            let p: Point = this.player.getMiddlePoint();
+            let vel = Calculator.calculateVelocity(p, this.player.mousePoint);
+            let projectile = this.projectileHandler.createProjectile(p.x, p.y, vel.x, vel.y, SceneEngine.getInstance().deltaTime());
+            if(projectile != null){
+                this.projectiles.push(projectile);
+            }
+        }else{
+            this.projectileHandler.update(SceneEngine.getInstance().deltaTime());
+        }
+
         let enemy = this.spawnHandler.update(SceneEngine.getInstance().deltaTime());
         if(enemy){
             this.enemies.push(enemy);
@@ -226,27 +239,25 @@ export default class GameScene extends Scene{
 
         }
 
-
     }
 
     mouseClick(e:MouseEvent){
-        let p: Point = this.player.getMiddlePoint();
+        // let p: Point = this.player.getMiddlePoint();
+        //
+        // let vel = Calculator.calculateVelocity(p, this.player.mousePoint);
+        //
+        // let projectile = this.projectileHandler.createProjectile(p.x, p.y, vel.x, vel.y, SceneEngine.getInstance().deltaTime());
+        // if(projectile != null){
+        //     this.projectiles.push(projectile);
+        // }
+    }
 
-        let xDif = e.x - p.x;
-        let yDif = e.y - p.y;
-        let dif = Math.abs(xDif)+ Math.abs(yDif);
-        let maxVel= 1;
+    mouseUp(e: MouseEvent) {
+        this.mouseHold = false;
+    }
 
-        let xVel = xDif/dif * maxVel;
-        let yVel = yDif/dif * maxVel;
-
-
-        let projectile = this.projectileHandler.createProjectile(p.x, p.y, xVel, yVel);
-        if(projectile != null){
-            this.projectiles.push(projectile);
-        }
-
-
+    mouseDown(e: MouseEvent) {
+        this.mouseHold = true;
     }
 
     noticeDelete(gameObject: GameObject) {
