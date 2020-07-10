@@ -39,4 +39,13 @@ export default class Skeleton extends Enemy{
         }
         super.draw(ctx, time);
     }
+
+    getHitBox(): IRectangle {
+        return <IRectangle>{
+            x: this.x + (this.width/2/2),
+            y: this.y + (this.height/9),
+            width: this.width/2,
+            height: this.height/9*8
+        }
+    }
 }

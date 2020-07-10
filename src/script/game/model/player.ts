@@ -2,6 +2,7 @@ import {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import ImageGameObject from "../../../module/context/core/gameObjects/imageGameObject";
 import Point from "./point";
 import Calculator from "../../handlers/calculator";
+import global from "../../../module/context/generals/global";
 
 export default class Player extends ImageGameObject{
     tileX: number;
@@ -24,7 +25,11 @@ export default class Player extends ImageGameObject{
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
+        if(global.getInstance().debug){
+            this.fillHitBox(ctx, "purple");
+        }
         super.draw(ctx, time);
+
 
         let p: Point = new Point(this.x, this.y);
 
@@ -45,7 +50,6 @@ export default class Player extends ImageGameObject{
 
         ctx.drawImage(this.bowImage,p.x,p.y,this.width,this.height);
         ctx.restore();
-
     }
 
     update(): void {
@@ -61,6 +65,15 @@ export default class Player extends ImageGameObject{
 
     setMousePoint(point: Point): void{
         this._mousePoint = point;
+    }
+
+    getHitBox(): IRectangle {
+        return <IRectangle>{
+            x: this.x + (this.width/4/2),
+            y: this.y + this.height/4/2,
+            width: this.width/4*3,
+            height: this.height/4*3
+        }
     }
 
 }

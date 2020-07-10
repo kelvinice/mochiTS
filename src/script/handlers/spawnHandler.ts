@@ -30,7 +30,6 @@ export default class SpawnHandler {
     spawn(): Enemy{
         let num = Math.floor(this.trueRandom.randomNumber(0, this.spawners.length));
         return this.spawners[num].spawn();
-
     }
 
 
