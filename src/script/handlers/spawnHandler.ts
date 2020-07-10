@@ -20,7 +20,7 @@ export default class SpawnHandler {
     public update(value: number): Enemy{
         this.currentValue+=value;
         if(this.currentValue >= this.valueToSpawn){
-            this.currentValue-=this.valueToSpawn;
+            this.currentValue%=this.valueToSpawn;
             return this.spawn();
         }
 

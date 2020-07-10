@@ -1,4 +1,4 @@
-import GameObject, {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
+import {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
 import ImageGameObject from "../../../../module/context/core/gameObjects/imageGameObject";
 import GameScene from "../../scenes/gameScene";
 import Slime from "./slime";
@@ -26,7 +26,7 @@ export default class Spawner extends ImageGameObject{
             width: GameScene.TILE_SIZE,
             height: GameScene.TILE_SIZE
         }, this.enemyImage);
-        enemy.initHP(100);
+        enemy.initHP(150);
         enemy.setZIndex(15);
         return enemy;
 

@@ -1,4 +1,4 @@
-import GameObject, {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
+import {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
 import AnimateGameObject from "../../../../module/context/core/gameObjects/animateGameObject";
 import Tile from "../tiles/tile";
 import GameScene from "../../scenes/gameScene";
@@ -21,7 +21,7 @@ export default abstract class Enemy extends AnimateGameObject{
         this._maxHp = value;
     }
 
-    constructor(iGameObject: IRectangle, image: ImageBitmap= null) {
+    protected constructor(iGameObject: IRectangle, image: ImageBitmap= null) {
         super(iGameObject, image);
         this.movementSpeed = 1;
         this.damagedHP = 0;

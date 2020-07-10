@@ -17,14 +17,19 @@ import Spawner from "../model/enemies/spawner";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import SpawnHandler from "../../handlers/spawnHandler";
 import ProjectileHandler from "../../handlers/projectileHandler";
+import TrueRandom from "../../handlers/trueRandom";
+import SkeletonSpawner from "../model/enemies/skeletonSpawner";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
     stoneImage: ImageBitmap;
     brickImage: ImageBitmap;
     switchGreenImage: ImageBitmap;
+    switchRedImage: ImageBitmap;
+    switchBlueImage: ImageBitmap;
     playerImage: ImageBitmap;
     slimeImage: ImageBitmap;
+    skeletonImage: ImageBitmap;
     arrowImage: ImageBitmap;
     bowImage: ImageBitmap;
     heartImage: ImageBitmap;
@@ -50,6 +55,7 @@ export default class GameScene extends Scene{
     nextVelY = 0;
 
     mouseHold: boolean = false;
+    trueRandom: TrueRandom;
 
     constructor(assetManager: AssetManager){
         super();
@@ -63,23 +69,28 @@ export default class GameScene extends Scene{
         this.stoneImage = assetManager.loadedImage["stone"];
         this.brickImage = assetManager.loadedImage["brick"];
         this.switchGreenImage = assetManager.loadedImage["switchGreen"];
+        this.switchRedImage = assetManager.loadedImage["switchRed"];
+        this.switchBlueImage = assetManager.loadedImage["switchBlue"];
         this.playerImage = assetManager.loadedImage["player"];
         this.slimeImage = assetManager.loadedImage["slime"];
         this.arrowImage = assetManager.loadedImage["arrow"];
         this.bowImage = assetManager.loadedImage["bow"];
         this.heartImage = assetManager.loadedImage["heart"];
         this.crosshairImage = assetManager.loadedImage["crosshair"];
-
-        this.spawnHandler = new SpawnHandler(this.spawners);
-        this.projectileHandler = new ProjectileHandler(this.arrowImage);
+        this.skeletonImage = assetManager.loadedImage["skeleton"];
 
         for (let i = 0; i < 10; i++) {
             this.numberImages.push(assetManager.loadedImage["hud"+i]);
         }
 
+        this.spawnHandler = new SpawnHandler(this.spawners);
+        this.projectileHandler = new ProjectileHandler(this.arrowImage);
+        this.trueRandom = new TrueRandom();
+
     }
 
     onCreated(): void {
+        this.trueRandom.randSeed();
         let size = Calculator.calculateSize(GameScene.TILE_SIZE, Global.getInstance().width , Global.getInstance().height);
         let mc : MapCreator = new MapCreator(size.y, size.x);
         this.maps = mc.getMap();
@@ -100,12 +111,27 @@ export default class GameScene extends Scene{
                     this.obstacles.push(this.maps[i][j]);
                 }else if(this.maps[i][j].char == 'S'){
                     img = null;
-                    let spawner = new Spawner(<IRectangle>{
-                        x: i*GameScene.TILE_SIZE,
-                        y: j*GameScene.TILE_SIZE,
-                        width: GameScene.TILE_SIZE,
-                        height: GameScene.TILE_SIZE
-                    }, this.switchGreenImage, this.slimeImage);
+                    let spawner:Spawner;
+                    let num = this.trueRandom.randomNumber(0,2);
+                    if(num==0){
+                        spawner = new Spawner(<IRectangle>{
+                            x: i*GameScene.TILE_SIZE,
+                            y: j*GameScene.TILE_SIZE,
+                            width: GameScene.TILE_SIZE,
+                            height: GameScene.TILE_SIZE
+                        }, this.switchGreenImage, this.slimeImage);
+
+                    }else{
+                        spawner = new SkeletonSpawner(<IRectangle>{
+                            x: i*GameScene.TILE_SIZE,
+                            y: j*GameScene.TILE_SIZE,
+                            width: GameScene.TILE_SIZE,
+                            height: GameScene.TILE_SIZE
+                        }, this.switchRedImage, this.skeletonImage);
+
+                    }
+
+
                     spawner.setZIndex(10);
                     this.spawners.push(spawner);
                     this.addGameObject(spawner);
@@ -238,9 +264,6 @@ export default class GameScene extends Scene{
 
     }
 
-    mouseClick(e:MouseEvent){
-    }
-
     mouseUp(e: MouseEvent) {
         this.mouseHold = false;
     }
@@ -261,15 +284,18 @@ export default class GameScene extends Scene{
     }
 
     mouseMove(e: MouseEvent) {
-        super.mouseMove(e);
         this.player.setMousePoint(new Point(e.x, e.y));
         this.cursor.setMiddlePoint(new Point(e.x, e.y))
     }
 
     keyDown(e: KeyboardEvent) {
-        super.keyUp(e);
-
         switch(e.key){
+            case 'e':
+                this.player.velX = 0;
+                this.player.velY = 0;
+                this.nextVelX = 0;
+                this.nextVelY = 0;
+                break;
             case 'w':
                 if(!this.isCanWalk(new RectangleGameObject(<IRectangle>{
                     x:this.player.x, y:this.player.y-1, width:this.player.width, height:this.player.height

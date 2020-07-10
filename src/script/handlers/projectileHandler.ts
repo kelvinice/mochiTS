@@ -6,26 +6,26 @@ import SceneEngine from "../../module/context/core/scene/sceneEngine";
 
 export default class ProjectileHandler {
     projectileImage: ImageBitmap;
-    currentValue: number;
-    valueToSpawn: number;
+    fireTime: number;
+    fireRate: number;
 
     constructor(projectileImage: ImageBitmap) {
         this.projectileImage = projectileImage;
-        this.currentValue = 0;
-        this.valueToSpawn = 0.5;
+        this.fireTime = 0;
+        this.fireRate = 0.5;
     }
 
     createProjectile(x: number, y: number, xVel: number, yVel: number, value: number): Projectile{
-        this.currentValue+=value;
-        if(this.currentValue >= this.valueToSpawn){
-            this.currentValue-=this.valueToSpawn;
+        this.fireTime+=value;
+        if(this.fireTime >= this.fireRate){
+            this.fireTime-=this.fireRate;
             return this.spawn(x,y,xVel,yVel);
         }
     }
 
     update(value: number){
-        if(this.currentValue < this.valueToSpawn){
-            this.currentValue+=value;
+        if(this.fireTime < this.fireRate){
+            this.fireTime+=value;
         }
     }
 

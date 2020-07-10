@@ -1,16 +1,17 @@
 import GameObject, {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
 import Point from "../point";
 import Enemy from "../enemies/enemy";
-import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
 import Global from "../../../../module/context/generals/global";
 
 export default class Projectile extends GameObject{
     velocity: Point;
     speed: number = 1;
+    damage: number;
 
     constructor(iGameObject: IRectangle, velocity: Point) {
         super(iGameObject);
         this.velocity = velocity;
+        this.damage = 40;
     }
 
     setSpeed(speed: number): Projectile{
@@ -40,7 +41,7 @@ export default class Projectile extends GameObject{
 
     onHit(enemy: Enemy){
         if(this.isDestroyed)return;
-        enemy.reduceHP(40);
+        enemy.reduceHP(this.damage);
         this.destroy();
     }
 

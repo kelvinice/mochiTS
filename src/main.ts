@@ -1,6 +1,4 @@
 import SceneEngine from "./module/context/core/scene/sceneEngine";
-import DummyScene from './script/game/scenes/dummyScene';
-import MapCreator from './script/handlers/mapCreator';
 import GameScene from './script/game/scenes/gameScene';
 import AssetManager from './module/context/generals/asset';
 
@@ -28,6 +26,7 @@ window.onload = () =>{
         assetManager.addPath("bow","bow.png");
         assetManager.addPath("heart","hudHeart_full.png");
         assetManager.addPath("crosshair","crosshair.png");
+        assetManager.addPath("skeleton","skeleton.png");
 
         for (let i = 0; i < 10; i++) {
                 assetManager.addPath("hud"+i,"hud"+i+".png");
