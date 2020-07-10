@@ -7,17 +7,12 @@ import GameTile from '../model/tiles/gameTile';
 import Player from "../model/player";
 import Point from "../model/point";
 import Projectile from "../model/projectiles/projectile";
-import {splitSprite} from "../../handlers/imageHandler";
 import Enemy from "../model/enemies/enemy";
 import Slime from "../model/enemies/slime";
 import Arrow from "../model/projectiles/arrow";
 import GameMenu from "../model/gameMenu";
-import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import Global from "../../../module/context/generals/global";
 import SizeCalculator from "../../handlers/sizeCalculator";
-import global from "../../../module/context/generals/global";
-import point from "../model/point";
-import gameMenu from "../model/gameMenu";
 import Cursor from "../model/cursors/cursor";
 import RectangleGameObject from "../../../module/context/core/gameObjects/rectangleGameObject";
 
@@ -36,7 +31,6 @@ export default class GameScene extends Scene{
 
     public static TILE_SIZE: number = 50;
 
-
     maps: Tile[][];
 
     cursor: Cursor;
@@ -45,6 +39,9 @@ export default class GameScene extends Scene{
     projectiles: Projectile[];
     gameMenu: GameMenu;
     obstacles: Tile[];
+
+    nextVelX = 0;
+    nextVelY = 0;
 
     constructor(assetManager: AssetManager){
         super();
@@ -151,6 +148,17 @@ export default class GameScene extends Scene{
             enemy.pathFind(this.maps, Math.round(this.player.x/GameScene.TILE_SIZE),Math.round(this.player.y/GameScene.TILE_SIZE));
         }
 
+        if((this.nextVelX != 0 || this.nextVelY != 0) && this.isCanWalk(
+            new RectangleGameObject(<IRectangle>{
+                x:this.player.x+this.nextVelX, y:this.player.y+this.nextVelY, width:this.player.width, height:this.player.height
+            }))
+        ){
+            this.player.velX = this.nextVelX;
+            this.player.velY = this.nextVelY;
+            this.nextVelX = 0;
+            this.nextVelY = 0;
+        }
+
         for (const projectile of this.projectiles) {
             for (const enemy of this.enemies) {
                 if(projectile.isIntersect(enemy)){
@@ -187,7 +195,7 @@ export default class GameScene extends Scene{
                         this.player.x = this.player.x + dx;
                     }
                     else {
-                        this.player.x = this.player.x -dx;
+                        this.player.x = this.player.x - dx;
                     }
                 }
                 else if (dy < dx) {
@@ -258,26 +266,75 @@ export default class GameScene extends Scene{
 
         switch(e.key){
             case 'w':
-                this.player.velX=0;
-                this.player.velY=-1;
-
+                if(!this.isCanWalk(new RectangleGameObject(<IRectangle>{
+                    x:this.player.x, y:this.player.y-1, width:this.player.width, height:this.player.height
+                }))){
+                    this.nextVelX = 0;
+                    this.nextVelY = -1;
+                }else{
+                    this.player.velX = 0;
+                    this.player.velY = -1;
+                    this.nextVelX = 0;
+                    this.nextVelY = 0;
+                }
                 break;
             case 'a':
-                this.player.velX=-1;
-                this.player.velY=0;
-
+                if(!this.isCanWalk(new RectangleGameObject(<IRectangle>{
+                    x:this.player.x-1, y:this.player.y, width:this.player.width, height:this.player.height
+                }))){
+                    this.nextVelX = -1;
+                    this.nextVelY = 0;
+                }else{
+                    this.player.velX=-1;
+                    this.player.velY=0;
+                    this.nextVelX = 0;
+                    this.nextVelY = 0;
+                }
                 break;
             case 's':
-                this.player.velX=0;
-                this.player.velY=1;
+                if(!this.isCanWalk(new RectangleGameObject(<IRectangle>{
+                    x:this.player.x, y:this.player.y+1, width:this.player.width, height:this.player.height
+                }))){
+                    this.nextVelX = 0;
+                    this.nextVelY = 1;
+                }else{
+                    this.player.velX = 0;
+                    this.player.velY = 1;
+                    this.nextVelX = 0;
+                    this.nextVelY = 0;
+                }
 
                 break;
             case 'd':
-                this.player.velX=1;
-                this.player.velY=0;
+                if(!this.isCanWalk(new RectangleGameObject(<IRectangle>{
+                    x:this.player.x+1, y:this.player.y, width:this.player.width, height:this.player.height
+                }))){
+                    this.nextVelX = 1;
+                    this.nextVelY = 0;
+                }else{
+                    this.player.velX=1;
+                    this.player.velY=0;
+                    this.nextVelX = 0;
+                    this.nextVelY = 0;
+                }
 
                 break;
         }
+    }
+
+    isCanWalk(g: GameObject) : boolean{
+        for (const wall of this.obstacles) {
+            let obs = new RectangleGameObject(<IRectangle>{
+                x: wall.x * GameScene.TILE_SIZE,
+                y: wall.y * GameScene.TILE_SIZE,
+                width: GameScene.TILE_SIZE,
+                height: GameScene.TILE_SIZE
+            });
+            if(obs.isIntersectSoft(g)){
+                return false;
+            }
+        }
+        return true;
     }
 
 
