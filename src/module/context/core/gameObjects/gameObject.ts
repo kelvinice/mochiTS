@@ -28,12 +28,16 @@ export default abstract class GameObject {
         return this;
     }
 
-    isIntersect(g: GameObject) {
+    /**
+     * @param g: Gameobject
+     * @deprecated this method compare real size of object instead of object hit box
+     */
+    isIntersect(g: IRectangle): boolean {
         return this.x <= g.x + g.width && this.x + this.width >= g.x
             && this.y <= g.y + g.height && this.y + this.height >= g.y;
     }
 
-    isIntersectSoft(g: GameObject) {
+    isIntersectSoft(g: IRectangle) {
         return this.x < g.x + g.width && this.x + this.width > g.x
             && this.y < g.y + g.height && this.y + this.height > g.y;
     }
@@ -60,12 +64,35 @@ export default abstract class GameObject {
         return this;
     }
 
+    fillHitBox(ctx: CanvasRenderingContext2D, color: string){
+        ctx.fillStyle = color;
+        let h = this.getHitBox();
+        ctx.fillRect(h.x, h.y, h.width, h.height);
+    }
+
     destroy(){
         this._isDestroyed = true;
     }
 
     get isDestroyed(): boolean {
         return this._isDestroyed;
+    }
+
+    public getHitBox(): IRectangle{
+        return <IRectangle>{
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height
+        }
+    }
+
+    isCollide(gameObject: GameObject): boolean{
+        let a = this.getHitBox();
+        let g = gameObject.getHitBox();
+
+        return a.x < g.x + g.width && a.x + a.width > g.x
+            && a.y < g.y + g.height && a.y + a.height > g.y;
     }
 }
 

@@ -8,8 +8,6 @@ import Player from "../model/player";
 import Point from "../model/point";
 import Projectile from "../model/projectiles/projectile";
 import Enemy from "../model/enemies/enemy";
-import Slime from "../model/enemies/slime";
-import Arrow from "../model/projectiles/arrow";
 import GameMenu from "../model/gameMenu";
 import Global from "../../../module/context/generals/global";
 import Calculator from "../../handlers/calculator";
@@ -19,7 +17,6 @@ import Spawner from "../model/enemies/spawner";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import SpawnHandler from "../../handlers/spawnHandler";
 import ProjectileHandler from "../../handlers/projectileHandler";
-import calculator from "../../handlers/calculator";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -189,14 +186,14 @@ export default class GameScene extends Scene{
 
         for (const projectile of this.projectiles) {
             for (const enemy of this.enemies) {
-                if(projectile.isIntersect(enemy)){
+                if(projectile.isCollide(enemy)){
                     projectile.onHit(enemy);
                 }
             }
         }
 
         for (const enemy of this.enemies) {
-            if(this.player.isIntersect(enemy)){
+            if(this.player.isCollide(enemy)){
                 this.gameMenu.reduceHeart();
                 enemy.destroy();
             }
@@ -242,14 +239,6 @@ export default class GameScene extends Scene{
     }
 
     mouseClick(e:MouseEvent){
-        // let p: Point = this.player.getMiddlePoint();
-        //
-        // let vel = Calculator.calculateVelocity(p, this.player.mousePoint);
-        //
-        // let projectile = this.projectileHandler.createProjectile(p.x, p.y, vel.x, vel.y, SceneEngine.getInstance().deltaTime());
-        // if(projectile != null){
-        //     this.projectiles.push(projectile);
-        // }
     }
 
     mouseUp(e: MouseEvent) {

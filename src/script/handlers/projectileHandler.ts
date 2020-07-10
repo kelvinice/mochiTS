@@ -12,7 +12,7 @@ export default class ProjectileHandler {
     constructor(projectileImage: ImageBitmap) {
         this.projectileImage = projectileImage;
         this.currentValue = 0;
-        this.valueToSpawn = 1;
+        this.valueToSpawn = 0.5;
     }
 
     createProjectile(x: number, y: number, xVel: number, yVel: number, value: number): Projectile{

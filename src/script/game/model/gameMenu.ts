@@ -66,9 +66,13 @@ export default class GameMenu extends GameObject{
     }
 
     public reduceHeart(){
-        if(this.hp<=0)return;
         this.hp--;
         this.hearts[this.hp].destroy();
+        if(this.hp<=0){
+            alert("You lose!");
+            window.location.reload();
+            return;
+        }
     }
 
     public setScore(number: number){
