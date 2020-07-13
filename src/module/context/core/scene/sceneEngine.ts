@@ -82,8 +82,6 @@ export default class SceneEngine {
             });
 
         }
-
-        
     }
 
     makeWindowReactive(){
