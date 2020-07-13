@@ -3,19 +3,21 @@ import {IRectangle} from "../../../../module/context/core/gameObjects/gameObject
 import {splitSprite} from "../../../handlers/imageHandler";
 import global from "../../../../module/context/generals/global";
 
-export default class Slime extends Enemy{
-    constructor(iGameObject: IRectangle, image: ImageBitmap = null) {
+export default class Skeleton extends Enemy{
+
+
+    constructor(iGameObject: IRectangle, image: ImageBitmap) {
         super(iGameObject, image);
         this.image = image;
 
-        this.rectangles = splitSprite(image, 4, 4);
-        this.animationController.addAnimation("down", 0, 3, 200);
-        this.animationController.addAnimation("left", 4, 7, 200);
-        this.animationController.addAnimation("right", 8, 11, 200);
-        this.animationController.addAnimation("up", 12, 15, 200);
+        this.rectangles = splitSprite(image, 9, 4);
+        this.animationController.addAnimation("up", 0, 8, 100);
+        this.animationController.addAnimation("left", 9, 17, 100);
+        this.animationController.addAnimation("down", 18, 26, 100);
+        this.animationController.addAnimation("right", 27, 35, 100);
 
         this.animationController.setAnim("down");
-        this.movementSpeed = 0.5;
+        this.movementSpeed = 1;
     }
 
     update() {
@@ -33,19 +35,17 @@ export default class Slime extends Enemy{
 
     draw(ctx: CanvasRenderingContext2D, time: Number) {
         if(global.getInstance().debug){
-            this.fillHitBox(ctx, "blue");
+            this.fillHitBox(ctx, "red");
         }
         super.draw(ctx, time);
     }
 
     getHitBox(): IRectangle {
         return <IRectangle>{
-            x: this.x + (this.width/3/2),
-            y: this.y + this.height/2,
-            width: this.width/3 * 2,
-            height: this.height/2
+            x: this.x + (this.width/2/2),
+            y: this.y + (this.height/9),
+            width: this.width/2,
+            height: this.height/9*8
         }
     }
-
-
 }

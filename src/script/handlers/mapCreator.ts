@@ -20,7 +20,6 @@ export default class MapCreator{
         this.trueRandom = new TrueRandom();
         this.trueRandom.randSeed();
         this.init();
-        
         let res = this.getMapFromBSP();
         
         this.reconstructWall(res);
@@ -50,20 +49,20 @@ export default class MapCreator{
         
         this.lastOpen = this.map[curr.x][curr.y];
 
-        if(this.map[curr.x-1][curr.y].poin > 0){
-            this.map[curr.x-1][curr.y].poin = 0;
+        if(this.map[curr.x-1][curr.y].point > 0){
+            this.map[curr.x-1][curr.y].point = 0;
             this.queue.push(new Point(curr.x-1,curr.y));
         }
-        if(this.map[curr.x+1][curr.y].poin > 0){
-            this.map[curr.x+1][curr.y].poin = 0;
+        if(this.map[curr.x+1][curr.y].point > 0){
+            this.map[curr.x+1][curr.y].point = 0;
             this.queue.push(new Point(curr.x+1,curr.y));
         }
-        if(this.map[curr.x][curr.y-1].poin > 0){
-            this.map[curr.x][curr.y-1].poin = 0;
+        if(this.map[curr.x][curr.y-1].point > 0){
+            this.map[curr.x][curr.y-1].point = 0;
             this.queue.push(new Point(curr.x,curr.y-1));
         }
-        if(this.map[curr.x][curr.y+1].poin > 0){
-            this.map[curr.x][curr.y+1].poin = 0;
+        if(this.map[curr.x][curr.y+1].point > 0){
+            this.map[curr.x][curr.y+1].point = 0;
             this.queue.push(new Point(curr.x,curr.y+1));
         }
     }
@@ -75,7 +74,7 @@ export default class MapCreator{
             for (let j = 1; j < this.WIDTH-1; j++)
             {
                 if ((i == 1 || j == 1 || i == this.HEIGHT - 2 || j == this.WIDTH - 2) && map[i][j].char == "#"){
-                    map[i][j] = new Tile('S');
+                    map[i][j] = new Tile('S', j, i);
                     this.queue.push(
                         new Point(i,j)
                         );
@@ -94,7 +93,7 @@ export default class MapCreator{
         {
             for (let j = 0; j < this.WIDTH; j++)
             {
-                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) map[i][j] = new Tile('W');
+                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) map[i][j] = new Tile('W', j, i);
             }
         }
     }
@@ -108,8 +107,8 @@ export default class MapCreator{
             this.map[i] = [];
             for (let j = 0; j < this.WIDTH; j++)
             {
-                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile('#');
-                else this.map[i][j] = new Tile(' ');
+                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile('#', j, i);
+                else this.map[i][j] = new Tile(' ', j, i);
             }
         }
     }
