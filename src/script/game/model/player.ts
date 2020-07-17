@@ -22,6 +22,7 @@ export default class Player extends ImageGameObject{
         this.bowImage = bowImage;
         this._mousePoint = new Point();
         this.movementSpeed = 1;
+        this.setZIndex(20);
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {

@@ -100,7 +100,7 @@ export default class SceneEngine {
 
         requestAnimationFrame((time: Number)=>this.render(time));
         // while(true){
-        //     this.update();
+        //     this.addFireTime();
         // }
     }
 

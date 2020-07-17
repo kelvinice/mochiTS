@@ -120,7 +120,6 @@ export default class GameScene extends Scene{
                             width: GameScene.TILE_SIZE,
                             height: GameScene.TILE_SIZE
                         }, this.switchGreenImage, this.slimeImage);
-
                     }else{
                         spawner = new SkeletonSpawner(<IRectangle>{
                             x: i*GameScene.TILE_SIZE,
@@ -142,7 +141,6 @@ export default class GameScene extends Scene{
                         width: GameScene.TILE_SIZE,
                         height: GameScene.TILE_SIZE
                     }, this.playerImage, this.bowImage);
-                    this.player.setZIndex(10);
                     this.player.setTile(j, i);
                     this.addGameObject(this.player);
                 }else{
@@ -184,7 +182,7 @@ export default class GameScene extends Scene{
                 this.projectiles.push(projectile);
             }
         }else{
-            this.projectileHandler.update(SceneEngine.getInstance().deltaTime());
+            this.projectileHandler.addFireTime(SceneEngine.getInstance().deltaTime());
         }
 
         let enemy = this.spawnHandler.update(SceneEngine.getInstance().deltaTime());
