@@ -43,8 +43,15 @@ export default class SceneEngine {
         canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
         canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
         canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
+        document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
         window.addEventListener("keydown", (e)=>this.keyDown(e), false);
+    }
 
+    mouseContextMenu(e: MouseEvent){
+        e.preventDefault();
+        if(this.currentScene != null){
+            this.currentScene.mouseContextMenu(e);
+        }
     }
 
     keyDown(e: KeyboardEvent){

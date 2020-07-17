@@ -22,11 +22,9 @@ export default class AnimateGameObject extends ImageGameObject{
             rect.y,
             rect.width,
             rect.height,
-            this.x,
-            this.y,
-            this.width,
-            this.height
-        )
+            this.x-this.leftPadding,this.y-this.topPadding
+            ,this.width + this.leftPadding + this.rightPadding,this.height + this.topPadding + this.bottomPadding
+        );
         this.animationController.updateAnimation(time.valueOf() - this.previousTime.valueOf());
         this.previousTime = Number(time);
     }

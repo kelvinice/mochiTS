@@ -19,6 +19,7 @@ import SpawnHandler from "../../handlers/spawnHandler";
 import ProjectileHandler from "../../handlers/projectileHandler";
 import TrueRandom from "../../handlers/trueRandom";
 import SkeletonSpawner from "../model/enemies/skeletonSpawner";
+import SunStrike from "../model/skills/SunStrike";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -34,6 +35,7 @@ export default class GameScene extends Scene{
     bowImage: ImageBitmap;
     heartImage: ImageBitmap;
     crosshairImage: ImageBitmap;
+    sunStrikeImage: ImageBitmap;
     numberImages: ImageBitmap[];
 
     public static TILE_SIZE: number = 50;
@@ -78,6 +80,7 @@ export default class GameScene extends Scene{
         this.heartImage = assetManager.loadedImage["heart"];
         this.crosshairImage = assetManager.loadedImage["crosshair"];
         this.skeletonImage = assetManager.loadedImage["skeleton"];
+        this.sunStrikeImage = assetManager.loadedImage["sunStrike"];
 
         for (let i = 0; i < 10; i++) {
             this.numberImages.push(assetManager.loadedImage["hud"+i]);
@@ -254,18 +257,32 @@ export default class GameScene extends Scene{
                     }
                 }
             }
-
-
         }
 
     }
 
     mouseUp(e: MouseEvent) {
-        this.mouseHold = false;
+        if(e.button == 0) {
+            this.mouseHold = false;
+        }
+        else{
+            this.addGameObject(new SunStrike(<IRectangle>{
+                x: e.x- (GameScene.TILE_SIZE/2),
+                y: e.y- (GameScene.TILE_SIZE/2),
+                width: GameScene.TILE_SIZE,
+                height: GameScene.TILE_SIZE
+            },this.sunStrikeImage));
+            console.log("ss up");
+        }
     }
 
     mouseDown(e: MouseEvent) {
-        this.mouseHold = true;
+        if(e.button == 0){
+            this.mouseHold = true;
+        }else{
+            console.log("ss down");
+        }
+
     }
 
     noticeDelete(gameObject: GameObject) {
@@ -285,7 +302,6 @@ export default class GameScene extends Scene{
     }
 
     keyDown(e: KeyboardEvent) {
-
         switch(e.key.toLowerCase()){
             case 'e':
                 this.player.velX = 0;

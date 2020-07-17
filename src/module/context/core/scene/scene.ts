@@ -25,6 +25,8 @@ export default abstract class Scene{
         });
     }
 
+    mouseContextMenu(e: MouseEvent){}
+
     mouseClick(e: MouseEvent){}
 
     mouseMove(e: MouseEvent){}
