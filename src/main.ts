@@ -4,14 +4,13 @@ import AssetManager from './module/context/generals/asset';
 
 window.onload = () =>{
     	function init() {
-        var canv: HTMLCanvasElement= document.getElementsByTagName("canvas")[0];
+        let canv: HTMLCanvasElement= document.getElementsByTagName("canvas")[0];
             
-        var sceneEngine = SceneEngine.getInstance();
+        let sceneEngine = SceneEngine.getInstance();
         sceneEngine.initCanvas(canv);
         // sceneEngine.makeWindowReactive();
         sceneEngine.hideCursor();
-        
-        
+
         let assetManager: AssetManager = new AssetManager();
         
         assetManager.addPath("path","path.png");
@@ -27,6 +26,7 @@ window.onload = () =>{
         assetManager.addPath("heart","hudHeart_full.png");
         assetManager.addPath("crosshair","crosshair.png");
         assetManager.addPath("skeleton","skeleton.png");
+        assetManager.addPath("sunStrike","sunStrike.png");
 
         for (let i = 0; i < 10; i++) {
                 assetManager.addPath("hud"+i,"hud"+i+".png");

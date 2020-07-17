@@ -285,7 +285,8 @@ export default class GameScene extends Scene{
     }
 
     keyDown(e: KeyboardEvent) {
-        switch(e.key){
+
+        switch(e.key.toLowerCase()){
             case 'e':
                 this.player.velX = 0;
                 this.player.velY = 0;
