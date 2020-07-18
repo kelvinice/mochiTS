@@ -5,6 +5,7 @@ var watchify = require('watchify');
 var tsify = require('tsify');
 var fancy_log = require('fancy-log');
 var buffer = require('vinyl-buffer');
+var uglify = require('gulp-uglify');
 var browserSync = require('browser-sync').create();
 var paths = {
     pages: ['src/*.html','src/*.css']
@@ -28,8 +29,8 @@ function bundle() {
         .bundle()
         .on('error', fancy_log)
         .pipe(source('bundle.js'))
-        // .pipe(buffer())
-        // .pipe(uglify())
+        .pipe(buffer())
+        .pipe(uglify())
         .pipe(gulp.dest('dist'));
 }
 
