@@ -102,8 +102,8 @@ export default class SceneEngine {
 
     start(){
         this.canvasController.setMaximize();
-        setInterval(()=>this.update(), this.frameTime);
-        // this.recurrentUpdate();
+        // setInterval(()=>this.update(), this.frameTime);
+        this.recurrentUpdate();
 
         requestAnimationFrame((time: Number)=>this.render(time));
         // while(true){

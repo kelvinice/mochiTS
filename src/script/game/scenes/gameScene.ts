@@ -265,22 +265,19 @@ export default class GameScene extends Scene{
         if(e.button == 0) {
             this.mouseHold = false;
         }
-        else{
+        else if(e.button == 2){
             this.addGameObject(new SunStrike(<IRectangle>{
                 x: e.x- (GameScene.TILE_SIZE/2),
                 y: e.y- (GameScene.TILE_SIZE/2),
                 width: GameScene.TILE_SIZE,
                 height: GameScene.TILE_SIZE
             },this.sunStrikeImage));
-            console.log("ss up");
         }
     }
 
     mouseDown(e: MouseEvent) {
         if(e.button == 0){
             this.mouseHold = true;
-        }else{
-            console.log("ss down");
         }
 
     }
