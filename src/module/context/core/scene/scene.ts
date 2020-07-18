@@ -3,6 +3,10 @@ import GameObject from '../gameObjects/gameObject';
 export default abstract class Scene{
     private gameObjects : GameObject[] = [];
     private willClearTrash = false;
+    lapseTime = 0;
+    previousTime = -1;
+    fps = 60;
+    frameTime = 1000/this.fps;
 
     abstract onCreated(): void;
 
@@ -20,6 +24,8 @@ export default abstract class Scene{
             return a.zIndex -  b.zIndex;
         });
     }
+
+    mouseContextMenu(e: MouseEvent){}
 
     mouseClick(e: MouseEvent){}
 
@@ -69,4 +75,8 @@ export default abstract class Scene{
 
     noticeDelete(gameObject: GameObject){}
 
+}
+
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

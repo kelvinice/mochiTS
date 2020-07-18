@@ -5,10 +5,10 @@ export default class AnimationController{
     activeAnimation: Animation;
     index: number;
     counter: number;
+
     constructor() {
         this.animations = [];
         this.counter = 0;
-
     }
 
     public addAnimation(name: string, begin: number, end: number, delay: number): void{

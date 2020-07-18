@@ -23,7 +23,7 @@ export default class ProjectileHandler {
         }
     }
 
-    update(value: number){
+    addFireTime(value: number){
         if(this.fireTime < this.fireRate){
             this.fireTime+=value;
         }

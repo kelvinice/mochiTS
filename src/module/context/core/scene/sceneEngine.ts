@@ -39,12 +39,19 @@ export default class SceneEngine {
         this.canvasController.setMaximize();
         Global.getInstance().width = this.canvasController.getWidthCanvas();
         Global.getInstance().height = this.canvasController.getHeightCanvas();
-        canvas.addEventListener("click", (e)=>this.mouseClick(e));
+        // canvas.addEventListener("click", (e)=>this.mouseClick(e));
         canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
         canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
         canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
+        document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
         window.addEventListener("keydown", (e)=>this.keyDown(e), false);
+    }
 
+    mouseContextMenu(e: MouseEvent){
+        e.preventDefault();
+        if(this.currentScene != null){
+            this.currentScene.mouseContextMenu(e);
+        }
     }
 
     keyDown(e: KeyboardEvent){
@@ -95,11 +102,12 @@ export default class SceneEngine {
 
     start(){
         this.canvasController.setMaximize();
-        setInterval(()=>this.update(), this.frameTime);
+        // setInterval(()=>this.update(), this.frameTime);
+        this.recurrentUpdate();
 
         requestAnimationFrame((time: Number)=>this.render(time));
         // while(true){
-        //     this.update();
+        //     this.addFireTime();
         // }
     }
 
@@ -110,6 +118,24 @@ export default class SceneEngine {
         }
 
         requestAnimationFrame((time: Number)=>this.render(time));
+    }
+
+    async recurrentUpdate(){
+        this.previousTime = await new Date().getTime();
+        while(true){
+            await this.update();
+
+            let currentTime = await new Date().getTime();
+            let delta = await (currentTime- this.previousTime);
+
+            let sleepTime = (this.frameTime) - delta;
+            if(sleepTime > 0){
+                await sleep(delta);
+            }
+            this.previousTime = await currentTime;
+
+
+        }
     }
 
     update(){
@@ -151,6 +177,8 @@ export default class SceneEngine {
         this.canvas.style.cursor = "none";
     }
 
+}
 
-
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
