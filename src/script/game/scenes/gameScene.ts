@@ -70,7 +70,6 @@ export default class GameScene extends Scene{
         this.spawners = [];
         this.sunStrikes = [];
 
-
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
         this.brickImage = assetManager.loadedImage["brick"];
@@ -87,8 +86,6 @@ export default class GameScene extends Scene{
         this.sunStrikeImage = assetManager.loadedImage["sunStrike"];
 
         this.hitImage = assetManager.loadedImage["hit"];
-        console.log(this.hitImage)
-
 
         for (let i = 0; i < 10; i++) {
             this.numberImages.push(assetManager.loadedImage["hud"+i]);

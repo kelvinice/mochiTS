@@ -10,11 +10,10 @@ export default class AnimateGameObject extends ImageGameObject{
     constructor(iGameObject: IRectangle, image: ImageBitmap) {
         super(iGameObject, image);
         this.animationController = new AnimationController();
-        this.previousTime = Number(0);
+        this.previousTime = Number(-1);
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
-        // let animation = this.animationController.activeAnimation;
         let rect = this.rectangles[this.animationController.index];
 
         ctx.drawImage(this.image,
@@ -25,7 +24,9 @@ export default class AnimateGameObject extends ImageGameObject{
             this.x-this.leftPadding,this.y-this.topPadding
             ,this.width + this.leftPadding + this.rightPadding,this.height + this.topPadding + this.bottomPadding
         );
-        this.animationController.updateAnimation(time.valueOf() - this.previousTime.valueOf());
+        if(this.previousTime.valueOf() != -1){
+            this.animationController.updateAnimation(time.valueOf() - this.previousTime.valueOf());
+        }
         this.previousTime = Number(time);
     }
 

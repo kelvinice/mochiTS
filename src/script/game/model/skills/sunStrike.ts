@@ -48,7 +48,6 @@ export default class SunStrike extends AnimateGameObject implements FrameListene
 
     onFrameChanged(frameIndex: number): void {
         if(frameIndex == 24){
-            console.log(frameIndex);
             this.willDmg = true;
 
         }else if(frameIndex == 29){

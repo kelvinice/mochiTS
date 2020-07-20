@@ -36,8 +36,8 @@ export default class Arrow extends Projectile{
     onHit(enemy: Enemy) {
         super.onHit(enemy);
         let hitEffect: HitEffect = new HitEffect(<IRectangle>{
-            x: this.x,
-            y: this.y,
+            x: this.x - (GameScene.TILE_SIZE/2),
+            y: this.y - (GameScene.TILE_SIZE/2),
             width: GameScene.TILE_SIZE,
             height: GameScene.TILE_SIZE
         }, this.hitImage);
