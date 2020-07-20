@@ -133,8 +133,6 @@ export default class SceneEngine {
                 await sleep(delta);
             }
             this.previousTime = await currentTime;
-
-
         }
     }
 

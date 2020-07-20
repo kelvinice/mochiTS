@@ -21,6 +21,7 @@ export default class SpawnHandler {
         this.currentValue+=value;
         if(this.currentValue >= this.valueToSpawn){
             this.currentValue%=this.valueToSpawn;
+            // this.currentValue=0;
             return this.spawn();
         }
 

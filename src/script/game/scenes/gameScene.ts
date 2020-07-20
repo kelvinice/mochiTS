@@ -49,6 +49,7 @@ export default class GameScene extends Scene{
     gameMenu: GameMenu;
     obstacles: Tile[];
     spawners: Spawner[];
+    sunStrikes: SunStrike[];
 
     spawnHandler: SpawnHandler;
     projectileHandler: ProjectileHandler;
@@ -66,6 +67,7 @@ export default class GameScene extends Scene{
         this.numberImages = [];
         this.obstacles = [];
         this.spawners = [];
+        this.sunStrikes = [];
 
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
@@ -217,6 +219,16 @@ export default class GameScene extends Scene{
             }
         }
 
+        for (const sunStrike of this.sunStrikes) {
+            if(!sunStrike.willDmg)continue;
+            for (const enemy of this.enemies) {
+                if(sunStrike.isCollide(enemy)){
+                    sunStrike.onHit(enemy);
+
+                }
+            }
+        }
+
         for (const enemy of this.enemies) {
             if(this.player.isCollide(enemy)){
                 this.gameMenu.reduceHeart();
@@ -266,12 +278,15 @@ export default class GameScene extends Scene{
             this.mouseHold = false;
         }
         else if(e.button == 2){
-            this.addGameObject(new SunStrike(<IRectangle>{
+            let ss = new SunStrike(<IRectangle>{
                 x: e.x- (GameScene.TILE_SIZE/2),
                 y: e.y- (GameScene.TILE_SIZE/2),
                 width: GameScene.TILE_SIZE,
                 height: GameScene.TILE_SIZE
-            },this.sunStrikeImage));
+            },this.sunStrikeImage);
+
+            this.sunStrikes.push(ss);
+            this.addGameObject(ss);
         }
     }
 
@@ -279,7 +294,6 @@ export default class GameScene extends Scene{
         if(e.button == 0){
             this.mouseHold = true;
         }
-
     }
 
     noticeDelete(gameObject: GameObject) {
@@ -289,8 +303,9 @@ export default class GameScene extends Scene{
             this.gameMenu.setScore(this.gameMenu.score+1);
         }else if(gameObject instanceof Projectile){
             this.projectiles.splice(this.projectiles.indexOf(gameObject) , 1);
+        }else if(gameObject instanceof SunStrike){
+            this.sunStrikes.splice(this.sunStrikes.indexOf(gameObject) , 1);
         }
-
     }
 
     mouseMove(e: MouseEvent) {

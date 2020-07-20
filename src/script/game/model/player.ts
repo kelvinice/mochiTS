@@ -31,7 +31,6 @@ export default class Player extends ImageGameObject{
         }
         super.draw(ctx, time);
 
-
         let p: Point = new Point(this.x, this.y);
 
         let vel = Calculator.calculateVelocity(p, this.mousePoint);

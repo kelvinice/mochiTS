@@ -10,7 +10,8 @@ export default class Arrow extends Projectile{
         super(iGameObject, velocity);
         this.image = image;
         this.rotation= 180+(Math.atan2(velocity.x,velocity.y) / (2* Math.PI) * 360 *-1);
-
+        let sound = new Audio('assets/sounds/arrow.mp3');
+        sound.play();
     }
 
     draw(ctx: CanvasRenderingContext2D) {

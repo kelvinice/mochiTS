@@ -5,10 +5,12 @@ export default class AnimationController{
     activeAnimation: Animation;
     index: number;
     counter: number;
+    frameListener: FrameListener;
 
     constructor() {
         this.animations = [];
         this.counter = 0;
+        this.frameListener = null;
     }
 
     public addAnimation(name: string, begin: number, end: number, delay: number): void{
@@ -36,6 +38,9 @@ export default class AnimationController{
 
         if(this.counter >= this.activeAnimation.delay){
             this.counter%=this.activeAnimation.delay;
+            if(this.frameListener != null){
+                this.frameListener.onFrameChanged(this.index);
+            }
             // this.counter=0;
         }else{
             return;
@@ -54,4 +59,12 @@ export default class AnimationController{
         }
     }
 
+    addFrameListener(frameListener: FrameListener){
+        this.frameListener = frameListener;
+    }
+
+}
+
+export interface FrameListener {
+    onFrameChanged(frameIndex: number): void;
 }

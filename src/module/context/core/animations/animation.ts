@@ -1,5 +1,3 @@
-import {IRectangle} from "../gameObjects/gameObject";
-
 export default class Animation{
     private _name: string;
     private _begin: number;
@@ -46,3 +44,4 @@ export default class Animation{
     }
 
 }
+
