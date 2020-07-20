@@ -6,11 +6,13 @@ import SceneEngine from "../../module/context/core/scene/sceneEngine";
 
 export default class ProjectileHandler {
     projectileImage: ImageBitmap;
+    hitImage: ImageBitmap;
     fireTime: number;
     fireRate: number;
 
-    constructor(projectileImage: ImageBitmap) {
+    constructor(projectileImage: ImageBitmap, hitImage: ImageBitmap) {
         this.projectileImage = projectileImage;
+        this.hitImage = hitImage;
         this.fireTime = 0;
         this.fireRate = 0.5;
     }
@@ -37,7 +39,7 @@ export default class ProjectileHandler {
             y: y,
             width: projectileSize,
             height: projectileSize
-        }, new Point(xVel, yVel), this.projectileImage);
+        }, new Point(xVel, yVel), this.projectileImage, this.hitImage);
         projectile.setSpeed(5);
         projectile.setZIndex(20);
 

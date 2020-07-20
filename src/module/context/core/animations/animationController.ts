@@ -23,6 +23,7 @@ export default class AnimationController{
             if(animation.name === name){
                 this.activeAnimation = animation;
                 this.index = animation.begin;
+                this.counter = 0;
                 return;
             }
         }

@@ -27,12 +27,15 @@ window.onload = () =>{
         assetManager.addPath("crosshair","crosshair.png");
         assetManager.addPath("skeleton","skeleton.png");
         assetManager.addPath("sunStrike","sunStrike.png");
+        assetManager.addPath("hit","hit.png");
+
 
         for (let i = 0; i < 10; i++) {
                 assetManager.addPath("hud"+i,"hud"+i+".png");
         }
 
         assetManager.addAssetDoneListener(()=>{
+
                 sceneEngine.updateScene(new GameScene(assetManager));
                 sceneEngine.start();
         });

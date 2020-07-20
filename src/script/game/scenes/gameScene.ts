@@ -19,7 +19,7 @@ import SpawnHandler from "../../handlers/spawnHandler";
 import ProjectileHandler from "../../handlers/projectileHandler";
 import TrueRandom from "../../handlers/trueRandom";
 import SkeletonSpawner from "../model/enemies/skeletonSpawner";
-import SunStrike from "../model/skills/SunStrike";
+import SunStrike from "../model/skills/sunStrike";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -36,6 +36,7 @@ export default class GameScene extends Scene{
     heartImage: ImageBitmap;
     crosshairImage: ImageBitmap;
     sunStrikeImage: ImageBitmap;
+    hitImage: ImageBitmap;
     numberImages: ImageBitmap[];
 
     public static TILE_SIZE: number = 50;
@@ -69,6 +70,7 @@ export default class GameScene extends Scene{
         this.spawners = [];
         this.sunStrikes = [];
 
+
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
         this.brickImage = assetManager.loadedImage["brick"];
@@ -84,12 +86,16 @@ export default class GameScene extends Scene{
         this.skeletonImage = assetManager.loadedImage["skeleton"];
         this.sunStrikeImage = assetManager.loadedImage["sunStrike"];
 
+        this.hitImage = assetManager.loadedImage["hit"];
+        console.log(this.hitImage)
+
+
         for (let i = 0; i < 10; i++) {
             this.numberImages.push(assetManager.loadedImage["hud"+i]);
         }
 
         this.spawnHandler = new SpawnHandler(this.spawners);
-        this.projectileHandler = new ProjectileHandler(this.arrowImage);
+        this.projectileHandler = new ProjectileHandler(this.arrowImage, this.hitImage);
         this.trueRandom = new TrueRandom();
 
     }
@@ -230,7 +236,6 @@ export default class GameScene extends Scene{
             for (const enemy of this.enemies) {
                 if(sunStrike.isCollide(enemy)){
                     sunStrike.onHit(enemy);
-
                 }
             }
         }
