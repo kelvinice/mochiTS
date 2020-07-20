@@ -179,6 +179,7 @@ export default class GameScene extends Scene{
     }
 
     onUpdate(): void {
+        //create projectile
         if(this.mouseHold){
             let p: Point = this.player.getMiddlePoint();
             let vel = Calculator.calculateVelocity(p, this.player.mousePoint);
@@ -190,16 +191,19 @@ export default class GameScene extends Scene{
             this.projectileHandler.addFireTime(SceneEngine.getInstance().deltaTime());
         }
 
+        //Enemy spawn
         let enemy = this.spawnHandler.update(SceneEngine.getInstance().deltaTime());
         if(enemy){
             this.enemies.push(enemy);
             this.addGameObject(enemy);
         }
 
+        //Enemy pathfinding
         for (let enemy of this.enemies) {
             enemy.pathFind(this.maps, Math.round(this.player.x/GameScene.TILE_SIZE),Math.round(this.player.y/GameScene.TILE_SIZE));
         }
 
+        //Check if player prepared next move is available to move
         if((this.nextVelX != 0 || this.nextVelY != 0) && this.isCanWalk(
             new RectangleGameObject(<IRectangle>{
                 x:this.player.x+this.nextVelX, y:this.player.y+this.nextVelY, width:this.player.width, height:this.player.height
@@ -211,6 +215,7 @@ export default class GameScene extends Scene{
             this.nextVelY = 0;
         }
 
+        //Check collision pojectile - enemy
         for (const projectile of this.projectiles) {
             for (const enemy of this.enemies) {
                 if(projectile.isCollide(enemy)){
@@ -219,6 +224,7 @@ export default class GameScene extends Scene{
             }
         }
 
+        //Check collision sunstrike - enemy
         for (const sunStrike of this.sunStrikes) {
             if(!sunStrike.willDmg)continue;
             for (const enemy of this.enemies) {
@@ -229,6 +235,7 @@ export default class GameScene extends Scene{
             }
         }
 
+        //Check collision enemy - player
         for (const enemy of this.enemies) {
             if(this.player.isCollide(enemy)){
                 this.gameMenu.reduceHeart();
@@ -236,6 +243,7 @@ export default class GameScene extends Scene{
             }
         }
 
+        //Check collision wall - player
         for (const wall of this.obstacles) {
             let obs = new RectangleGameObject(<IRectangle>{
                 x: wall.x * GameScene.TILE_SIZE,

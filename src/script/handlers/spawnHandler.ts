@@ -8,11 +8,10 @@ export default class SpawnHandler {
     valueToSpawn: number;
     trueRandom: TrueRandom;
 
-
     constructor(spawners: Spawner[]) {
         this.spawners = spawners;
         this.currentValue = 0;
-        this.valueToSpawn = 2;
+        this.valueToSpawn = 2; //in seconds
         this.trueRandom = new TrueRandom();
         this.trueRandom.randSeed();
     }
