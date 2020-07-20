@@ -5,10 +5,10 @@ import global from "./module/context/generals/global";
 
 window.onload = () =>{
     	function init() {
-        let canv: HTMLCanvasElement= document.getElementsByTagName("canvas")[0];
+        let canvas: HTMLCanvasElement= document.getElementsByTagName("canvas")[0];
             
         let sceneEngine = SceneEngine.getInstance();
-        sceneEngine.initCanvas(canv);
+        sceneEngine.initCanvas(canvas);
         // sceneEngine.makeWindowReactive();
         sceneEngine.hideCursor();
 
