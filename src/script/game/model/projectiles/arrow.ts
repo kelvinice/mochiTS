@@ -15,8 +15,8 @@ export default class Arrow extends Projectile{
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        var cx     = this.x + 0.5 * this.width;   // x of shape center
-        var cy     = this.y + 0.5 * this.height;  // y of shape center
+        let cx     = this.x + 0.5 * this.width;   // x of shape center
+        let cy     = this.y + 0.5 * this.height;  // y of shape center
 
         super.draw(ctx);
         ctx.save();
