@@ -1,6 +1,7 @@
 import SceneEngine from "./module/context/core/scene/sceneEngine";
 import GameScene from './script/game/scenes/gameScene';
 import AssetManager from './module/context/generals/asset';
+import global from "./module/context/generals/global";
 
 window.onload = () =>{
     	function init() {
@@ -19,7 +20,7 @@ window.onload = () =>{
         assetManager.addPath("switchBlue","switchBlue.png");
         assetManager.addPath("switchRed","switchRed.png");
         assetManager.addPath("switchGreen","switchGreen.png");
-        assetManager.addPath("player","player_green.png");
+        assetManager.addPath("player","player.png");
         assetManager.addPath("slime","slime.png");
         assetManager.addPath("arrow","arrow.png");
         assetManager.addPath("bow","bow.png");
@@ -44,4 +45,9 @@ window.onload = () =>{
 
         }
         init();
+
 }
+window.debug = () => {
+        global.getInstance().debug = !global.getInstance().debug;
+}
+
