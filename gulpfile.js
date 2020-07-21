@@ -41,7 +41,7 @@ gulp.task('browser-sync', function() {
             baseDir: "./dist/"
         }
     });
-    gulp.watch("dist/*.js", function() {
+    gulp.watch("dist/*.js", function(done) {
         browserSync.reload();
         done();
     });

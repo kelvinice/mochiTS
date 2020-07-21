@@ -8,7 +8,7 @@ export default class Global{
     private constructor(){
         this.width = 0;
         this.height = 0;
-        this.debug = true;
+        this.debug = false;
     }
 
     public static getInstance(): Global{

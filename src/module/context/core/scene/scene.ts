@@ -56,8 +56,6 @@ export default abstract class Scene{
         this.deleteTrash();
     }
 
-
-
     deleteTrash(): void{
         let destroyeds = this.gameObjects.filter(value => {
             return value.isDestroyed;
@@ -70,11 +68,9 @@ export default abstract class Scene{
         this.gameObjects = this.gameObjects.filter(value => {
             return !value.isDestroyed;
         });
-
     }
 
     noticeDelete(gameObject: GameObject){}
-
 }
 
 function sleep(ms: number) {

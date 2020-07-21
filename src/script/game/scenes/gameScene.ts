@@ -19,7 +19,7 @@ import SpawnHandler from "../../handlers/spawnHandler";
 import ProjectileHandler from "../../handlers/projectileHandler";
 import TrueRandom from "../../handlers/trueRandom";
 import SkeletonSpawner from "../model/enemies/skeletonSpawner";
-import SunStrike from "../model/skills/SunStrike";
+import SunStrike from "../model/skills/sunStrike";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -36,6 +36,7 @@ export default class GameScene extends Scene{
     heartImage: ImageBitmap;
     crosshairImage: ImageBitmap;
     sunStrikeImage: ImageBitmap;
+    hitImage: ImageBitmap;
     numberImages: ImageBitmap[];
 
     public static TILE_SIZE: number = 50;
@@ -49,6 +50,7 @@ export default class GameScene extends Scene{
     gameMenu: GameMenu;
     obstacles: Tile[];
     spawners: Spawner[];
+    sunStrikes: SunStrike[];
 
     spawnHandler: SpawnHandler;
     projectileHandler: ProjectileHandler;
@@ -66,6 +68,7 @@ export default class GameScene extends Scene{
         this.numberImages = [];
         this.obstacles = [];
         this.spawners = [];
+        this.sunStrikes = [];
 
         this.pathImage = assetManager.loadedImage["path"];
         this.stoneImage = assetManager.loadedImage["stone"];
@@ -82,12 +85,14 @@ export default class GameScene extends Scene{
         this.skeletonImage = assetManager.loadedImage["skeleton"];
         this.sunStrikeImage = assetManager.loadedImage["sunStrike"];
 
+        this.hitImage = assetManager.loadedImage["hit"];
+
         for (let i = 0; i < 10; i++) {
             this.numberImages.push(assetManager.loadedImage["hud"+i]);
         }
 
         this.spawnHandler = new SpawnHandler(this.spawners);
-        this.projectileHandler = new ProjectileHandler(this.arrowImage);
+        this.projectileHandler = new ProjectileHandler(this.arrowImage, this.hitImage);
         this.trueRandom = new TrueRandom();
 
     }
@@ -177,6 +182,7 @@ export default class GameScene extends Scene{
     }
 
     onUpdate(): void {
+        //create projectile
         if(this.mouseHold){
             let p: Point = this.player.getMiddlePoint();
             let vel = Calculator.calculateVelocity(p, this.player.mousePoint);
@@ -188,16 +194,19 @@ export default class GameScene extends Scene{
             this.projectileHandler.addFireTime(SceneEngine.getInstance().deltaTime());
         }
 
+        //Enemy spawn
         let enemy = this.spawnHandler.update(SceneEngine.getInstance().deltaTime());
         if(enemy){
             this.enemies.push(enemy);
             this.addGameObject(enemy);
         }
 
+        //Enemy pathfinding
         for (let enemy of this.enemies) {
             enemy.pathFind(this.maps, Math.round(this.player.x/GameScene.TILE_SIZE),Math.round(this.player.y/GameScene.TILE_SIZE));
         }
 
+        //Check if player prepared next move is available to move
         if((this.nextVelX != 0 || this.nextVelY != 0) && this.isCanWalk(
             new RectangleGameObject(<IRectangle>{
                 x:this.player.x+this.nextVelX, y:this.player.y+this.nextVelY, width:this.player.width, height:this.player.height
@@ -209,6 +218,7 @@ export default class GameScene extends Scene{
             this.nextVelY = 0;
         }
 
+        //Check collision pojectile - enemy
         for (const projectile of this.projectiles) {
             for (const enemy of this.enemies) {
                 if(projectile.isCollide(enemy)){
@@ -217,6 +227,17 @@ export default class GameScene extends Scene{
             }
         }
 
+        //Check collision sunstrike - enemy
+        for (const sunStrike of this.sunStrikes) {
+            if(!sunStrike.willDmg)continue;
+            for (const enemy of this.enemies) {
+                if(sunStrike.isCollide(enemy)){
+                    sunStrike.onHit(enemy);
+                }
+            }
+        }
+
+        //Check collision enemy - player
         for (const enemy of this.enemies) {
             if(this.player.isCollide(enemy)){
                 this.gameMenu.reduceHeart();
@@ -224,6 +245,7 @@ export default class GameScene extends Scene{
             }
         }
 
+        //Check collision wall - player
         for (const wall of this.obstacles) {
             let obs = new RectangleGameObject(<IRectangle>{
                 x: wall.x * GameScene.TILE_SIZE,
@@ -266,12 +288,15 @@ export default class GameScene extends Scene{
             this.mouseHold = false;
         }
         else if(e.button == 2){
-            this.addGameObject(new SunStrike(<IRectangle>{
+            let ss = new SunStrike(<IRectangle>{
                 x: e.x- (GameScene.TILE_SIZE/2),
                 y: e.y- (GameScene.TILE_SIZE/2),
                 width: GameScene.TILE_SIZE,
                 height: GameScene.TILE_SIZE
-            },this.sunStrikeImage));
+            },this.sunStrikeImage);
+
+            this.sunStrikes.push(ss);
+            this.addGameObject(ss);
         }
     }
 
@@ -279,7 +304,6 @@ export default class GameScene extends Scene{
         if(e.button == 0){
             this.mouseHold = true;
         }
-
     }
 
     noticeDelete(gameObject: GameObject) {
@@ -289,8 +313,9 @@ export default class GameScene extends Scene{
             this.gameMenu.setScore(this.gameMenu.score+1);
         }else if(gameObject instanceof Projectile){
             this.projectiles.splice(this.projectiles.indexOf(gameObject) , 1);
+        }else if(gameObject instanceof SunStrike){
+            this.sunStrikes.splice(this.sunStrikes.indexOf(gameObject) , 1);
         }
-
     }
 
     mouseMove(e: MouseEvent) {

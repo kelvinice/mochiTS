@@ -1,10 +1,11 @@
 import {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
-import ImageGameObject from "../../../module/context/core/gameObjects/imageGameObject";
 import Point from "./point";
 import Calculator from "../../handlers/calculator";
 import global from "../../../module/context/generals/global";
+import AnimateGameObject from "../../../module/context/core/gameObjects/animateGameObject";
+import {splitSprite} from "../../handlers/imageHandler";
 
-export default class Player extends ImageGameObject{
+export default class Player extends AnimateGameObject{
     tileX: number;
     tileY: number;
     bowImage: ImageBitmap;
@@ -23,6 +24,14 @@ export default class Player extends ImageGameObject{
         this._mousePoint = new Point();
         this.movementSpeed = 1;
         this.setZIndex(20);
+
+        this.rectangles = splitSprite(image, 4, 4);
+        this.animationController.addAnimation("down", 0, 3, 200);
+        this.animationController.addAnimation("left", 4, 7, 200);
+        this.animationController.addAnimation("right", 8, 11, 200);
+        this.animationController.addAnimation("up", 12, 15, 200);
+        this.animationController.addAnimation("idle", 0, 0, 100);
+        this.animationController.setAnim("idle");
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
@@ -30,7 +39,6 @@ export default class Player extends ImageGameObject{
             this.fillHitBox(ctx, "purple");
         }
         super.draw(ctx, time);
-
 
         let p: Point = new Point(this.x, this.y);
 
@@ -57,6 +65,18 @@ export default class Player extends ImageGameObject{
         super.update();
         this.x+=this.velX * this.movementSpeed;
         this.y+=this.velY * this.movementSpeed;
+
+        if(this.velX == 0 && this.velY == 0){
+            this.animationController.setAnim("idle");
+        }else if(this.velX > 0){
+            this.animationController.setAnim("right");
+        }else if(this.velX < 0){
+            this.animationController.setAnim("left");
+        }else if(this.velY < 0){
+            this.animationController.setAnim("up");
+        }else if(this.velY > 0){
+            this.animationController.setAnim("down");
+        }
     }
 
     setTile(tileX: number, tileY: number){
