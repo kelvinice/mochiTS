@@ -2,7 +2,6 @@ import Global from '../../generals/global';
 import Scene from './scene';
 import CanvasController from '../../../canvasController';
 import GameObject from '../gameObjects/gameObject';
-import scene from "./scene";
 
 export default class SceneEngine {
     canvas: HTMLCanvasElement;
@@ -12,7 +11,6 @@ export default class SceneEngine {
     readyStatus: boolean;
     private static instance: SceneEngine = null;
 
-    private lapseTime = 0;
     private previousTime = -1;
     private fps = 60;
     private frameTime = 1000/this.fps;
@@ -133,8 +131,6 @@ export default class SceneEngine {
                 await sleep(delta);
             }
             this.previousTime = await currentTime;
-
-
         }
     }
 
@@ -175,6 +171,10 @@ export default class SceneEngine {
 
     hideCursor(){
         this.canvas.style.cursor = "none";
+    }
+
+    showCursor(){
+        this.canvas.style.cursor = "unset";
     }
 
 }
