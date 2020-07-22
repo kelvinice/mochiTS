@@ -18,7 +18,10 @@ export default class HitEffect extends AnimateGameObject implements FrameListene
         this.animationController.addFrameListener(this);
 
         let sound = new Audio('assets/sounds/hit.mp3');
-        sound.play();
+        sound.addEventListener("canplaythrough", ()=>{
+            sound.play();
+        })
+
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number) {

@@ -174,7 +174,7 @@ export default class SceneEngine {
     }
 
     showCursor(){
-        this.canvas.style.cursor = "unset";
+        this.canvas.style.cursor = "default";
     }
 
 }

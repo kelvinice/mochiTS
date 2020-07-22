@@ -20,6 +20,7 @@ import ProjectileHandler from "../../handlers/projectileHandler";
 import TrueRandom from "../../handlers/trueRandom";
 import SkeletonSpawner from "../model/enemies/skeletonSpawner";
 import SunStrike from "../model/skills/sunStrike";
+import sceneEngine from "../../../module/context/core/scene/sceneEngine";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -94,7 +95,6 @@ export default class GameScene extends Scene{
         this.spawnHandler = new SpawnHandler(this.spawners);
         this.projectileHandler = new ProjectileHandler(this.arrowImage, this.hitImage);
         this.trueRandom = new TrueRandom();
-
     }
 
     onCreated(): void {
@@ -310,7 +310,9 @@ export default class GameScene extends Scene{
         super.noticeDelete(gameObject);
         if(gameObject instanceof Enemy){
             this.enemies.splice(this.enemies.indexOf(gameObject) , 1);
-            this.gameMenu.setScore(this.gameMenu.score+1);
+            if(gameObject.hp <= 0){
+                this.gameMenu.setScore(this.gameMenu.score+1);
+            }
         }else if(gameObject instanceof Projectile){
             this.projectiles.splice(this.projectiles.indexOf(gameObject) , 1);
         }else if(gameObject instanceof SunStrike){

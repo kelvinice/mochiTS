@@ -47,7 +47,3 @@ window.onload = () =>{
         init();
 
 }
-window.debug = () => {
-        global.getInstance().debug = !global.getInstance().debug;
-}
-
