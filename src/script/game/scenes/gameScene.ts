@@ -20,7 +20,6 @@ import ProjectileHandler from "../../handlers/projectileHandler";
 import TrueRandom from "../../handlers/trueRandom";
 import SkeletonSpawner from "../model/enemies/skeletonSpawner";
 import SunStrike from "../model/skills/sunStrike";
-import sceneEngine from "../../../module/context/core/scene/sceneEngine";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;

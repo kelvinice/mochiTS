@@ -1,17 +1,24 @@
-import SceneEngine from './sceneEngine';
 import GameObject from '../gameObjects/gameObject';
 export default abstract class Scene{
     private gameObjects : GameObject[] = [];
-    private willClearTrash = false;
     lapseTime = 0;
     previousTime = -1;
     fps = 60;
     frameTime = 1000/this.fps;
 
+    /**
+     * Called before render and update start
+     */
     abstract onCreated(): void;
 
+    /**
+     * Drawing logic
+     */
     abstract onRender(ctx: CanvasRenderingContext2D): void;
 
+    /**
+     * Calculation and data change logic
+     */
     abstract onUpdate(): void;
 
     addGameObject(gameObject: GameObject){
@@ -71,8 +78,4 @@ export default abstract class Scene{
     }
 
     noticeDelete(gameObject: GameObject){}
-}
-
-function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
