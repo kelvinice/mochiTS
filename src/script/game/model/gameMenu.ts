@@ -57,9 +57,6 @@ export default class GameMenu extends GameObject{
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
-        // ctx.fillStyle = "blue"
-        // ctx.fillRect(this.x, this.y, this.width, this.height);
-
     }
 
     update(): void {
@@ -69,6 +66,7 @@ export default class GameMenu extends GameObject{
         this.hp--;
         this.hearts[this.hp].destroy();
         if(this.hp<=0){
+            SceneEngine.getInstance().showCursor();
             alert("You lose!");
             window.location.reload();
             return;
