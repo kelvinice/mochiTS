@@ -12,7 +12,7 @@ export default class HitEffect extends AnimateGameObject implements FrameListene
         this.setZIndex(40);
 
         this.rectangles = splitSprite(image, 4, 1);
-        this.animationController.addAnimation("hit", 0, 3, 150);
+        this.animationController.addAnimation("hit", 0, 3, 100);
 
         this.animationController.setAnim("hit");
         this.animationController.addFrameListener(this);

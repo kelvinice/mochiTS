@@ -5,6 +5,8 @@ import GameScene from "../../scenes/gameScene";
 import global from "../../../../module/context/generals/global";
 import {FrameListener} from "../../../../module/context/core/animations/animationController";
 import Enemy from "../enemies/enemy";
+import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
+import TextEffect from "../textEffect";
 
 export default class SunStrike extends AnimateGameObject implements FrameListener{
     public willDmg: boolean;
@@ -59,6 +61,16 @@ export default class SunStrike extends AnimateGameObject implements FrameListene
     onHit(enemy: Enemy){
         if(this.isDestroyed)return;
         enemy.reduceHP(this.damage);
+
+        SceneEngine.getInstance().injectGameObject(new TextEffect(
+            {
+                x: this.x,
+                y: this.y,
+                width: this.width,
+                height: this.height
+            },this.damage+""
+        ).setColor("yellow"));
+
         this.willDmg = false;
     }
 

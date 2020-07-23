@@ -243,12 +243,14 @@ export default class GameScene extends Scene{
         for (const enemy of this.enemies) {
             if(this.player.isCollide(enemy)){
                 this.gameMenu.reduceHeart();
+                let txt: string = "Ouch..";
                 this.addGameObject(new TextEffect({
                     x: this.player.x,
                     y: this.player.y,
                     width: GameScene.TILE_SIZE,
                     height: GameScene.TILE_SIZE
-                }));
+                }, txt));
+
                 enemy.destroy();
             }
         }
