@@ -24,6 +24,11 @@ export default class SceneEngine {
         return ((time - this.last_time) / 1000);
     }
 
+    public deltaTimeMili(): number{
+        let time = this.getTime();
+        return ((time - this.last_time));
+    }
+
     getTime(): number{
         return new Date().getTime();
     }
@@ -92,7 +97,7 @@ export default class SceneEngine {
     }
 
     public static getInstance(){
-        if(this.instance === null){
+        if(this.instance == null){
             this.instance = new SceneEngine();
         }
         return this.instance;

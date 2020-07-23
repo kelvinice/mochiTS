@@ -20,6 +20,7 @@ import ProjectileHandler from "../../handlers/projectileHandler";
 import TrueRandom from "../../handlers/trueRandom";
 import SkeletonSpawner from "../model/enemies/skeletonSpawner";
 import SunStrike from "../model/skills/sunStrike";
+import TextEffect from "../model/textEffect";
 
 export default class GameScene extends Scene{
     pathImage: ImageBitmap;
@@ -242,6 +243,12 @@ export default class GameScene extends Scene{
         for (const enemy of this.enemies) {
             if(this.player.isCollide(enemy)){
                 this.gameMenu.reduceHeart();
+                this.addGameObject(new TextEffect({
+                    x: this.player.x,
+                    y: this.player.y,
+                    width: GameScene.TILE_SIZE,
+                    height: GameScene.TILE_SIZE
+                }));
                 enemy.destroy();
             }
         }
