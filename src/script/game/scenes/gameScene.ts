@@ -37,6 +37,7 @@ export default class GameScene extends Scene{
     crosshairImage: ImageBitmap;
     sunStrikeImage: ImageBitmap;
     hitImage: ImageBitmap;
+    fireBallImage: ImageBitmap;
     numberImages: ImageBitmap[];
 
     public static TILE_SIZE: number = 50;
@@ -84,6 +85,7 @@ export default class GameScene extends Scene{
         this.crosshairImage = assetManager.loadedImage["crosshair"];
         this.skeletonImage = assetManager.loadedImage["skeleton"];
         this.sunStrikeImage = assetManager.loadedImage["sunStrike"];
+        this.fireBallImage = assetManager.loadedImage["fireball"];
 
         this.hitImage = assetManager.loadedImage["hit"];
 
@@ -147,7 +149,7 @@ export default class GameScene extends Scene{
                         y: j*GameScene.TILE_SIZE,
                         width: GameScene.TILE_SIZE,
                         height: GameScene.TILE_SIZE
-                    }, this.playerImage, this.bowImage);
+                    }, this.playerImage, this.bowImage, this.fireBallImage);
                     this.player.setTile(j, i);
                     this.addGameObject(this.player);
                 }else{
@@ -287,15 +289,17 @@ export default class GameScene extends Scene{
             this.mouseHold = false;
         }
         else if(e.button == 2){
-            let ss = new SunStrike(<IRectangle>{
-                x: e.x- (GameScene.TILE_SIZE/2),
-                y: e.y- (GameScene.TILE_SIZE/2),
-                width: GameScene.TILE_SIZE,
-                height: GameScene.TILE_SIZE
-            },this.sunStrikeImage);
+            if(this.player.useSkill()){
+                let ss = new SunStrike(<IRectangle>{
+                    x: e.x- (GameScene.TILE_SIZE/2),
+                    y: e.y- (GameScene.TILE_SIZE/2),
+                    width: GameScene.TILE_SIZE,
+                    height: GameScene.TILE_SIZE
+                },this.sunStrikeImage);
 
-            this.sunStrikes.push(ss);
-            this.addGameObject(ss);
+                this.sunStrikes.push(ss);
+                this.addGameObject(ss);
+            }
         }
     }
 
@@ -311,6 +315,7 @@ export default class GameScene extends Scene{
             this.enemies.splice(this.enemies.indexOf(gameObject) , 1);
             if(gameObject.hp <= 0){
                 this.gameMenu.setScore(this.gameMenu.score+1);
+                this.player.addExort();
             }
         }else if(gameObject instanceof Projectile){
             this.projectiles.splice(this.projectiles.indexOf(gameObject) , 1);

@@ -29,6 +29,7 @@ window.onload = () =>{
         assetManager.addPath("skeleton","skeleton.png");
         assetManager.addPath("sunStrike","sunStrike.png");
         assetManager.addPath("hit","hit.png");
+        assetManager.addPath("fireball","fireball.png");
 
 
         for (let i = 0; i < 10; i++) {

@@ -9,18 +9,22 @@ export default class Player extends AnimateGameObject{
     tileX: number;
     tileY: number;
     bowImage: ImageBitmap;
+    fireBallImage: ImageBitmap;
     private _mousePoint: Point;
     velX: number = 0;
     velY: number = 0;
     movementSpeed: number;
+    fireRotation: number;
+    exort: number;
 
     get mousePoint(): Point {
         return this._mousePoint;
     }
 
-    constructor(iGameObject: IRectangle, image: ImageBitmap, bowImage: ImageBitmap) {
+    constructor(iGameObject: IRectangle, image: ImageBitmap, bowImage: ImageBitmap, fireBallImage: ImageBitmap) {
         super(iGameObject, image);
         this.bowImage = bowImage;
+        this.fireBallImage = fireBallImage;
         this._mousePoint = new Point();
         this.movementSpeed = 1;
         this.setZIndex(20);
@@ -32,6 +36,9 @@ export default class Player extends AnimateGameObject{
         this.animationController.addAnimation("up", 12, 15, 200);
         this.animationController.addAnimation("idle", 0, 0, 100);
         this.animationController.setAnim("idle");
+
+        this.fireRotation = 0;
+        this.exort = 0;
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
@@ -40,11 +47,23 @@ export default class Player extends AnimateGameObject{
         }
         super.draw(ctx, time);
 
+        this.fireRotation = this.fireRotation +1 %360;
+
+        //Draw Fire Start
+        let fireSize  =this.width/3;
+
+        for (let i = 0; i < this.exort; i++) {
+            this.drawFire(ctx, new Point(this.x + this.width/2 - (fireSize/2), this.y - (this.width/2)), fireSize, 360/this.exort * i);
+        }
+
+        //Draw Fire End
+
+
+        //Draw Bow Start
         let p: Point = new Point(this.x, this.y);
-
         let vel = Calculator.calculateVelocity(p, this.mousePoint);
-
         let rotation= 180+(Math.atan2(vel.x,vel.y) / (2* Math.PI) * 360 *-1);
+
 
         p.x += vel.x * 20;
         p.y += vel.y * 20;
@@ -58,6 +77,22 @@ export default class Player extends AnimateGameObject{
         ctx.translate( -cx, -cy );
 
         ctx.drawImage(this.bowImage,p.x,p.y,this.width,this.height);
+        ctx.restore();
+
+        //Draw Bow End
+    }
+
+    drawFire(ctx: CanvasRenderingContext2D, firePoint: Point, fireSize: number, fireRad: number){
+        let cx1     = this.getMiddlePoint().x ;   // x of shape center
+        let cy1     = this.getMiddlePoint().y;  // y of shape center
+
+        ctx.save();
+        ctx.translate( cx1, cy1 );
+        ctx.rotate( (Math.PI / 180) * (this.fireRotation + fireRad));
+        ctx.translate( -cx1, -cy1 );
+
+
+        ctx.drawImage(this.fireBallImage, firePoint.x, firePoint.y, fireSize, fireSize);
         ctx.restore();
     }
 
@@ -95,6 +130,19 @@ export default class Player extends AnimateGameObject{
             width: this.width/4*3,
             height: this.height/4*3
         }
+    }
+
+    addExort(){
+        this.exort += 1;
+        if(this.exort > 9) this.exort = 9;
+    }
+
+    useSkill(): boolean{
+        if(this.exort>= 3){
+            this.exort-=3;
+            return true;
+        }
+        return false;
     }
 
 }
