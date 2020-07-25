@@ -1,5 +1,4 @@
 import Scene from '../../../module/context/core/scene/scene';
-import AssetManager from '../../../module/context/generals/asset';
 import MapCreator from '../../handlers/mapCreator';
 import GameObject, { IRectangle } from '../../../module/context/core/gameObjects/gameObject';
 import Tile from '../model/tiles/tile';
@@ -24,24 +23,6 @@ import TextEffect from "../model/textEffect";
 import SlimeSpawner from "../model/enemies/slimeSpawner";
 
 export default class GameScene extends Scene{
-    // pathImage: ImageBitmap;
-    // stoneImage: ImageBitmap;
-    // brickImage: ImageBitmap;
-    // switchGreenImage: ImageBitmap;
-    // switchRedImage: ImageBitmap;
-    // switchBlueImage: ImageBitmap;
-    // playerImage: ImageBitmap;
-    // slimeImage: ImageBitmap;
-    // skeletonImage: ImageBitmap;
-    // arrowImage: ImageBitmap;
-    // bowImage: ImageBitmap;
-    // heartImage: ImageBitmap;
-    // crosshairImage: ImageBitmap;
-    // sunStrikeImage: ImageBitmap;
-    // hitImage: ImageBitmap;
-    // fireBallImage: ImageBitmap;
-    // numberImages: ImageBitmap[];
-
     public static TILE_SIZE: number = 50;
 
     maps: Tile[][];
