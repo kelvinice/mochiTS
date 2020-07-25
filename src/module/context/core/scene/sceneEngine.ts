@@ -8,8 +8,9 @@ export default class SceneEngine {
     canvasController: CanvasController;
     ctx: CanvasRenderingContext2D;
     currentScene: Scene;
-    readyStatus: boolean;
+    private readyStatus: boolean;
     private static instance: SceneEngine = null;
+    private fpsRealization: number = 0;
 
     private previousTime = -1;
     private fps = 60;
@@ -18,6 +19,10 @@ export default class SceneEngine {
     private last_time: number = this.getTime();
 
     private constructor(){}
+
+    public getFPSRealization(){
+        return this.fpsRealization;
+    }
 
     public deltaTime(): number{
         let time = this.getTime();
@@ -109,9 +114,6 @@ export default class SceneEngine {
         this.recurrentUpdate();
 
         requestAnimationFrame((time: Number)=>this.render(time));
-        // while(true){
-        //     this.addFireTime();
-        // }
     }
 
     render(time: Number) {
@@ -135,9 +137,9 @@ export default class SceneEngine {
 
             if(sleepTime > 0){
                 await sleep(delta * 99 / 100);
-                // console.log("success: "+sleepTime);
+                this.fpsRealization = 1000/(delta+sleepTime);
             }else{
-                // console.log("failed: "+sleepTime);
+                this.fpsRealization = 1000/delta;
             }
             this.previousTime = await currentTime;
         }

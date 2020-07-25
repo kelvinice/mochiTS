@@ -52,7 +52,6 @@ export default class SunStrike extends AnimateGameObject implements FrameListene
     onFrameChanged(frameIndex: number): void {
         if(frameIndex == 24){
             this.willDmg = true;
-
         }else if(frameIndex == 29){
             this.destroy();
         }
@@ -66,9 +65,7 @@ export default class SunStrike extends AnimateGameObject implements FrameListene
         SceneEngine.getInstance().injectGameObject(new TextEffect(
             {
                 x: this.x,
-                y: this.y,
-                width: this.width,
-                height: this.height
+                y: this.y
             },this.damage+""
         ).setColor("yellow"));
 

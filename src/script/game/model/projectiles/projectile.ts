@@ -6,6 +6,7 @@ import global from "../../../../module/context/generals/global";
 import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
 import TextEffect from "../textEffect";
 import TrueRandom from "../../../handlers/trueRandom";
+import GameScene from "../../scenes/gameScene";
 
 export default class Projectile extends GameObject{
     velocity: Point;
@@ -57,11 +58,11 @@ export default class Projectile extends GameObject{
         SceneEngine.getInstance().injectGameObject(new TextEffect(
             {
                 x: Math.round(this.x).valueOf(),
-                y: Math.round(this.y).valueOf(),
-                width: this.width,
-                height: this.height
+                y: Math.round(this.y).valueOf()
             },outDamage+""
-        ).setColor("white"));
+        ).setColor("white")
+            .setFontSize(Math.round(GameScene.TILE_SIZE / 5))
+        );
         enemy.reduceHP(outDamage);
         this.destroy();
     }

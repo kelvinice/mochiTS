@@ -21,6 +21,8 @@ import SkeletonSpawner from "../model/enemies/skeletonSpawner";
 import SunStrike from "../model/skills/sunStrike";
 import TextEffect from "../model/textEffect";
 import SlimeSpawner from "../model/enemies/slimeSpawner";
+import GameText from "../model/gameText";
+import TimeCounter from "../../handlers/timeCounter";
 
 export default class GameScene extends Scene{
     public static TILE_SIZE: number = 50;
@@ -44,6 +46,9 @@ export default class GameScene extends Scene{
 
     mouseHold: boolean = false;
     trueRandom: TrueRandom;
+    fpsText: GameText;
+    fpsTimeCounter: TimeCounter;
+    fpss: number[] = [];
 
     constructor(){
         super();
@@ -55,7 +60,10 @@ export default class GameScene extends Scene{
         this.spawnHandler = new SpawnHandler(this.spawners);
         this.projectileHandler = new ProjectileHandler();
         this.trueRandom = new TrueRandom();
-        SceneEngine.getInstance().hideCursor();
+        this.fpsText = new GameText(new Point(Global.getInstance().width/2, GameScene.TILE_SIZE),
+            "");
+
+        this.fpsTimeCounter = new TimeCounter(1000);
     }
 
     onCreated(): void {
@@ -136,13 +144,28 @@ export default class GameScene extends Scene{
         );
 
         this.addGameObject(this.gameMenu);
-
+        this.fpsText.setFontSize(GameScene.TILE_SIZE);
+        this.addGameObject(this.fpsText);
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
     }
 
     onUpdate(): void {
+        if(Global.getInstance().debug){
+            this.fpss.push(Math.round(SceneEngine.getInstance().getFPSRealization()));
+            if(this.fpsTimeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMili())){
+                let length = this.fpss.length;
+                let total = 0;
+                for (const f of this.fpss) {
+                    total+= f;
+                }
+
+                this.fpsText.setText(Math.round(total/length) + "");
+                this.fpss = [];
+            }
+        }
+
         //create projectile
         if(this.mouseHold){
             let p: Point = this.player.getMiddlePoint();
@@ -206,9 +229,10 @@ export default class GameScene extends Scene{
                 this.addGameObject(new TextEffect({
                     x: this.player.x,
                     y: this.player.y,
-                    width: GameScene.TILE_SIZE,
-                    height: GameScene.TILE_SIZE
-                }, txt));
+                }, txt)
+                    .setColor("red")
+                    .setFontSize(Math.round(GameScene.TILE_SIZE / 5))
+                );
 
                 enemy.destroy();
             }

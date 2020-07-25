@@ -2,18 +2,15 @@ import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/g
 import TimeCounter from "../../handlers/timeCounter";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import GameScene from "../scenes/gameScene";
+import Point from "./point";
+import GameText from "./gameText";
 
-export default class TextEffect extends GameObject{
+export default class TextEffect extends GameText{
     timeCounter: TimeCounter;
-    color: string;
-    text: string;
     verticalMovSpeed: number;
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
-        let fontSize = Math.round(GameScene.TILE_SIZE / 5);
-        ctx.font = "bold "+fontSize+"pt arial"
-        ctx.fillStyle = this.color;
-        ctx.fillText(this.text,this.x, this.y);
+        super.draw(ctx, time);
     }
 
     update(): void {
@@ -23,21 +20,12 @@ export default class TextEffect extends GameObject{
         }
     }
 
-    constructor(iGameObject: IRectangle, text: string) {
-        super(iGameObject);
+    constructor(point: Point, text: string) {
+        super(point, text);
         this.setZIndex(60);
         this.timeCounter = new TimeCounter(500);
-        this.color = "red";
-        this.setText(text);
         this.verticalMovSpeed = -0.5;
     }
 
-    setColor(color: string): TextEffect{
-        this.color = color;
-        return this;
-    }
 
-    setText(text:string){
-        this.text = text;
-    }
 }
