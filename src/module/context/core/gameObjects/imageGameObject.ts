@@ -9,8 +9,8 @@ export default class ImageGameObject extends GameObject{
     leftPadding: number;
     rightPadding: number;
 
-    constructor(iGameObject: IRectangle, image: ImageBitmap = null){
-        super(iGameObject);
+    constructor(iRectangle: IRectangle, image: ImageBitmap = null){
+        super(iRectangle);
         this._image = image;
         this.horizontalPadding = 0;
         this.topPadding = 0;

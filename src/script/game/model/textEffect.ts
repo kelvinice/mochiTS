@@ -24,7 +24,7 @@ export default class TextEffect extends GameObject{
 
     constructor(iGameObject: IRectangle, text: string) {
         super(iGameObject);
-        this.setZIndex(50);
+        this.setZIndex(60);
         this.timeCounter = new TimeCounter(500);
         this.color = "red";
         this.setText(text);

@@ -8,7 +8,7 @@ export default class RectangleGameObject extends GameObject{
     }
 
 
-    constructor(iGameObject: IRectangle) {
-        super(iGameObject);
+    constructor(iRectangle: IRectangle) {
+        super(iRectangle);
     }
 }

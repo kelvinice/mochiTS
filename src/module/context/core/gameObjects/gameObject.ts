@@ -12,11 +12,11 @@ export default abstract class GameObject {
     private _isDestroyed: boolean;
     private readonly _id: string;
 
-    protected constructor(iGameObject: IRectangle) {
-        this.x = iGameObject.x;
-        this.y = iGameObject.y;
-        this.width = iGameObject.width;
-        this.height = iGameObject.height;
+    protected constructor(iRectangle: IRectangle) {
+        this.x = iRectangle.x;
+        this.y = iRectangle.y;
+        this.width = iRectangle.width;
+        this.height = iRectangle.height;
         this._isDestroyed = false;
         this._id = Guid.newGuid();
     }

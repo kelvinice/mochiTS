@@ -132,8 +132,12 @@ export default class SceneEngine {
             let delta = await (currentTime- this.previousTime);
 
             let sleepTime = (this.frameTime) - delta;
+
             if(sleepTime > 0){
-                await sleep(delta);
+                await sleep(delta * 99 / 100);
+                // console.log("success: "+sleepTime);
+            }else{
+                // console.log("failed: "+sleepTime);
             }
             this.previousTime = await currentTime;
         }

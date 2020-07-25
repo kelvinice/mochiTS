@@ -3,6 +3,7 @@ import Arrow from "../game/model/projectiles/arrow";
 import {IRectangle} from "../../module/context/core/gameObjects/gameObject";
 import Point from "../game/model/point";
 import SceneEngine from "../../module/context/core/scene/sceneEngine";
+import GameScene from "../game/scenes/gameScene";
 
 export default class ProjectileHandler {
     fireTime: number;
@@ -28,7 +29,7 @@ export default class ProjectileHandler {
     }
 
     spawn(x: number, y: number, xVel: number, yVel: number){
-        let projectileSize = 20;
+        let projectileSize = GameScene.TILE_SIZE * 2 /5;
 
         let projectile: Projectile = new Arrow(<IRectangle>{
             x: x,

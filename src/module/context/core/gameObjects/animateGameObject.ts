@@ -7,8 +7,8 @@ export default class AnimateGameObject extends ImageGameObject{
     protected rectangles: IRectangle[];
     protected previousTime: number;
 
-    constructor(iGameObject: IRectangle, image: ImageBitmap) {
-        super(iGameObject, image);
+    constructor(iRectangle: IRectangle, image: ImageBitmap) {
+        super(iRectangle, image);
         this.animationController = new AnimationController();
         this.previousTime = Number(-1);
     }

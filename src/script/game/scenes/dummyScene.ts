@@ -1,48 +1,28 @@
-import Global from '../../../module/context/generals/global';
-import { IRectangle } from '../../../module/context/core/gameObjects/gameObject';
 import Ball from '../../../module/ball';
 import Scene from "../../../module/context/core/scene/scene";
+import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 
 
 export default class DummyScene extends Scene{
     onCreated(): void {
-        throw new Error("Method not implemented.");
     }
     onRender(ctx: CanvasRenderingContext2D): void {
-        throw new Error("Method not implemented.");
     }
     onUpdate(): void {
-        throw new Error("Method not implemented.");
     }
     balls: Ball[];
     
     constructor(){
         super();
-       
-        this.balls = [];
-        this.addBall(new Ball(<IRectangle>{
-            height : 200,
-            width : 200,
-            x : 10,
-            y : 10
-        }))
-        this.addBall(new Ball(<IRectangle>{
-            height : 100,
-            width : 100,
-            x : 600,
-            y : 100
-        }))
-        this.addBall(new Ball(<IRectangle>{
-            height : 150,
-            width : 150,
-            x : 300,
-            y : 400
-        }))
+       this.addBall(new Ball({
+           x:0,y:0,width:100,height:100
+       }))
+
     }
 
     addBall(ball: Ball): void{
         this.balls.push(ball);
-        this.addGameObject(ball);
+        SceneEngine.getInstance().injectGameObject(ball);
     }
 
     render(ctx: CanvasRenderingContext2D): void {

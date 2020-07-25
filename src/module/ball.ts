@@ -6,13 +6,13 @@ import { IRectangle } from './context/core/gameObjects/gameObject';
 export default class Ball extends GameObject{
     velX: number;
     velY: number;
-    isCollide: boolean;
+    isCollided: boolean;
 
     constructor(iGameObject: IRectangle){
         super(iGameObject);
         this.velX = 1;
         this.velY = 1;
-        this.isCollide = false;
+        this.isCollided = false;
     }
 
     draw(ctx: CanvasRenderingContext2D){
@@ -34,7 +34,7 @@ export default class Ball extends GameObject{
         if(this.y+this.height >= Global.getInstance().height || this.y <=0){
             this.velY*=-1;
         }
-        this.isCollide = false;
+        this.isCollided = false;
     }
 
 
