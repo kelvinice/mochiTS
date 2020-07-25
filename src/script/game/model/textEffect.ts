@@ -1,5 +1,5 @@
 import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
-import TimeCounter from "../../handlers/TimeCounter";
+import TimeCounter from "../../handlers/timeCounter";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 
 export default class TextEffect extends GameObject{
