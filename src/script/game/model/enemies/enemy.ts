@@ -25,6 +25,7 @@ export default abstract class Enemy extends AnimateGameObject{
         super(iGameObject, image);
         this.movementSpeed = 1;
         this.damagedHP = 0;
+        this.setZIndex(15);
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {

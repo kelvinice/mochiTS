@@ -18,6 +18,7 @@ export default class Skeleton extends Enemy{
 
         this.animationController.setAnim("down");
         this.movementSpeed = 1;
+        this.initHP(100);
     }
 
     update() {

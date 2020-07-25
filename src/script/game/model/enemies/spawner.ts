@@ -20,17 +20,11 @@ export default class Spawner extends ImageGameObject{
     }
 
     spawn(): Enemy{
-        let enemy = new Slime(<IRectangle>{
+        return new Slime(<IRectangle>{
             x: this.x,
             y: this.y,
             width: GameScene.TILE_SIZE,
             height: GameScene.TILE_SIZE
         }, this.enemyImage);
-        enemy.initHP(150);
-        enemy.setZIndex(15);
-        return enemy;
-
-        // this.enemies.push(enemy);
-        // this.addGameObject(enemy);
     }
 }

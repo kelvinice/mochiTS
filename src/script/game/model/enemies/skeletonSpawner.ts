@@ -13,16 +13,11 @@ export default class SkeletonSpawner extends Spawner{
     }
 
     spawn(): Enemy {
-        let enemy = new Skeleton(<IRectangle>{
+        return new Skeleton(<IRectangle>{
             x: this.x,
             y: this.y,
             width: GameScene.TILE_SIZE,
             height: GameScene.TILE_SIZE
         }, this.enemyImage);
-
-        enemy.initHP(100);
-        enemy.setZIndex(15);
-
-        return enemy;
     }
 }

@@ -16,6 +16,7 @@ export default class Slime extends Enemy{
 
         this.animationController.setAnim("down");
         this.movementSpeed = 0.5;
+        this.initHP(140);
     }
 
     update() {
