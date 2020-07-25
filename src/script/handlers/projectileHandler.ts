@@ -5,14 +5,10 @@ import Point from "../game/model/point";
 import SceneEngine from "../../module/context/core/scene/sceneEngine";
 
 export default class ProjectileHandler {
-    projectileImage: ImageBitmap;
-    hitImage: ImageBitmap;
     fireTime: number;
     fireRate: number;
 
-    constructor(projectileImage: ImageBitmap, hitImage: ImageBitmap) {
-        this.projectileImage = projectileImage;
-        this.hitImage = hitImage;
+    constructor() {
         this.fireTime = 0;
         this.fireRate = 0.5;
     }
@@ -39,7 +35,7 @@ export default class ProjectileHandler {
             y: y,
             width: projectileSize,
             height: projectileSize
-        }, new Point(xVel, yVel), this.projectileImage, this.hitImage);
+        }, new Point(xVel, yVel));
         projectile.setSpeed(5);
         projectile.setZIndex(20);
 

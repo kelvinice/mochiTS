@@ -2,6 +2,7 @@ import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/g
 import Heart from "./huds/heart";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import NumberHUD from "./huds/numberHUD";
+import Global from "../../../module/context/generals/global";
 
 export default class GameMenu extends GameObject{
     heartImage:ImageBitmap;
@@ -15,13 +16,13 @@ export default class GameMenu extends GameObject{
     numbers: NumberHUD[];
     digit = 3;
 
-    constructor(iGameObject: IRectangle, heartImage: ImageBitmap, numberImages: ImageBitmap[]) {
+    constructor(iGameObject: IRectangle) {
         super(iGameObject);
         this.setZIndex(1000);
 
         this.hearts = [];
         this.numbers = [];
-        this.heartImage = heartImage;
+        this.heartImage = Global.getInstance().assetManager.loadedImage["heart"];
         this.heartYPosition = 0;
         this.numberYPosition = 0;
         let heartSize = 80;
@@ -34,7 +35,7 @@ export default class GameMenu extends GameObject{
                 y: this.heartYPosition,
                 width: heartSize,
                 height: heartSize
-            }, heartImage);
+            }, this.heartImage);
             heart.setZIndex(this.zIndex + 1);
             this.hearts.push(heart);
             SceneEngine.getInstance().injectGameObject(heart);
@@ -48,7 +49,7 @@ export default class GameMenu extends GameObject{
                 y: this.numberYPosition,
                 width: numberSize,
                 height: numberSize
-            }, numberImages);
+            });
             this.numbers[i] = number;
             number.setZIndex(this.zIndex+1);
             SceneEngine.getInstance().injectGameObject(number);

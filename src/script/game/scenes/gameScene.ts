@@ -21,25 +21,26 @@ import TrueRandom from "../../handlers/trueRandom";
 import SkeletonSpawner from "../model/enemies/skeletonSpawner";
 import SunStrike from "../model/skills/sunStrike";
 import TextEffect from "../model/textEffect";
+import SlimeSpawner from "../model/enemies/slimeSpawner";
 
 export default class GameScene extends Scene{
-    pathImage: ImageBitmap;
-    stoneImage: ImageBitmap;
-    brickImage: ImageBitmap;
-    switchGreenImage: ImageBitmap;
-    switchRedImage: ImageBitmap;
-    switchBlueImage: ImageBitmap;
-    playerImage: ImageBitmap;
-    slimeImage: ImageBitmap;
-    skeletonImage: ImageBitmap;
-    arrowImage: ImageBitmap;
-    bowImage: ImageBitmap;
-    heartImage: ImageBitmap;
-    crosshairImage: ImageBitmap;
-    sunStrikeImage: ImageBitmap;
-    hitImage: ImageBitmap;
-    fireBallImage: ImageBitmap;
-    numberImages: ImageBitmap[];
+    // pathImage: ImageBitmap;
+    // stoneImage: ImageBitmap;
+    // brickImage: ImageBitmap;
+    // switchGreenImage: ImageBitmap;
+    // switchRedImage: ImageBitmap;
+    // switchBlueImage: ImageBitmap;
+    // playerImage: ImageBitmap;
+    // slimeImage: ImageBitmap;
+    // skeletonImage: ImageBitmap;
+    // arrowImage: ImageBitmap;
+    // bowImage: ImageBitmap;
+    // heartImage: ImageBitmap;
+    // crosshairImage: ImageBitmap;
+    // sunStrikeImage: ImageBitmap;
+    // hitImage: ImageBitmap;
+    // fireBallImage: ImageBitmap;
+    // numberImages: ImageBitmap[];
 
     public static TILE_SIZE: number = 50;
 
@@ -63,39 +64,15 @@ export default class GameScene extends Scene{
     mouseHold: boolean = false;
     trueRandom: TrueRandom;
 
-    constructor(assetManager: AssetManager){
+    constructor(){
         super();
         this.enemies = [];
         this.projectiles = [];
-        this.numberImages = [];
         this.obstacles = [];
         this.spawners = [];
         this.sunStrikes = [];
-
-        this.pathImage = assetManager.loadedImage["path"];
-        this.stoneImage = assetManager.loadedImage["stone"];
-        this.brickImage = assetManager.loadedImage["brick"];
-        this.switchGreenImage = assetManager.loadedImage["switchGreen"];
-        this.switchRedImage = assetManager.loadedImage["switchRed"];
-        this.switchBlueImage = assetManager.loadedImage["switchBlue"];
-        this.playerImage = assetManager.loadedImage["player"];
-        this.slimeImage = assetManager.loadedImage["slime"];
-        this.arrowImage = assetManager.loadedImage["arrow"];
-        this.bowImage = assetManager.loadedImage["bow"];
-        this.heartImage = assetManager.loadedImage["heart"];
-        this.crosshairImage = assetManager.loadedImage["crosshair"];
-        this.skeletonImage = assetManager.loadedImage["skeleton"];
-        this.sunStrikeImage = assetManager.loadedImage["sunStrike"];
-        this.fireBallImage = assetManager.loadedImage["fireball"];
-
-        this.hitImage = assetManager.loadedImage["hit"];
-
-        for (let i = 0; i < 10; i++) {
-            this.numberImages.push(assetManager.loadedImage["hud"+i]);
-        }
-
         this.spawnHandler = new SpawnHandler(this.spawners);
-        this.projectileHandler = new ProjectileHandler(this.arrowImage, this.hitImage);
+        this.projectileHandler = new ProjectileHandler();
         this.trueRandom = new TrueRandom();
     }
 
@@ -106,7 +83,7 @@ export default class GameScene extends Scene{
         this.maps = mc.getMap();
         this.cursor = new Cursor(<IRectangle>{
             x:0,y:0,width:GameScene.TILE_SIZE/2,height:GameScene.TILE_SIZE/2
-        }, this.crosshairImage);
+        });
         this.cursor.setZIndex(100000);
         this.addGameObject(this.cursor)
 
@@ -114,29 +91,29 @@ export default class GameScene extends Scene{
             for (let j = 0; j < this.maps[i].length; j++) {
                 let img;
                 if(this.maps[i][j].char == '#'){
-                    img = this.pathImage;
+                    img = Global.getInstance().assetManager.loadedImage["path"];
                 }
                 else if(this.maps[i][j].char == 'W'){
-                    img = this.stoneImage;
+                    img = Global.getInstance().assetManager.loadedImage["stone"];
                     this.obstacles.push(this.maps[i][j]);
                 }else if(this.maps[i][j].char == 'S'){
                     img = null;
                     let spawner:Spawner;
                     let num = this.trueRandom.randomNumber(0,2);
                     if(num==0){
-                        spawner = new Spawner(<IRectangle>{
+                        spawner = new SlimeSpawner(<IRectangle>{
                             x: i*GameScene.TILE_SIZE,
                             y: j*GameScene.TILE_SIZE,
                             width: GameScene.TILE_SIZE,
                             height: GameScene.TILE_SIZE
-                        }, this.switchGreenImage, this.slimeImage);
+                        });
                     }else{
                         spawner = new SkeletonSpawner(<IRectangle>{
                             x: i*GameScene.TILE_SIZE,
                             y: j*GameScene.TILE_SIZE,
                             width: GameScene.TILE_SIZE,
                             height: GameScene.TILE_SIZE
-                        }, this.switchRedImage, this.skeletonImage);
+                        });
                     }
 
                     spawner.setZIndex(10);
@@ -144,17 +121,17 @@ export default class GameScene extends Scene{
                     this.addGameObject(spawner);
 
                 }else if(this.maps[i][j].char == 'H'){
-                    img = this.pathImage;
+                    img = Global.getInstance().assetManager.loadedImage["path"];
                     this.player = new Player(<IRectangle>{
                         x: i*GameScene.TILE_SIZE,
                         y: j*GameScene.TILE_SIZE,
                         width: GameScene.TILE_SIZE,
                         height: GameScene.TILE_SIZE
-                    }, this.playerImage, this.bowImage, this.fireBallImage);
+                    });
                     this.player.setTile(j, i);
                     this.addGameObject(this.player);
                 }else{
-                    img = this.brickImage;
+                    img = Global.getInstance().assetManager.loadedImage["brick"];
                     this.obstacles.push(this.maps[i][j]);
                 }
 
@@ -173,7 +150,7 @@ export default class GameScene extends Scene{
                 y: 0,
                 width: Global.getInstance().width,
                 height: this.maps[0].length * GameScene.TILE_SIZE
-            }, this.heartImage, this.numberImages
+            }
         );
 
         this.addGameObject(this.gameMenu);
@@ -304,7 +281,7 @@ export default class GameScene extends Scene{
                     y: e.y- (GameScene.TILE_SIZE/2),
                     width: GameScene.TILE_SIZE,
                     height: GameScene.TILE_SIZE
-                },this.sunStrikeImage);
+                });
 
                 this.sunStrikes.push(ss);
                 this.addGameObject(ss);

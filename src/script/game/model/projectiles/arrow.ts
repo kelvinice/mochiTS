@@ -5,16 +5,15 @@ import Enemy from "../enemies/enemy";
 import HitEffect from "../hitEffect";
 import GameScene from "../../scenes/gameScene";
 import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
+import global from "../../../../module/context/generals/global";
 
 export default class Arrow extends Projectile{
     image: ImageBitmap;
-    hitImage: ImageBitmap;
     rotation: number;
 
-    constructor(iGameObject: IRectangle, velocity: Point, image: ImageBitmap, hitImage: ImageBitmap) {
+    constructor(iGameObject: IRectangle, velocity: Point) {
         super(iGameObject, velocity);
-        this.image = image;
-        this.hitImage = hitImage;
+        this.image = global.getInstance().assetManager.loadedImage["arrow"];
         this.rotation= 180+(Math.atan2(velocity.x,velocity.y) / (2* Math.PI) * 360 *-1);
         let sound = new Audio('assets/sounds/arrow.mp3');
         sound.play();
@@ -40,7 +39,7 @@ export default class Arrow extends Projectile{
             y: this.y - (GameScene.TILE_SIZE/2),
             width: GameScene.TILE_SIZE,
             height: GameScene.TILE_SIZE
-        }, this.hitImage);
+        });
         SceneEngine.getInstance().injectGameObject(hitEffect);
     }
 }

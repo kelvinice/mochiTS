@@ -2,6 +2,7 @@ import SceneEngine from "./module/context/core/scene/sceneEngine";
 import GameScene from './script/game/scenes/gameScene';
 import AssetManager from './module/context/generals/asset';
 import global from "./module/context/generals/global";
+import Global from "./module/context/generals/global";
 
 window.onload = () =>{
     	function init() {
@@ -12,7 +13,7 @@ window.onload = () =>{
         // sceneEngine.makeWindowReactive();
         sceneEngine.hideCursor();
 
-        let assetManager: AssetManager = new AssetManager();
+        let assetManager: AssetManager = Global.getInstance().assetManager;
         
         assetManager.addPath("path","path.png");
         assetManager.addPath("stone","stone.png");
@@ -38,7 +39,7 @@ window.onload = () =>{
 
         assetManager.addAssetDoneListener(()=>{
 
-                sceneEngine.updateScene(new GameScene(assetManager));
+                sceneEngine.updateScene(new GameScene());
                 sceneEngine.start();
         });
 

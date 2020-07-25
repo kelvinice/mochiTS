@@ -6,13 +6,13 @@ export default class Global{
     width: number;
     height: number;
     private static instance: Global = null;
-    globalAssetManager: AssetManager;
+    assetManager: AssetManager;
 
     private constructor(){
         this.width = 0;
         this.height = 0;
         this.debug = false;
-        this.globalAssetManager = new AssetManager();
+        this.assetManager = new AssetManager();
     }
 
     public static getInstance(): Global{

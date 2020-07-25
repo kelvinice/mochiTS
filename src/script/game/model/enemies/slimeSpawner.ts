@@ -1,20 +1,20 @@
 import Spawner from "./spawner";
 import {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
-import GameScene from "../../scenes/gameScene";
-import Enemy from "./enemy";
-import Skeleton from "./skeleton";
 import Global from "../../../../module/context/generals/global";
+import Enemy from "./enemy";
+import GameScene from "../../scenes/gameScene";
+import Slime from "./slime";
 
-export default class SkeletonSpawner extends Spawner{
+export default class SlimeSpawner extends Spawner{
     constructor(iGameObject: IRectangle) {
         super(iGameObject,
-            Global.getInstance().assetManager.loadedImage["switchRed"],
-            Global.getInstance().assetManager.loadedImage["skeleton"]);
+            Global.getInstance().assetManager.loadedImage["switchGreen"],
+            Global.getInstance().assetManager.loadedImage["slime"]);
 
     }
 
     spawn(): Enemy {
-        return new Skeleton(<IRectangle>{
+        return new Slime(<IRectangle>{
             x: this.x,
             y: this.y,
             width: GameScene.TILE_SIZE,

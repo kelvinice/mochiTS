@@ -4,6 +4,7 @@ import Calculator from "../../handlers/calculator";
 import global from "../../../module/context/generals/global";
 import AnimateGameObject from "../../../module/context/core/gameObjects/animateGameObject";
 import {splitSprite} from "../../handlers/imageHandler";
+import Global from "../../../module/context/generals/global";
 
 export default class Player extends AnimateGameObject{
     tileX: number;
@@ -21,15 +22,15 @@ export default class Player extends AnimateGameObject{
         return this._mousePoint;
     }
 
-    constructor(iGameObject: IRectangle, image: ImageBitmap, bowImage: ImageBitmap, fireBallImage: ImageBitmap) {
-        super(iGameObject, image);
-        this.bowImage = bowImage;
-        this.fireBallImage = fireBallImage;
+    constructor(iGameObject: IRectangle) {
+        super(iGameObject, Global.getInstance().assetManager.loadedImage["player"]);
+        this.bowImage = Global.getInstance().assetManager.loadedImage["bow"];
+        this.fireBallImage = Global.getInstance().assetManager.loadedImage["fireball"];
         this._mousePoint = new Point();
         this.movementSpeed = 1;
         this.setZIndex(20);
 
-        this.rectangles = splitSprite(image, 4, 4);
+        this.rectangles = splitSprite(this.image, 4, 4);
         this.animationController.addAnimation("down", 0, 3, 200);
         this.animationController.addAnimation("left", 4, 7, 200);
         this.animationController.addAnimation("right", 8, 11, 200);

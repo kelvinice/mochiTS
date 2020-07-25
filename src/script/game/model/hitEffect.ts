@@ -2,16 +2,17 @@ import AnimateGameObject from "../../../module/context/core/gameObjects/animateG
 import {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import {splitSprite} from "../../handlers/imageHandler";
 import {FrameListener} from "../../../module/context/core/animations/animationController";
+import global from "../../../module/context/generals/global";
 
 export default class HitEffect extends AnimateGameObject implements FrameListener{
 
 
-    constructor(iGameObject: IRectangle, image: ImageBitmap) {
-        super(iGameObject, image);
+    constructor(iGameObject: IRectangle) {
+        super(iGameObject, global.getInstance().assetManager.loadedImage["hit"]);
 
         this.setZIndex(40);
 
-        this.rectangles = splitSprite(image, 4, 1);
+        this.rectangles = splitSprite(this.image, 4, 1);
         this.animationController.addAnimation("hit", 0, 3, 100);
 
         this.animationController.setAnim("hit");

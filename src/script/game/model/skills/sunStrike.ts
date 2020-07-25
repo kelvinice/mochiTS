@@ -7,16 +7,17 @@ import {FrameListener} from "../../../../module/context/core/animations/animatio
 import Enemy from "../enemies/enemy";
 import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
 import TextEffect from "../textEffect";
+import Global from "../../../../module/context/generals/global";
 
 export default class SunStrike extends AnimateGameObject implements FrameListener{
     public willDmg: boolean;
     public damage: number;
 
-    constructor(iGameObject: IRectangle, image: ImageBitmap) {
-        super(iGameObject, image);
+    constructor(iGameObject: IRectangle) {
+        super(iGameObject, Global.getInstance().assetManager.loadedImage["sunStrike"]);
         this.setZIndex(30);
 
-        this.rectangles = splitSprite(image, 5, 6);
+        this.rectangles = splitSprite(this.image, 5, 6);
         this.animationController.addAnimation("burn", 0, 29, 80);
 
         this.animationController.setAnim("burn");

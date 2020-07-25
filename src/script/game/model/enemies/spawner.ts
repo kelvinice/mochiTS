@@ -4,7 +4,7 @@ import GameScene from "../../scenes/gameScene";
 import Slime from "./slime";
 import Enemy from "./enemy";
 
-export default class Spawner extends ImageGameObject{
+export default abstract class Spawner extends ImageGameObject{
     enemyImage: ImageBitmap;
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
         super.draw(ctx, time);
