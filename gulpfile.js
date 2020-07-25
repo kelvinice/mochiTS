@@ -8,7 +8,7 @@ var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var browserSync = require('browser-sync').create();
 var paths = {
-    pages: ['src/*.html','src/*.css']
+    pages: ['src/*.html','src/*.css', 'src/*.ico']
 };
 
 var watchedBrowserify = watchify(browserify({
