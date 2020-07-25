@@ -23,7 +23,7 @@ import TextEffect from "../model/textEffect";
 import SlimeSpawner from "../model/enemies/slimeSpawner";
 
 export default class GameScene extends Scene{
-    public static TILE_SIZE: number = 70;
+    public static TILE_SIZE: number = 50;
 
     maps: Tile[][];
 
@@ -55,6 +55,7 @@ export default class GameScene extends Scene{
         this.spawnHandler = new SpawnHandler(this.spawners);
         this.projectileHandler = new ProjectileHandler();
         this.trueRandom = new TrueRandom();
+        SceneEngine.getInstance().hideCursor();
     }
 
     onCreated(): void {
