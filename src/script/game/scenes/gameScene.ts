@@ -23,7 +23,7 @@ import TextEffect from "../model/textEffect";
 import SlimeSpawner from "../model/enemies/slimeSpawner";
 
 export default class GameScene extends Scene{
-    public static TILE_SIZE: number = 50;
+    public static TILE_SIZE: number = 70;
 
     maps: Tile[][];
 

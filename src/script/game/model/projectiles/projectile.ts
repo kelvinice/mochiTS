@@ -56,13 +56,12 @@ export default class Projectile extends GameObject{
 
         SceneEngine.getInstance().injectGameObject(new TextEffect(
             {
-                x: this.x,
-                y: this.y,
+                x: Math.round(this.x).valueOf(),
+                y: Math.round(this.y).valueOf(),
                 width: this.width,
                 height: this.height
             },outDamage+""
         ).setColor("white"));
-
         enemy.reduceHP(outDamage);
         this.destroy();
     }

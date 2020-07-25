@@ -1,6 +1,7 @@
 import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import TimeCounter from "../../handlers/timeCounter";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
+import GameScene from "../scenes/gameScene";
 
 export default class TextEffect extends GameObject{
     timeCounter: TimeCounter;
@@ -9,10 +10,10 @@ export default class TextEffect extends GameObject{
     verticalMovSpeed: number;
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
-        ctx.font = "bold 10pt arial"
+        let fontSize = Math.round(GameScene.TILE_SIZE / 5);
+        ctx.font = "bold "+fontSize+"pt arial"
         ctx.fillStyle = this.color;
         ctx.fillText(this.text,this.x, this.y);
-        this.verticalMovSpeed = -0.5;
     }
 
     update(): void {
@@ -28,6 +29,7 @@ export default class TextEffect extends GameObject{
         this.timeCounter = new TimeCounter(500);
         this.color = "red";
         this.setText(text);
+        this.verticalMovSpeed = -0.5;
     }
 
     setColor(color: string): TextEffect{

@@ -2,7 +2,6 @@ import {IRectangle} from "../../../../module/context/core/gameObjects/gameObject
 import AnimateGameObject from "../../../../module/context/core/gameObjects/animateGameObject";
 import Tile from "../tiles/tile";
 import GameScene from "../../scenes/gameScene";
-import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
 
 export default abstract class Enemy extends AnimateGameObject{
     private _hp: number;
@@ -72,7 +71,7 @@ export default abstract class Enemy extends AnimateGameObject{
         this.hp -= value;
         this.damagedHP += value;
         this.setZIndex(this.zIndex+1);
-        SceneEngine.getInstance().reorderZIndex();
+        // SceneEngine.getInstance().reorderZIndex();
         if(this.hp <= 0){
             this.hp = 0;
             this.destroy();
