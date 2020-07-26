@@ -52,7 +52,7 @@ export default class SceneEngine {
         canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
         canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
         document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
-        window.addEventListener("keydown", (e)=>this.keyDown(e), false);
+        window.addEventListener("keydown", (e)=>this.keyDown(e));
     }
 
     mouseContextMenu(e: MouseEvent){
@@ -136,7 +136,7 @@ export default class SceneEngine {
             let sleepTime = (this.frameTime) - delta;
 
             if(sleepTime > 0){
-                await sleep(delta * 99 / 100);
+                await sleep(delta);
                 this.fpsRealization = 1000/(delta+sleepTime);
             }else{
                 this.fpsRealization = 1000/delta;

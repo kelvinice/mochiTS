@@ -1,8 +1,8 @@
 import SceneEngine from "./module/context/core/scene/sceneEngine";
-import GameScene from './script/game/scenes/gameScene';
 import AssetManager from './module/context/generals/asset';
-import global from "./module/context/generals/global";
 import Global from "./module/context/generals/global";
+import MenuScene from "./script/game/scenes/menuScene";
+import GameOverScene from "./script/game/scenes/gameOverScene";
 
 window.onload = () =>{
     	function init() {
@@ -10,8 +10,7 @@ window.onload = () =>{
             
         let sceneEngine = SceneEngine.getInstance();
         sceneEngine.initCanvas(canvas);
-        // sceneEngine.makeWindowReactive();
-        sceneEngine.hideCursor();
+        sceneEngine.makeWindowReactive();
 
         let assetManager: AssetManager = Global.getInstance().assetManager;
         
@@ -31,15 +30,16 @@ window.onload = () =>{
         assetManager.addPath("sunStrike","sunStrike.png");
         assetManager.addPath("hit","hit.png");
         assetManager.addPath("fireball","fireball.png");
-
+        assetManager.addPath("background","background.png");
 
         for (let i = 0; i < 10; i++) {
                 assetManager.addPath("hud"+i,"hud"+i+".png");
         }
 
         assetManager.addAssetDoneListener(()=>{
-
-                sceneEngine.updateScene(new GameScene());
+                // sceneEngine.updateScene(new GameOverScene(90));
+                sceneEngine.updateScene(new MenuScene());
+                // sceneEngine.updateScene(new GameScene());
                 sceneEngine.start();
         });
 

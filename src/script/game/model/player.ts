@@ -47,6 +47,10 @@ export default class Player extends AnimateGameObject{
             this.fillHitBox(ctx, "purple");
         }
         super.draw(ctx, time);
+        ctx.font = "bold 12pt arial";
+        ctx.fillStyle = "black";
+        let min = (Global.getInstance().name.length - 6)/2 * 10;
+        ctx.fillText(Global.getInstance().name.toUpperCase(), this.x -min, this.y);
 
         this.fireRotation = this.fireRotation +1 %360;
 

@@ -15,7 +15,6 @@ export default class GameText extends GameObject{
     update(): void {
     }
 
-
     constructor(point: Point, text: string) {
         super(<IRectangle>{
             x: point.x,

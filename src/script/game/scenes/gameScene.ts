@@ -25,7 +25,7 @@ import GameText from "../model/gameText";
 import TimeCounter from "../../handlers/timeCounter";
 
 export default class GameScene extends Scene{
-    public static TILE_SIZE: number = 50;
+    public static TILE_SIZE: number = 60;
 
     maps: Tile[][];
 
@@ -49,6 +49,7 @@ export default class GameScene extends Scene{
     fpsText: GameText;
     fpsTimeCounter: TimeCounter;
     fpss: number[] = [];
+    audio: HTMLAudioElement;
 
     constructor(){
         super();
@@ -64,6 +65,10 @@ export default class GameScene extends Scene{
             "");
 
         this.fpsTimeCounter = new TimeCounter(1000);
+        GameScene.TILE_SIZE = Global.getInstance().tile_size;
+        this.audio = new Audio("assets/sounds/bgm.mp3");
+        this.audio.loop = true;
+        this.audio.play();
     }
 
     onCreated(): void {
@@ -76,6 +81,7 @@ export default class GameScene extends Scene{
         });
         this.cursor.setZIndex(100000);
         this.addGameObject(this.cursor)
+        SceneEngine.getInstance().hideCursor();
 
         for (let i = 0; i < this.maps.length; i++) {
             for (let j = 0; j < this.maps[i].length; j++) {
@@ -140,7 +146,7 @@ export default class GameScene extends Scene{
                 y: 0,
                 width: Global.getInstance().width,
                 height: this.maps[0].length * GameScene.TILE_SIZE
-            }
+            }, this.audio
         );
 
         this.addGameObject(this.gameMenu);

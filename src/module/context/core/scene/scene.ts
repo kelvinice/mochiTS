@@ -47,7 +47,8 @@ export default abstract class Scene{
     keyUp(e: KeyboardEvent){}
 
     processRender(ctx: CanvasRenderingContext2D, time: Number): void{
-        this.gameObjects.forEach(go => {
+        let gameObjects = [...this.gameObjects];
+        gameObjects.forEach(go => {
             go.draw(ctx, time);
         });
         this.onRender(ctx);
@@ -55,7 +56,8 @@ export default abstract class Scene{
     }
 
     processUpdate(): void{
-        this.gameObjects.forEach(go => {
+        let gameObjects = [...this.gameObjects];
+        gameObjects.forEach(go => {
             go.update();
         });
         this.onUpdate();

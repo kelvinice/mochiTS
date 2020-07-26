@@ -3,6 +3,7 @@ import Heart from "./huds/heart";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import NumberHUD from "./huds/numberHUD";
 import Global from "../../../module/context/generals/global";
+import GameOverScene from "../scenes/gameOverScene";
 
 export default class GameMenu extends GameObject{
     heartImage:ImageBitmap;
@@ -15,10 +16,12 @@ export default class GameMenu extends GameObject{
     hp: number;
     numbers: NumberHUD[];
     digit = 3;
+    bgm: HTMLAudioElement;
 
-    constructor(iGameObject: IRectangle) {
+    constructor(iGameObject: IRectangle, bgm: HTMLAudioElement) {
         super(iGameObject);
         this.setZIndex(1000);
+        this.bgm = bgm;
 
         this.hearts = [];
         this.numbers = [];
@@ -64,12 +67,17 @@ export default class GameMenu extends GameObject{
     }
 
     public reduceHeart(){
+        let audio = new Audio("assets/sounds/attacked.mp3");
+        audio.play();
+
         this.hp--;
         this.hearts[this.hp].destroy();
         if(this.hp<=0){
+            this.bgm.pause();
             SceneEngine.getInstance().showCursor();
-            alert("You lose!");
-            window.location.reload();
+
+            SceneEngine.getInstance().updateScene(new GameOverScene(this.score));
+
             return;
         }
     }
@@ -86,4 +94,13 @@ export default class GameMenu extends GameObject{
         }
 
     }
+}
+
+export function padString(number: number, digit: number): string {
+    let pad = "";
+    for (let i = 0; i < this.digit-1; i++) {
+        pad+="0";
+    }
+    let score = (pad + number).slice(-1 * this.digit);
+    return score;
 }
