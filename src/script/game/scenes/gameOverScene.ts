@@ -13,27 +13,27 @@ export default class GameOverScene extends Scene{
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
-        ctx.font = "bold 50pt arial";
-        ctx.fillStyle = "black";
-        ctx.fillText("Game Over", SceneEngine.getInstance().canvas.width/2 - 200 , 100 );
-
-        ctx.font = "bold 30pt arial";
-        ctx.fillText("High Score", SceneEngine.getInstance().canvas.width/2 - 120 , 200 );
-
-        ctx.font = "bold 13pt arial";
-        let i = 0;
-        for (const score of this.scores) {
-            i++;
-            ctx.fillText(score.name.toUpperCase(), SceneEngine.getInstance().canvas.width/2 - 150 , 300 + i * 25);
-            ctx.fillText(score.score, SceneEngine.getInstance().canvas.width/2 + 150 , 300 + i * 25 );
-            if(score.name === Global.getInstance().name){
-                ctx.strokeRect(SceneEngine.getInstance().canvas.width/2 - 165,
-                    300 + i * 25 - 20,
-                    350,
-                    29
-                    )
-            }
-        }
+        // ctx.font = "bold 50pt arial";
+        // ctx.fillStyle = "black";
+        // ctx.fillText("Game Over", SceneEngine.getInstance().canvas.width/2 - 200 , 100 );
+        //
+        // ctx.font = "bold 30pt arial";
+        // ctx.fillText("High Score", SceneEngine.getInstance().canvas.width/2 - 120 , 200 );
+        //
+        // ctx.font = "bold 13pt arial";
+        // let i = 0;
+        // for (const score of this.scores) {
+        //     i++;
+        //     ctx.fillText(score.name.toUpperCase(), SceneEngine.getInstance().canvas.width/2 - 150 , 300 + i * 25);
+        //     ctx.fillText(score.score, SceneEngine.getInstance().canvas.width/2 + 150 , 300 + i * 25 );
+        //     if(score.name === Global.getInstance().name){
+        //         ctx.strokeRect(SceneEngine.getInstance().canvas.width/2 - 165,
+        //             300 + i * 25 - 20,
+        //             350,
+        //             29
+        //             )
+        //     }
+        // }
 
         
     }
@@ -68,11 +68,23 @@ export default class GameOverScene extends Scene{
         this.scores.push(new ScoreName("RL", 107));
         this.scores.push(new ScoreName("LW", 142));
         this.scores.push(new ScoreName("DD", 143));
-        this.scores.push(new ScoreName(Global.getInstance().name, score));
+        this.scores.push(new ScoreName(Global.getInstance().name.toUpperCase(), score));
 
         this.scores.sort((a,b)=>{
             return (+b.score) - (+a.score);
         })
+
+
+        let table = document.getElementById("score-table");
+        for (const score of this.scores) {
+            table.innerHTML+= `
+                <tr>
+                    <td>${score.name}</td>
+                    <td>${score.score}</td>
+                </tr>
+            `
+        }
+        table.parentElement.parentElement.parentElement.style.visibility = "visible";
 
     }
 }

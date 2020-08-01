@@ -46,7 +46,7 @@ export default class MenuScene extends Scene{
             Global.getInstance().tile_size  = +size.value;
             Global.getInstance().name = name.value;
             SceneEngine.getInstance().updateScene(new GameScene());
-            form.parentElement.parentElement.parentElement.remove();
+            form.parentElement.parentElement.parentElement.style.visibility = "hidden";
             this.audio.pause();
 
         }
