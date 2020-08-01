@@ -13,7 +13,7 @@ export default class AnimateGameObject extends ImageGameObject{
         this.previousTime = Number(-1);
     }
 
-    draw(ctx: CanvasRenderingContext2D, time: Number): void {
+    drawAnimationOnXY(ctx: CanvasRenderingContext2D, x: number, y: number){
         let rect = this.rectangles[this.animationController.index];
 
         ctx.drawImage(this.image,
@@ -21,9 +21,14 @@ export default class AnimateGameObject extends ImageGameObject{
             rect.y,
             rect.width,
             rect.height,
-            this.x-this.leftPadding,this.y-this.topPadding
+            x-this.leftPadding,y-this.topPadding
             ,this.width + this.leftPadding + this.rightPadding,this.height + this.topPadding + this.bottomPadding
         );
+
+    }
+
+    draw(ctx: CanvasRenderingContext2D, time: Number): void {
+        this.drawAnimationOnXY(ctx, this.x, this.y);
         if(this.previousTime.valueOf() != -1){
             this.animationController.updateAnimation(time.valueOf() - this.previousTime.valueOf());
         }

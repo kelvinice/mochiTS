@@ -175,5 +175,9 @@ export default abstract class Enemy extends AnimateGameObject{
 
     }
 
+    onHitWithPlayer(){
+        this.destroy();
+    }
+
 }
 

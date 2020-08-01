@@ -23,6 +23,9 @@ import TextEffect from "../model/textEffect";
 import SlimeSpawner from "../model/enemies/slimeSpawner";
 import GameText from "../model/gameText";
 import TimeCounter from "../../handlers/timeCounter";
+import Boss from "../model/enemies/boss";
+import sceneEngine from "../../../module/context/core/scene/sceneEngine";
+import GameOverScene from "./gameOverScene";
 
 export default class GameScene extends Scene{
     public static TILE_SIZE: number = 60;
@@ -37,7 +40,7 @@ export default class GameScene extends Scene{
     obstacles: Tile[];
     sunStrikes: SunStrike[];
 
-    spawnHandler: SpawnHandler;
+    public static spawnHandler: SpawnHandler;
     projectileHandler: ProjectileHandler;
 
     nextVelX = 0;
@@ -49,6 +52,7 @@ export default class GameScene extends Scene{
     fpsTimeCounter: TimeCounter;
     fpss: number[] = [];
     audio: HTMLAudioElement;
+    boss: Boss;
 
     constructor(){
         super();
@@ -151,9 +155,19 @@ export default class GameScene extends Scene{
         this.addGameObject(this.gameMenu);
         this.fpsText.setFontSize(GameScene.TILE_SIZE);
         this.addGameObject(this.fpsText);
-        this.spawnHandler = new SpawnHandler(spawners);
+        GameScene.spawnHandler = new SpawnHandler(spawners);
 
-        this.spawnHandler.changeAllSpawner();
+        GameScene.spawnHandler.changeAllSpawner();
+
+        this.boss = new Boss({
+            x: 100,
+            y: 100,
+            width: GameScene.TILE_SIZE*2,
+            height: GameScene.TILE_SIZE*2,
+        }, this.player);
+
+        this.addGameObject(this.boss);
+        this.enemies.push(this.boss);
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
@@ -187,7 +201,7 @@ export default class GameScene extends Scene{
         }
 
         //Enemy spawn
-        let enemy = this.spawnHandler.update(SceneEngine.getInstance().deltaTime());
+        let enemy = GameScene.spawnHandler.update(SceneEngine.getInstance().deltaTime());
         if(enemy){
             this.enemies.push(enemy);
             this.addGameObject(enemy);
@@ -241,8 +255,7 @@ export default class GameScene extends Scene{
                     .setColor("red")
                     .setFontSize(Math.round(GameScene.TILE_SIZE / 5))
                 );
-
-                enemy.destroy();
+                enemy.onHitWithPlayer();
             }
         }
 
@@ -312,6 +325,9 @@ export default class GameScene extends Scene{
     noticeDelete(gameObject: GameObject) {
         super.noticeDelete(gameObject);
         if(gameObject instanceof Enemy){
+            if(gameObject instanceof Boss){
+                SceneEngine.getInstance().updateScene(new GameOverScene(this.gameMenu.score));
+            }
             this.enemies.splice(this.enemies.indexOf(gameObject) , 1);
             if(gameObject.hp <= 0){
                 this.gameMenu.setScore(this.gameMenu.score+1);

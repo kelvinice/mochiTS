@@ -39,6 +39,10 @@ export default class TimeCounter{
         this.previousTime = time;
     }
 
+    setTargetTime(time: number){
+        this.targetTime = time;
+    }
+
 
 
 

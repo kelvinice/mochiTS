@@ -11,6 +11,11 @@ export default class SpawnHandler {
     currentValue: number;
     valueToSpawn: number;
     trueRandom: TrueRandom;
+    willSpawn: boolean = true;
+
+    setWillSpawn(willSpawn: boolean){
+        this.willSpawn = willSpawn;
+    }
 
     constructor(spawners: Spawner[]) {
         this.spawners = spawners;
@@ -18,6 +23,7 @@ export default class SpawnHandler {
         this.valueToSpawn = 2; //in seconds
         this.trueRandom = new TrueRandom();
         this.trueRandom.randSeed();
+
     }
 
     public update(value: number): Enemy{
@@ -32,6 +38,7 @@ export default class SpawnHandler {
     }
 
     spawn(): Enemy{
+        if(!this.willSpawn)return null;
         let num = Math.floor(this.trueRandom.randomNumber(0, this.spawners.length));
         return this.spawners[num].spawn();
     }
