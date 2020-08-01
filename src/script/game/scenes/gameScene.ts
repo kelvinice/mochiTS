@@ -35,7 +35,6 @@ export default class GameScene extends Scene{
     projectiles: Projectile[];
     gameMenu: GameMenu;
     obstacles: Tile[];
-    spawners: Spawner[];
     sunStrikes: SunStrike[];
 
     spawnHandler: SpawnHandler;
@@ -56,9 +55,8 @@ export default class GameScene extends Scene{
         this.enemies = [];
         this.projectiles = [];
         this.obstacles = [];
-        this.spawners = [];
         this.sunStrikes = [];
-        this.spawnHandler = new SpawnHandler(this.spawners);
+
         this.projectileHandler = new ProjectileHandler();
         this.trueRandom = new TrueRandom();
         this.fpsText = new GameText(new Point(Global.getInstance().width/2, GameScene.TILE_SIZE),
@@ -82,6 +80,7 @@ export default class GameScene extends Scene{
         this.cursor.setZIndex(100000);
         this.addGameObject(this.cursor)
         SceneEngine.getInstance().hideCursor();
+        let spawners = [];
 
         for (let i = 0; i < this.maps.length; i++) {
             for (let j = 0; j < this.maps[i].length; j++) {
@@ -113,7 +112,7 @@ export default class GameScene extends Scene{
                     }
 
                     spawner.setZIndex(10);
-                    this.spawners.push(spawner);
+                    spawners.push(spawner);
                     this.addGameObject(spawner);
 
                 }else if(this.maps[i][j].char == 'H'){
@@ -152,6 +151,9 @@ export default class GameScene extends Scene{
         this.addGameObject(this.gameMenu);
         this.fpsText.setFontSize(GameScene.TILE_SIZE);
         this.addGameObject(this.fpsText);
+        this.spawnHandler = new SpawnHandler(spawners);
+
+        this.spawnHandler.changeAllSpawner(1);
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
