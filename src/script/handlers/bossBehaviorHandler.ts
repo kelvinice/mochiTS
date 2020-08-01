@@ -1,9 +1,9 @@
 import TimeCounter from "./timeCounter";
 import BossBehavior from "../game/model/enemies/behaviors/bossBehavior";
 import SceneEngine from "../../module/context/core/scene/sceneEngine";
-import SuckBehavior from "../game/model/enemies/behaviors/SuckBehavior";
 import Boss from "../game/model/enemies/boss";
 import GameScene from "../game/scenes/gameScene";
+import SpearBehavior from "../game/model/enemies/behaviors/SpearBehavior";
 
 export default class BossBehaviorHandler {
     timeCounter: TimeCounter;
@@ -11,10 +11,10 @@ export default class BossBehaviorHandler {
     boss: Boss;
 
     constructor(boss: Boss) {
-        this.bossBehavior = new SuckBehavior(this);
-        this.timeCounter = new TimeCounter(this.bossBehavior.behaviorDuration);
         this.boss = boss;
         GameScene.spawnHandler.setWillSpawn(false);
+        this.bossBehavior = new SpearBehavior(this);
+        this.timeCounter = new TimeCounter(this.bossBehavior.behaviorDuration);
     }
 
     update(){

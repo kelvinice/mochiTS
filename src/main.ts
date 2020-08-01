@@ -33,6 +33,8 @@ window.onload = () =>{
         assetManager.addPath("background","background.png");
         assetManager.addPath("boss","boss.png");
         assetManager.addPath("energy","energy.png");
+        assetManager.addPath("dark-arrow","dark-arrow.png");
+        assetManager.addPath("dark-sunStrike","dark-sunStrike.png");
 
         for (let i = 0; i < 10; i++) {
                 assetManager.addPath("hud"+i,"hud"+i+".png");

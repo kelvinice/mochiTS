@@ -20,7 +20,7 @@ export default class SuckBehavior extends BossBehavior{
 
     constructor(bossBehaviorHandler: BossBehaviorHandler) {
         super(5000, bossBehaviorHandler);
-        this.timeCounter = new TimeCounter(50);
+        this.timeCounter = new TimeCounter(100);
         this.trueRandom = new TrueRandom();
         this.trueRandom.randSeed();
     }

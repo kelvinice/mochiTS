@@ -55,7 +55,7 @@ export default abstract class GameObject {
     getMiddlePoint(): Point{
         let x = this.x + (this.width/2);
         let y = this.y + (this.height/2);
-        return new Point(x,y);
+        return new Point(Math.round(x),Math.round(y));
     }
 
     setMiddlePoint(point: Point): GameObject{

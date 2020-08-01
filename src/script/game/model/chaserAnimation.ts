@@ -1,4 +1,4 @@
-import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
+import {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import Point from "./point";
 import Boss from "./enemies/boss";
 import ImageGameObject from "../../../module/context/core/gameObjects/imageGameObject";
@@ -9,7 +9,6 @@ export default class ChaserAnimation extends ImageGameObject{
     rotation: number;
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
-
         let cx = this.x +  this.width;   // x of shape center
         let cy = this.y +  this.height;  // y of shape center
 
@@ -47,7 +46,7 @@ export default class ChaserAnimation extends ImageGameObject{
             ))
 
         if(this.isCollide(this.target)){
-            this.target.hp+=3;
+            this.target.hp+=5;
             if(this.target.hp > this.target.maxHp)this.target.hp = this.target.maxHp;
             this.destroy();
         }
