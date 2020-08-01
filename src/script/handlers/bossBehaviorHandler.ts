@@ -11,8 +11,8 @@ export default class BossBehaviorHandler {
     boss: Boss;
 
     constructor(boss: Boss) {
-        this.timeCounter = new TimeCounter(1000);
         this.bossBehavior = new SuckBehavior(this);
+        this.timeCounter = new TimeCounter(this.bossBehavior.behaviorDuration);
         this.boss = boss;
         GameScene.spawnHandler.setWillSpawn(false);
     }
