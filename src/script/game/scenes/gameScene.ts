@@ -153,7 +153,7 @@ export default class GameScene extends Scene{
         this.addGameObject(this.fpsText);
         this.spawnHandler = new SpawnHandler(spawners);
 
-        this.spawnHandler.changeAllSpawner(1);
+        this.spawnHandler.changeAllSpawner();
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
