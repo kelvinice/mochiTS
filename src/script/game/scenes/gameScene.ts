@@ -318,6 +318,7 @@ export default class GameScene extends Scene{
         super.noticeDelete(gameObject);
         if(gameObject instanceof Enemy){
             if(gameObject instanceof Boss){
+                this.gameMenu.bgm.pause();
                 SceneEngine.getInstance().updateScene(new GameOverScene(this.gameMenu.score));
             }
             this.enemies.splice(this.enemies.indexOf(gameObject) , 1);

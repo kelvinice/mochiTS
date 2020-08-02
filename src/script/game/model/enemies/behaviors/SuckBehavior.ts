@@ -10,8 +10,10 @@ import ChaserAnimation from "../../chaserAnimation";
 export default class SuckBehavior extends BossBehavior{
     timeCounter: TimeCounter;
     trueRandom: TrueRandom;
+    sound: HTMLAudioElement;
 
     onBehaviorComplete(): void {
+        this.sound.pause();
     }
 
     getNextBehavior(): BossBehavior {
@@ -23,6 +25,9 @@ export default class SuckBehavior extends BossBehavior{
         this.timeCounter = new TimeCounter(100);
         this.trueRandom = new TrueRandom();
         this.trueRandom.randSeed();
+        this.sound = new Audio('assets/sounds/drain.mp3');
+        this.sound.loop = true;
+        this.sound.play();
     }
 
     onBehaviorUpdate() {

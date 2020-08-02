@@ -15,6 +15,8 @@ export default class SpearBehavior extends BossBehavior{
         for (const spear of spears) {
             spear.speed = 5;
         }
+        let sound = new Audio('assets/sounds/boss_attack.mp3');
+        sound.play();
     }
 
     getNextBehavior(): BossBehavior {

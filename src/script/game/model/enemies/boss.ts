@@ -17,6 +17,7 @@ export default class Boss extends Enemy{
     private bossBehaviorHandler: BossBehaviorHandler;
     shadows: Point[] = [];
     shadowTimer: TimeCounter;
+    sound: HTMLAudioElement;
 
 
     constructor(iGameObject: IRectangle, player: Player) {
@@ -34,6 +35,9 @@ export default class Boss extends Enemy{
         this.trueRandom.randSeed();
         this.bossBehaviorHandler = new BossBehaviorHandler(this);
         this.shadowTimer = new TimeCounter(50);
+
+        this.sound = new Audio('assets/sounds/boss_intro.mp3');
+        this.sound.play();
     }
 
 
