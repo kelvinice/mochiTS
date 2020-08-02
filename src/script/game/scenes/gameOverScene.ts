@@ -13,28 +13,11 @@ export default class GameOverScene extends Scene{
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
-        // ctx.font = "bold 50pt arial";
-        // ctx.fillStyle = "black";
-        // ctx.fillText("Game Over", SceneEngine.getInstance().canvas.width/2 - 200 , 100 );
-        //
-        // ctx.font = "bold 30pt arial";
-        // ctx.fillText("High Score", SceneEngine.getInstance().canvas.width/2 - 120 , 200 );
-        //
-        // ctx.font = "bold 13pt arial";
-        // let i = 0;
-        // for (const score of this.scores) {
-        //     i++;
-        //     ctx.fillText(score.name.toUpperCase(), SceneEngine.getInstance().canvas.width/2 - 150 , 300 + i * 25);
-        //     ctx.fillText(score.score, SceneEngine.getInstance().canvas.width/2 + 150 , 300 + i * 25 );
-        //     if(score.name === Global.getInstance().name){
-        //         ctx.strokeRect(SceneEngine.getInstance().canvas.width/2 - 165,
-        //             300 + i * 25 - 20,
-        //             350,
-        //             29
-        //             )
-        //     }
-        // }
-
+        ctx.drawImage(global.getInstance().assetManager.loadedImage["background"],
+            0,0,
+            SceneEngine.getInstance().canvas.width,
+            SceneEngine.getInstance().canvas.height
+        )
         
     }
 
