@@ -19,9 +19,9 @@ export default class Player extends AnimateGameObject{
     private _mousePoint: Point;
     velX: number = 0;
     velY: number = 0;
-    movementSpeed: number;
+    public static movementSpeed: number;
     fireRotation: number;
-    exort: number;
+    public static exort: number;
     gameMenu: GameMenu;
 
     get mousePoint(): Point {
@@ -33,7 +33,7 @@ export default class Player extends AnimateGameObject{
         this.bowImage = Global.getInstance().assetManager.loadedImage["bow"];
         this.fireBallImage = Global.getInstance().assetManager.loadedImage["fireball"];
         this._mousePoint = new Point();
-        this.movementSpeed = 1;
+        Player.movementSpeed = 1;
         this.setZIndex(20);
 
         this.rectangles = splitSprite(this.image, 4, 4);
@@ -45,7 +45,7 @@ export default class Player extends AnimateGameObject{
         this.animationController.setAnim("idle");
 
         this.fireRotation = 0;
-        this.exort = 0;
+        Player.exort = 0;
 
         this.gameMenu = gameMenu;
     }
@@ -65,8 +65,8 @@ export default class Player extends AnimateGameObject{
         //Draw Fire Start
         let fireSize  =this.width/3;
 
-        for (let i = 0; i < this.exort; i++) {
-            this.drawFire(ctx, new Point(this.x + this.width/2 - (fireSize/2), this.y - (this.width/2)), fireSize, 360/this.exort * i);
+        for (let i = 0; i < Player.exort; i++) {
+            this.drawFire(ctx, new Point(this.x + this.width/2 - (fireSize/2), this.y - (this.width/2)), fireSize, 360/Player.exort * i);
         }
 
         //Draw Fire End
@@ -104,15 +104,14 @@ export default class Player extends AnimateGameObject{
         ctx.rotate( (Math.PI / 180) * (this.fireRotation + fireRad));
         ctx.translate( -cx1, -cy1 );
 
-
         ctx.drawImage(this.fireBallImage, firePoint.x, firePoint.y, fireSize, fireSize);
         ctx.restore();
     }
 
     update(): void {
         super.update();
-        this.x+=this.velX * this.movementSpeed;
-        this.y+=this.velY * this.movementSpeed;
+        this.x+=this.velX * Player.movementSpeed;
+        this.y+=this.velY * Player.movementSpeed;
 
         if(this.velX == 0 && this.velY == 0){
             this.animationController.setAnim("idle");
@@ -146,15 +145,15 @@ export default class Player extends AnimateGameObject{
     }
 
     addExort(){
-        this.exort += 1;
-        if(this.exort > 9) this.exort = 9;
+        Player.exort += 1;
+        if(Player.exort > 9) Player.exort = 9;
     }
 
     useSkill(): boolean{
         let cost = 3;
         if(PerkHandler.getInstance().isActivate("sunstrikecost-1"))cost = 2;
-        if(this.exort>= cost){
-            this.exort-=cost;
+        if(Player.exort>= cost){
+            Player.exort-=cost;
             return true;
         }
         return false;

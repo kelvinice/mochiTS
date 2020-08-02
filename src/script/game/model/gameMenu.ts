@@ -32,7 +32,7 @@ export default class GameMenu extends GameObject{
         this.hp = 3;
         this.score = 0;
 
-        for(let i=0;i<this.hp;i++){
+        for(let i=0;i<this.hp +2;i++){
             let heart = new Heart(<IRectangle>{
                x: this.width - (heartSize * (i + 1)),
                 y: this.heartYPosition,
@@ -41,7 +41,9 @@ export default class GameMenu extends GameObject{
             }, this.heartImage);
             heart.setZIndex(this.zIndex + 1);
             this.hearts.push(heart);
-            SceneEngine.getInstance().injectGameObject(heart);
+            if(i< this.hp){
+                SceneEngine.getInstance().injectGameObject(heart);
+            }
         }
 
         let numberSize = 80;
@@ -72,14 +74,19 @@ export default class GameMenu extends GameObject{
 
         this.hp--;
         this.hearts[this.hp].destroy();
+        this.hearts[this.hp]
         if(this.hp<=0){
             this.bgm.pause();
             SceneEngine.getInstance().showCursor();
-
             SceneEngine.getInstance().updateScene(new GameOverScene(this.score));
-
             return;
         }
+    }
+
+    public increaseHeart(){
+        this.hearts[this.hp].restore();
+        SceneEngine.getInstance().injectGameObject(this.hearts[this.hp]);
+        this.hp++;
     }
 
     public setScore(number: number){
@@ -98,9 +105,8 @@ export default class GameMenu extends GameObject{
 
 export function padString(number: number, digit: number): string {
     let pad = "";
-    for (let i = 0; i < this.digit-1; i++) {
+    for (let i = 0; i < digit-1; i++) {
         pad+="0";
     }
-    let score = (pad + number).slice(-1 * this.digit);
-    return score;
+    return (pad + number).slice(-1 * this.digit);
 }

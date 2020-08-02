@@ -74,6 +74,10 @@ export default abstract class GameObject {
         this._isDestroyed = true;
     }
 
+    restore(){
+        this._isDestroyed = false;
+    }
+
     get isDestroyed(): boolean {
         return this._isDestroyed;
     }

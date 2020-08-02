@@ -1,8 +1,10 @@
-import GameTile from "../game/model/tiles/gameTile";
 import GameScene from "../game/scenes/gameScene";
 import TrueRandom from "./trueRandom";
 import SceneEngine from "../../module/context/core/scene/sceneEngine";
 import WaveHandler from "./waveHandler";
+import Player from "../game/model/player";
+import ProjectileHandler from "./projectileHandler";
+import GameMenu from "../game/model/gameMenu";
 
 export default class PerkHandler {
     private static instance: PerkHandler = null;
@@ -18,16 +20,24 @@ export default class PerkHandler {
     activatedPerk: any;
     perksToChoose: Perk[];
     waveHandler: WaveHandler;
+    public gameMenu: GameMenu;
 
     private constructor() {
         this.perks = [];
         this.activatedPerk = {};
-        this.perks.push(new Perk("dmg+5", "Attack Damage + 5"));
-        this.perks.push(new Perk("dmg+1foreveryexort", "Attack Damage + 1 for every Exort"));
-        this.perks.push(new Perk("movementspeed+50%", "Movement Speed + 50%"));
-        this.perks.push(new Perk("heart+2" , "Life + 2"));
-        this.perks.push(new Perk("projectilespeed+50%", "Attack Projectile Speed + 50%"));
-        this.perks.push(new Perk("attackspeed+50%", "Delay between each attack reduced 50%"));
+        this.perks.push(new Perk("dmg+10", "Attack Damage + 10"));
+        this.perks.push(new Perk("dmg+2foreveryexort", "Attack Damage + 2 for every Exort"));
+        this.perks.push(new Perk("movementspeed+50%", "Movement Speed + 50%",  () => {
+            Player.movementSpeed  = Player.movementSpeed *3/2;
+        }));
+        this.perks.push(new Perk("heart+2" , "Life + 2", ()=>{
+            this.gameMenu.increaseHeart();
+            this.gameMenu.increaseHeart();
+        }));
+        this.perks.push(new Perk("projectilespeed+100%", "Attack Projectile Speed + 100%"));
+        this.perks.push(new Perk("attackspeed+30%", "Delay between each attack reduced 30%", function () {
+            ProjectileHandler.fireRate = ProjectileHandler.fireRate * 70/100;
+        }));
         this.perks.push(new Perk("sunstrikedmg+50", "Sun Strike Damage + 50"));
         this.perks.push(new Perk("sunstrikecost-1", "Sun Strike cost 1 less Exort"));
         this.perks.push(new Perk("scoreincrease2perenemy", "Score Per Enemy + 2"));
@@ -37,11 +47,10 @@ export default class PerkHandler {
     }
 
 
+
+
     isActivate(name: string): boolean{
-        if(this.activatedPerk[name]){
-            return true;
-        }
-        return false;
+        return this.activatedPerk[name];
     }
 
     render(ctx: CanvasRenderingContext2D){

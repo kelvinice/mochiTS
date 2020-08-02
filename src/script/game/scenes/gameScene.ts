@@ -165,6 +165,7 @@ export default class GameScene extends Scene{
         this.waveHandler = new WaveHandler(this.enemies, this.player);
         this.waveHandler.notifiedEnemyDead();
         PerkHandler.getInstance().waveHandler = this.waveHandler;
+        PerkHandler.getInstance().gameMenu = this.gameMenu;
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {

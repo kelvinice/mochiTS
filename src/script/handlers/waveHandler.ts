@@ -31,10 +31,9 @@ export default class WaveHandler {
     }
 
     update(){
-        if(this.waveTimeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMili())){
+        if(this.waveNum <= this.bossWave && this.waveTimeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMili())){
             this.waveOnGoing = false;
             GameScene.spawnHandler.setWillSpawn(false);
-            console.log("end");
         }
 
     }

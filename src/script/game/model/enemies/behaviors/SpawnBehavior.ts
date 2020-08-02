@@ -7,7 +7,7 @@ export default class SpawnBehavior extends BossBehavior{
     constructor(bossBehaviorHandler: BossBehaviorHandler) {
         super(7000, bossBehaviorHandler);
         GameScene.spawnHandler.changeAllSpawner();
-        GameScene.spawnHandler.valueToSpawn = 2;
+        GameScene.spawnHandler.valueToSpawn = 1;
         GameScene.spawnHandler.setWillSpawn(true);
         let sound = new Audio('assets/sounds/boss_spawn.mp3');
         sound.play();
