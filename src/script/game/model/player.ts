@@ -5,6 +5,10 @@ import global from "../../../module/context/generals/global";
 import AnimateGameObject from "../../../module/context/core/gameObjects/animateGameObject";
 import {splitSprite} from "../../handlers/imageHandler";
 import Global from "../../../module/context/generals/global";
+import SceneEngine from "../../../module/context/core/scene/sceneEngine";
+import TextEffect from "./textEffect";
+import GameScene from "../scenes/gameScene";
+import GameMenu from "./gameMenu";
 
 export default class Player extends AnimateGameObject{
     tileX: number;
@@ -17,12 +21,13 @@ export default class Player extends AnimateGameObject{
     movementSpeed: number;
     fireRotation: number;
     exort: number;
+    gameMenu: GameMenu;
 
     get mousePoint(): Point {
         return this._mousePoint;
     }
 
-    constructor(iGameObject: IRectangle) {
+    constructor(iGameObject: IRectangle, gameMenu: GameMenu) {
         super(iGameObject, Global.getInstance().assetManager.loadedImage["player"]);
         this.bowImage = Global.getInstance().assetManager.loadedImage["bow"];
         this.fireBallImage = Global.getInstance().assetManager.loadedImage["fireball"];
@@ -40,6 +45,8 @@ export default class Player extends AnimateGameObject{
 
         this.fireRotation = 0;
         this.exort = 0;
+
+        this.gameMenu = gameMenu;
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
@@ -148,6 +155,18 @@ export default class Player extends AnimateGameObject{
             return true;
         }
         return false;
+    }
+
+    onHitWithEnemy(){
+        this.gameMenu.reduceHeart();
+        let txt: string = "Ouch..";
+        SceneEngine.getInstance().injectGameObject(new TextEffect({
+                x: this.x,
+                y: this.y,
+            }, txt)
+                .setColor("red")
+                .setFontSize(Math.round(GameScene.TILE_SIZE / 5))
+        );
     }
 
 }

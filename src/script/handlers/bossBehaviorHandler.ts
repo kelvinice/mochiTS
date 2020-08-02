@@ -23,7 +23,6 @@ export default class BossBehaviorHandler {
             this.bossBehavior.onBehaviorComplete();
             this.boss.blink();
             this.updateBehavior(this.bossBehavior.getNextBehavior());
-
         }
 
     }

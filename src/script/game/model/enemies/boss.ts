@@ -5,21 +5,19 @@ import {splitSprite} from "../../../handlers/imageHandler";
 import Global from "../../../../module/context/generals/global";
 import Player from "../player";
 import TrueRandom from "../../../handlers/trueRandom";
-import GameTile from "../tiles/gameTile";
 import GameScene from "../../scenes/gameScene";
 import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
 import bossBehaviorHandler from "../../../handlers/bossBehaviorHandler";
 import BossBehaviorHandler from "../../../handlers/bossBehaviorHandler";
 import Point from "../point";
 import TimeCounter from "../../../handlers/timeCounter";
-import timeCounter from "../../../handlers/timeCounter";
 
 export default class Boss extends Enemy{
     player: Player;
     private trueRandom: TrueRandom;
     private bossBehaviorHandler: bossBehaviorHandler;
     shadows: Point[] = [];
-    shadowTimer: timeCounter;
+    shadowTimer: TimeCounter;
 
 
     constructor(iGameObject: IRectangle, player: Player) {

@@ -19,12 +19,10 @@ import ProjectileHandler from "../../handlers/projectileHandler";
 import TrueRandom from "../../handlers/trueRandom";
 import SkeletonSpawner from "../model/enemies/skeletonSpawner";
 import SunStrike from "../model/skills/sunStrike";
-import TextEffect from "../model/textEffect";
 import SlimeSpawner from "../model/enemies/slimeSpawner";
 import GameText from "../model/gameText";
 import TimeCounter from "../../handlers/timeCounter";
 import Boss from "../model/enemies/boss";
-import sceneEngine from "../../../module/context/core/scene/sceneEngine";
 import GameOverScene from "./gameOverScene";
 
 export default class GameScene extends Scene{
@@ -86,6 +84,17 @@ export default class GameScene extends Scene{
         SceneEngine.getInstance().hideCursor();
         let spawners = [];
 
+        this.gameMenu = new GameMenu(
+            <IRectangle>{
+                x: 0,
+                y: 0,
+                width: Global.getInstance().width,
+                height: this.maps[0].length * GameScene.TILE_SIZE
+            }, this.audio
+        );
+
+        this.addGameObject(this.gameMenu);
+
         for (let i = 0; i < this.maps.length; i++) {
             for (let j = 0; j < this.maps[i].length; j++) {
                 let img;
@@ -126,7 +135,7 @@ export default class GameScene extends Scene{
                         y: j*GameScene.TILE_SIZE,
                         width: GameScene.TILE_SIZE,
                         height: GameScene.TILE_SIZE
-                    });
+                    }, this.gameMenu);
                     this.player.setTile(j, i);
                     this.addGameObject(this.player);
                 }else{
@@ -143,16 +152,7 @@ export default class GameScene extends Scene{
             }
         }
 
-        this.gameMenu = new GameMenu(
-            <IRectangle>{
-                x: 0,
-                y: 0,
-                width: Global.getInstance().width,
-                height: this.maps[0].length * GameScene.TILE_SIZE
-            }, this.audio
-        );
 
-        this.addGameObject(this.gameMenu);
         this.fpsText.setFontSize(GameScene.TILE_SIZE);
         this.addGameObject(this.fpsText);
         GameScene.spawnHandler = new SpawnHandler(spawners);
@@ -246,15 +246,7 @@ export default class GameScene extends Scene{
         //Check collision enemy - player
         for (const enemy of this.enemies) {
             if(this.player.isCollide(enemy)){
-                this.gameMenu.reduceHeart();
-                let txt: string = "Ouch..";
-                this.addGameObject(new TextEffect({
-                    x: this.player.x,
-                    y: this.player.y,
-                }, txt)
-                    .setColor("red")
-                    .setFontSize(Math.round(GameScene.TILE_SIZE / 5))
-                );
+                this.player.onHitWithEnemy();
                 enemy.onHitWithPlayer();
             }
         }

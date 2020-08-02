@@ -5,7 +5,6 @@ import Player from "../player";
 import Point from "../point";
 import Global from "../../../../module/context/generals/global";
 
-
 export default class EnemyArrow extends ImageGameObject{
     rotation: number;
     target: Player;
@@ -37,7 +36,12 @@ export default class EnemyArrow extends ImageGameObject{
             this.x += this.velX * this.speed;
             this.y += this.velY * this.speed;
             this.checkOutOfRange();
+            if(this.target.isCollide(this)){
+                this.target.onHitWithEnemy();
+                this.destroy();
+            }
         }
+
 
     }
 

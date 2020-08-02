@@ -5,7 +5,6 @@ import EnemyArrow from "../enemyArrow";
 import GameScene from "../../../scenes/gameScene";
 import SceneEngine from "../../../../../module/context/core/scene/sceneEngine";
 import calculator from "../../../../handlers/calculator";
-import player from "../../player";
 import Player from "../../player";
 
 export default class SpearBehavior extends BossBehavior{
@@ -13,17 +12,14 @@ export default class SpearBehavior extends BossBehavior{
 
     onBehaviorComplete(): void {
         let spears = [...this.spears];
-
         for (const spear of spears) {
             spear.speed = 5;
         }
     }
 
-
     getNextBehavior(): BossBehavior {
         return new SunStrikeBehavior(this.behaviorHandler);
     }
-
 
     addSpear(x: number, y: number, target: Player){
         let projectileSize = GameScene.TILE_SIZE * 2 /3;
@@ -51,12 +47,10 @@ export default class SpearBehavior extends BossBehavior{
         super.onBehaviorUpdate();
 
         let player = this.behaviorHandler.boss.player;
-
         let spears = [...this.spears];
 
         for (const spear of spears) {
             spear.setVel(calculator.calculateVelocity(spear.getMiddlePoint(), player.getMiddlePoint()));
         }
-
     }
 }
