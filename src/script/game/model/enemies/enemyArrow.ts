@@ -46,8 +46,11 @@ export default class EnemyArrow extends ImageGameObject{
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number) {
-        let cx = this.x + this.width;   // x of shape center
-        let cy = this.y + this.height;  // y of shape center
+        if(global.getInstance().debug){
+            this.fillHitBox(ctx, "orange");
+        }
+        let cx = this.x + 0.5* this.width;   // x of shape center
+        let cy = this.y + 0.5* this.height;  // y of shape center
 
         ctx.save();
         ctx.translate( cx, cy );

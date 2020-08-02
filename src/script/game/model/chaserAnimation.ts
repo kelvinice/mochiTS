@@ -3,12 +3,16 @@ import Point from "./point";
 import Boss from "./enemies/boss";
 import ImageGameObject from "../../../module/context/core/gameObjects/imageGameObject";
 import Global from "../../../module/context/generals/global";
+import global from "../../../module/context/generals/global";
 
 export default class ChaserAnimation extends ImageGameObject{
     target: Boss;
     rotation: number;
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
+        if(global.getInstance().debug){
+            this.fillHitBox(ctx, "black");
+        }
         let cx = this.x +  this.width;   // x of shape center
         let cy = this.y +  this.height;  // y of shape center
 

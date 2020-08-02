@@ -4,6 +4,7 @@ import Global from "../../../../module/context/generals/global";
 import {splitSprite} from "../../../handlers/imageHandler";
 import GameScene from "../../scenes/gameScene";
 import Player from "../player";
+import global from "../../../../module/context/generals/global";
 
 export default class EnemySunStrike extends AnimateGameObject{
     public willDmg: boolean;
@@ -32,6 +33,9 @@ export default class EnemySunStrike extends AnimateGameObject{
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number) {
+        if(global.getInstance().debug){
+            this.fillHitBox(ctx, "red");
+        }
         super.draw(ctx, time);
     }
 
