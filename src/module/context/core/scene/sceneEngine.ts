@@ -123,7 +123,7 @@ export default class SceneEngine {
 
     render(time: Number) {
         if(this.readyStatus == true){
-            this.renderTimeCounter.targetTime = 1000/this.getFPSRealization();
+            this.renderTimeCounter.setTargetTime(1000/this.getFPSRealization());
             if(!Global.getInstance().fpsCap || this.renderTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
                 if(!Global.getInstance().clearCap || this.clearTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
                     this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);

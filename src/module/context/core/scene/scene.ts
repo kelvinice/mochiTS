@@ -53,7 +53,6 @@ export default abstract class Scene{
             go.draw(ctx, time);
         });
         this.onRender(ctx);
-
     }
 
     processUpdate(): void{

@@ -29,7 +29,7 @@ export default class Boss extends Enemy{
 
         this.animationController.setAnim("right");
         this.movementSpeed = 0;
-        this.initHP(1000);
+        this.initHP(1500);
         this.player = player;
         this.trueRandom = new TrueRandom();
         this.trueRandom.randSeed();
@@ -114,8 +114,8 @@ export default class Boss extends Enemy{
             ));
         }
 
-        this.shadowTimer.targetTime = 250/shadowCount;
-        this.shadowTimer.counter = 0;
+        this.shadowTimer.setTargetTime(250/shadowCount);
+        this.shadowTimer.resetCounter();
         this.x = nextX;
         this.y = nextY;
     }

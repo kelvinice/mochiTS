@@ -24,6 +24,8 @@ import GameText from "../model/gameText";
 import TimeCounter from "../../handlers/timeCounter";
 import Boss from "../model/enemies/boss";
 import GameOverScene from "./gameOverScene";
+import WaveHandler from "../../handlers/waveHandler";
+import PerkHandler from "../../handlers/perkHandler";
 
 export default class GameScene extends Scene{
     public static TILE_SIZE: number = 60;
@@ -40,6 +42,7 @@ export default class GameScene extends Scene{
 
     public static spawnHandler: SpawnHandler;
     projectileHandler: ProjectileHandler;
+    waveHandler: WaveHandler;
 
     nextVelX = 0;
     nextVelY = 0;
@@ -50,7 +53,8 @@ export default class GameScene extends Scene{
     fpsTimeCounter: TimeCounter;
     fpss: number[] = [];
     audio: HTMLAudioElement;
-    boss: Boss;
+    // boss: Boss;
+
 
     constructor(){
         super();
@@ -60,6 +64,7 @@ export default class GameScene extends Scene{
         this.sunStrikes = [];
 
         this.projectileHandler = new ProjectileHandler();
+
         this.trueRandom = new TrueRandom();
         this.fpsText = new GameText(new Point(Global.getInstance().width/2, GameScene.TILE_SIZE),
             "");
@@ -156,21 +161,14 @@ export default class GameScene extends Scene{
         this.fpsText.setFontSize(GameScene.TILE_SIZE);
         this.addGameObject(this.fpsText);
         GameScene.spawnHandler = new SpawnHandler(spawners);
-
         GameScene.spawnHandler.changeAllSpawner();
-
-        this.boss = new Boss({
-            x: 100,
-            y: 100,
-            width: GameScene.TILE_SIZE*2,
-            height: GameScene.TILE_SIZE*2,
-        }, this.player);
-
-        this.addGameObject(this.boss);
-        this.enemies.push(this.boss);
+        this.waveHandler = new WaveHandler(this.enemies, this.player);
+        this.waveHandler.notifiedEnemyDead();
+        PerkHandler.getInstance().waveHandler = this.waveHandler;
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
+        PerkHandler.getInstance().render(ctx);
     }
 
     onUpdate(): void {
@@ -182,11 +180,12 @@ export default class GameScene extends Scene{
                 for (const f of this.fpss) {
                     total+= f;
                 }
-
                 this.fpsText.setText(Math.round(total/length) + "");
                 this.fpss = [];
             }
         }
+
+        this.waveHandler.update();
 
         //create projectile
         if(this.mouseHold){
@@ -215,7 +214,7 @@ export default class GameScene extends Scene{
         //Check if player prepared next move is available to move
         if((this.nextVelX != 0 || this.nextVelY != 0) && this.isCanWalk(
             new RectangleGameObject(<IRectangle>{
-                x:this.player.x+this.nextVelX, y:this.player.y+this.nextVelY, width:this.player.width, height:this.player.height
+                x:this.player.x+this.nextVelX +0.5, y:this.player.y+this.nextVelY+0.5, width:this.player.width -1, height:this.player.height-1
             }))
         ){
             this.player.velX = this.nextVelX;
@@ -319,12 +318,16 @@ export default class GameScene extends Scene{
         if(gameObject instanceof Enemy){
             if(gameObject instanceof Boss){
                 this.gameMenu.bgm.pause();
+                this.gameMenu.score *= 2;
                 SceneEngine.getInstance().updateScene(new GameOverScene(this.gameMenu.score));
             }
             this.enemies.splice(this.enemies.indexOf(gameObject) , 1);
             if(gameObject.hp <= 0){
-                this.gameMenu.setScore(this.gameMenu.score+1);
+                let inc = 1;
+                if(PerkHandler.getInstance().isActivate("scoreincrease2perenemy"))inc = 3;
+                this.gameMenu.setScore(this.gameMenu.score+inc);
                 this.player.addExort();
+                this.waveHandler.notifiedEnemyDead();
             }
         }else if(gameObject instanceof Projectile){
             this.projectiles.splice(this.projectiles.indexOf(gameObject) , 1);
@@ -397,6 +400,12 @@ export default class GameScene extends Scene{
                     this.nextVelX = 0;
                     this.nextVelY = 0;
                 }
+                break;
+            default:
+                if(!isNaN(+e.key)){
+                    PerkHandler.getInstance().inputPerk(+e.key);
+                }
+
                 break;
         }
     }

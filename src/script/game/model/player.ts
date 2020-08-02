@@ -9,6 +9,7 @@ import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import TextEffect from "./textEffect";
 import GameScene from "../scenes/gameScene";
 import GameMenu from "./gameMenu";
+import PerkHandler from "../../handlers/perkHandler";
 
 export default class Player extends AnimateGameObject{
     tileX: number;
@@ -150,8 +151,10 @@ export default class Player extends AnimateGameObject{
     }
 
     useSkill(): boolean{
-        if(this.exort>= 3){
-            this.exort-=3;
+        let cost = 3;
+        if(PerkHandler.getInstance().isActivate("sunstrikecost-1"))cost = 2;
+        if(this.exort>= cost){
+            this.exort-=cost;
             return true;
         }
         return false;

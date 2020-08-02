@@ -1,12 +1,16 @@
 export default class TimeCounter{
-    targetTime: number;
-    counter:number;
-    previousTime: number;
+    private targetTime: number;
+    private counter:number;
+    private previousTime: number;
 
     constructor(targetTime: number) {
         this.targetTime = targetTime;
         this.counter = 0;
         this.previousTime = -1;
+    }
+
+    resetCounter(){
+        this.counter = 0;
     }
 
     updateTimeByCurrentTimeMili(time: number): boolean{

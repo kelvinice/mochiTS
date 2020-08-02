@@ -11,16 +11,17 @@ export default class SpawnHandler {
     currentValue: number;
     valueToSpawn: number;
     trueRandom: TrueRandom;
-    willSpawn: boolean = true;
+    private willSpawn: boolean = true;
 
     setWillSpawn(willSpawn: boolean){
         this.willSpawn = willSpawn;
+        this.currentValue = 0;
     }
 
     constructor(spawners: Spawner[]) {
         this.spawners = spawners;
         this.currentValue = 0;
-        this.valueToSpawn = 2; //in seconds
+        this.valueToSpawn = 1; //in seconds
         this.trueRandom = new TrueRandom();
         this.trueRandom.randSeed();
 

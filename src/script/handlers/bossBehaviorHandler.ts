@@ -3,7 +3,7 @@ import BossBehavior from "../game/model/enemies/behaviors/bossBehavior";
 import SceneEngine from "../../module/context/core/scene/sceneEngine";
 import Boss from "../game/model/enemies/boss";
 import GameScene from "../game/scenes/gameScene";
-import SpearBehavior from "../game/model/enemies/behaviors/SpearBehavior";
+import IdleBehavior from "../game/model/enemies/behaviors/idleBehavior";
 
 export default class BossBehaviorHandler {
     timeCounter: TimeCounter;
@@ -13,7 +13,7 @@ export default class BossBehaviorHandler {
     constructor(boss: Boss) {
         this.boss = boss;
         GameScene.spawnHandler.setWillSpawn(false);
-        this.bossBehavior = new SpearBehavior(this);
+        this.bossBehavior = new IdleBehavior(this);
         this.timeCounter = new TimeCounter(this.bossBehavior.behaviorDuration);
     }
 
@@ -28,7 +28,7 @@ export default class BossBehaviorHandler {
     }
 
     updateBehavior(nextBehavior: BossBehavior){
-        this.timeCounter.targetTime = nextBehavior.behaviorDuration;
+        this.timeCounter.setTargetTime(nextBehavior.behaviorDuration);
         this.bossBehavior = nextBehavior;
     }
 

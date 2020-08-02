@@ -8,6 +8,7 @@ import Enemy from "../enemies/enemy";
 import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
 import TextEffect from "../textEffect";
 import Global from "../../../../module/context/generals/global";
+import PerkHandler from "../../../handlers/perkHandler";
 
 export default class SunStrike extends AnimateGameObject implements FrameListener{
     public willDmg: boolean;
@@ -60,13 +61,17 @@ export default class SunStrike extends AnimateGameObject implements FrameListene
 
     onHit(enemy: Enemy){
         if(this.isDestroyed)return;
+
+        let dmg = this.damage;
+        if(PerkHandler.getInstance().isActivate("sunstrikedmg+50"))dmg+= 50;
+
         enemy.reduceHP(this.damage);
 
         SceneEngine.getInstance().injectGameObject(new TextEffect(
             {
                 x: this.x,
                 y: this.y
-            },this.damage+""
+            },dmg+""
         ).setColor("yellow").setFontSize(Math.round(GameScene.TILE_SIZE/5)));
 
         this.willDmg = false;
