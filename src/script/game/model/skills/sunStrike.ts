@@ -67,7 +67,7 @@ export default class SunStrike extends AnimateGameObject implements FrameListene
                 x: this.x,
                 y: this.y
             },this.damage+""
-        ).setColor("yellow"));
+        ).setColor("yellow").setFontSize(Math.round(GameScene.TILE_SIZE/5)));
 
         this.willDmg = false;
     }
