@@ -15,7 +15,7 @@ export default class SunStrike extends AnimateGameObject implements FrameListene
 
     constructor(iGameObject: IRectangle) {
         super(iGameObject, Global.getInstance().assetManager.loadedImage["sunStrike"]);
-        this.setZIndex(30);
+        this.setZIndex(40);
 
         this.rectangles = splitSprite(this.image, 5, 6);
         this.animationController.addAnimation("burn", 0, 29, 80);

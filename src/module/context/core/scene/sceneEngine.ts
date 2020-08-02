@@ -2,6 +2,7 @@ import Global from '../../generals/global';
 import Scene from './scene';
 import CanvasController from '../../../canvasController';
 import GameObject from '../gameObjects/gameObject';
+import TimeCounter from "../../../../script/handlers/timeCounter";
 
 export default class SceneEngine {
     canvas: HTMLCanvasElement;
@@ -17,6 +18,8 @@ export default class SceneEngine {
     private frameTime = 1000/this.fps;
 
     private last_time: number = this.getTime();
+    private renderTimeCounter: TimeCounter;
+    private clearTimeCounter: TimeCounter;
 
     private constructor(){}
 
@@ -53,6 +56,8 @@ export default class SceneEngine {
         canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
         document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
         window.addEventListener("keydown", (e)=>this.keyDown(e));
+        this.renderTimeCounter = new TimeCounter(this.frameTime );
+        this.clearTimeCounter = new TimeCounter(this.frameTime * 2);
     }
 
     mouseContextMenu(e: MouseEvent){
@@ -118,8 +123,12 @@ export default class SceneEngine {
 
     render(time: Number) {
         if(this.readyStatus == true){
-            this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
-            this.currentScene.processRender(this.ctx, time);
+            if(!Global.getInstance().fpsCap || this.renderTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
+                if(!Global.getInstance().clearCap || this.clearTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
+                    this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
+                }
+                this.currentScene.processRender(this.ctx, time);
+            }
         }
 
         requestAnimationFrame((time: Number)=>this.render(time));

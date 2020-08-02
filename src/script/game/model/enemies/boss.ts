@@ -7,7 +7,6 @@ import Player from "../player";
 import TrueRandom from "../../../handlers/trueRandom";
 import GameScene from "../../scenes/gameScene";
 import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
-import bossBehaviorHandler from "../../../handlers/bossBehaviorHandler";
 import BossBehaviorHandler from "../../../handlers/bossBehaviorHandler";
 import Point from "../point";
 import TimeCounter from "../../../handlers/timeCounter";
@@ -15,7 +14,7 @@ import TimeCounter from "../../../handlers/timeCounter";
 export default class Boss extends Enemy{
     player: Player;
     private trueRandom: TrueRandom;
-    private bossBehaviorHandler: bossBehaviorHandler;
+    private bossBehaviorHandler: BossBehaviorHandler;
     shadows: Point[] = [];
     shadowTimer: TimeCounter;
 
@@ -35,7 +34,6 @@ export default class Boss extends Enemy{
         this.trueRandom.randSeed();
         this.bossBehaviorHandler = new BossBehaviorHandler(this);
         this.shadowTimer = new TimeCounter(50);
-
     }
 
 
@@ -48,8 +46,6 @@ export default class Boss extends Enemy{
         }
 
         this.bossBehaviorHandler.update();
-
-
     }
 
 

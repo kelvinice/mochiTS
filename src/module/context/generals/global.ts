@@ -9,6 +9,8 @@ export default class Global{
     assetManager: AssetManager;
     name: string;
     tile_size: number;
+    fpsCap: boolean;
+    clearCap: boolean;
 
     private constructor(){
         this.width = 0;
@@ -17,6 +19,8 @@ export default class Global{
         this.assetManager = new AssetManager();
         this.name = "";
         this.tile_size = 50;
+        this.fpsCap = true;
+        this.clearCap = false;
     }
 
     public static getInstance(): Global{
