@@ -4,6 +4,7 @@ import global from "../../../../module/context/generals/global";
 import Player from "../player";
 import Point from "../point";
 import Global from "../../../../module/context/generals/global";
+import GameScene from "../../scenes/gameScene";
 
 export default class EnemyArrow extends ImageGameObject{
     rotation: number;
@@ -23,9 +24,9 @@ export default class EnemyArrow extends ImageGameObject{
     }
 
     checkOutOfRange(){
-        if(this.x < 0 || this.y < 0 ||
-            this.x +this.width > Global.getInstance().width
-            || this.y + this.height > Global.getInstance().height
+        if(this.x < 0 - GameScene.TILE_SIZE || this.y < 0 - GameScene.TILE_SIZE ||
+            this.x +this.width > Global.getInstance().width + GameScene.TILE_SIZE
+            || this.y + this.height > Global.getInstance().height + GameScene.TILE_SIZE
         ){
             this.destroy();
         }
