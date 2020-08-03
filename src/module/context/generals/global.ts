@@ -19,7 +19,7 @@ export default class Global{
         this.assetManager = new AssetManager();
         this.name = "";
         this.tile_size = 50;
-        this.fpsCap = true;
+        this.fpsCap = false;
         this.clearCap = false;
     }
 
