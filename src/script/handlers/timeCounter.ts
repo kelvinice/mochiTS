@@ -26,7 +26,6 @@ export default class TimeCounter{
 
         this.previousTime = time;
         return false;
-
     }
 
     updateTimeCounter(time: number): boolean{

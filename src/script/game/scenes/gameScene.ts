@@ -98,6 +98,7 @@ export default class GameScene extends Scene{
             }, this.audio
         );
 
+
         this.addGameObject(this.gameMenu);
 
         for (let i = 0; i < this.maps.length; i++) {
