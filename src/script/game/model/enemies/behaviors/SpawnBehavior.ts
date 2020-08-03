@@ -21,4 +21,8 @@ export default class SpawnBehavior extends BossBehavior{
         return new SpearBehavior(this.behaviorHandler);
     }
 
+    onBehaviorUpdate() {
+        // GameScene.spawnHandler.willSpawn = true;
+    }
+
 }

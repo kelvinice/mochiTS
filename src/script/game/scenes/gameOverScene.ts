@@ -2,7 +2,6 @@ import Scene from "../../../module/context/core/scene/scene";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import global from "../../../module/context/generals/global";
 import Global from "../../../module/context/generals/global";
-import {padString} from "../model/gameMenu";
 
 export default class GameOverScene extends Scene{
     audio: HTMLAudioElement;
@@ -76,7 +75,9 @@ class ScoreName {
     name: string;
     score: string;
     constructor(name: string, score: number) {
-        this.score = padString(score, 3);
+        // this.score = padString(score, 3);
+        this.score = score + "";
         this.name = name;
+
     }
 }

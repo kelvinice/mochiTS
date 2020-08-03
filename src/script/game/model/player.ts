@@ -36,12 +36,19 @@ export default class Player extends AnimateGameObject{
         Player.movementSpeed = 1;
         this.setZIndex(20);
 
-        this.rectangles = splitSprite(this.image, 4, 4);
-        this.animationController.addAnimation("down", 0, 3, 200);
-        this.animationController.addAnimation("left", 4, 7, 200);
-        this.animationController.addAnimation("right", 8, 11, 200);
-        this.animationController.addAnimation("up", 12, 15, 200);
-        this.animationController.addAnimation("idle", 0, 0, 100);
+        this.rectangles = splitSprite(this.image, 13, 21);
+        this.animationController.addAnimation("up", 104, 112, 100);
+        this.animationController.addAnimation("left", 117, 125, 100);
+        this.animationController.addAnimation("down", 130, 138, 100);
+        this.animationController.addAnimation("right", 143, 151, 100);
+
+        this.animationController.addAnimation("idle", 130, 130, 100);
+
+        // this.animationController.addAnimation("down", 0, 3, 200);
+        // this.animationController.addAnimation("left", 4, 7, 200);
+        // this.animationController.addAnimation("right", 8, 11, 200);
+        // this.animationController.addAnimation("up", 12, 15, 200);
+        // this.animationController.addAnimation("idle", 0, 0, 100);
         this.animationController.setAnim("idle");
 
         this.fireRotation = 0;

@@ -105,7 +105,8 @@ export default class GameMenu extends GameObject{
 
 export function padString(number: number, digit: number): string {
     let pad = "";
-    for (let i = 0; i < digit-1; i++) {
+    let length = (number + "").length;
+    for (let i = 0; i < digit - length; i++) {
         pad+="0";
     }
     return (pad + number).slice(-1 * this.digit);

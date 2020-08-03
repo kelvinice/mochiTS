@@ -11,7 +11,7 @@ export default class SpawnHandler {
     currentValue: number;
     valueToSpawn: number;
     trueRandom: TrueRandom;
-    private willSpawn: boolean = true;
+    willSpawn: boolean = true;
 
     setWillSpawn(willSpawn: boolean){
         this.willSpawn = willSpawn;

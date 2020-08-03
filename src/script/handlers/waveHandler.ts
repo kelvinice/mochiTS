@@ -50,6 +50,7 @@ export default class WaveHandler {
             boss.blink();
             SceneEngine.getInstance().injectGameObject(boss);
             this.enemies.push(boss);
+            this.waveNum++;
         }else if(this.waveNum < this.bossWave){
             GameScene.spawnHandler.changeAllSpawner(this.waveNum);
             GameScene.spawnHandler.setWillSpawn(true);
