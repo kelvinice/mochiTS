@@ -10,6 +10,7 @@ import SceneEngine from "../../../../module/context/core/scene/sceneEngine";
 import BossBehaviorHandler from "../../../handlers/bossBehaviorHandler";
 import Point from "../point";
 import TimeCounter from "../../../handlers/timeCounter";
+import global from "../../../../module/context/generals/global";
 
 export default class Boss extends Enemy{
     player: Player;
@@ -58,6 +59,9 @@ export default class Boss extends Enemy{
     }
 
     draw(ctx: CanvasRenderingContext2D, time: Number) {
+        if(global.getInstance().debug){
+            this.fillHitBox(ctx, "blue");
+        }
         if(this.shadowTimer.updateTimeByCurrentTimeMili(time.valueOf())){
             this.shadows.shift();
         }
