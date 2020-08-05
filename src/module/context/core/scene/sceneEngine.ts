@@ -20,8 +20,11 @@ export default class SceneEngine {
     private last_time: number = this.getTime();
     private renderTimeCounter: TimeCounter;
     private clearTimeCounter: TimeCounter;
+    private willRender: boolean;
 
-    private constructor(){}
+    private constructor(){
+        this.willRender = true;
+    }
 
     public getFPSRealization(){
         return this.fpsRealization;
@@ -123,13 +126,16 @@ export default class SceneEngine {
 
     render(time: Number) {
         if(this.readyStatus == true){
-            this.renderTimeCounter.setTargetTime(1000/this.getFPSRealization());
-            if(!Global.getInstance().fpsCap || this.renderTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
+            // this.renderTimeCounter.setTargetTime(1000/this.getFPSRealization());
+            // if(!Global.getInstance().fpsCap || this.renderTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
+            if(!Global.getInstance().fpsCap || this.willRender){
                 if(!Global.getInstance().clearCap || this.clearTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
                     this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
                 }
                 this.currentScene.processRender(this.ctx, time);
+                this.willRender = false;
             }
+            // }
         }
 
         requestAnimationFrame((time: Number)=>this.render(time));
@@ -152,6 +158,7 @@ export default class SceneEngine {
                 this.fpsRealization = 1000/delta;
             }
             this.previousTime = await currentTime;
+            this.willRender = true;
         }
     }
 
