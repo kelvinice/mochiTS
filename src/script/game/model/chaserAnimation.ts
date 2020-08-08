@@ -50,7 +50,7 @@ export default class ChaserAnimation extends ImageGameObject{
             ))
 
         if(this.isCollide(this.target)){
-            this.target.hp+=5;
+            this.target.hp+=10;
             if(this.target.hp > this.target.maxHp)this.target.hp = this.target.maxHp;
             this.destroy();
         }
