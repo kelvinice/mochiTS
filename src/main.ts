@@ -1,8 +1,8 @@
 import SceneEngine from "./module/context/core/scene/sceneEngine";
 import AssetManager from './module/context/generals/asset';
 import Global from "./module/context/generals/global";
+import LoadingScene from "./script/game/scenes/loadingScene";
 import MenuScene from "./script/game/scenes/menuScene";
-import GameOverScene from "./script/game/scenes/gameOverScene";
 
 window.onload = () =>{
     	function init() {
@@ -39,15 +39,18 @@ window.onload = () =>{
         for (let i = 0; i < 10; i++) {
                 assetManager.addPath("hud"+i,"hud"+i+".png");
         }
+        sceneEngine.updateScene(new LoadingScene());
+        sceneEngine.start();
 
         assetManager.addAssetDoneListener(()=>{
                 // sceneEngine.updateScene(new GameOverScene(90));
                 sceneEngine.updateScene(new MenuScene());
                 // sceneEngine.updateScene(new GameScene());
-                sceneEngine.start();
+
         });
 
         assetManager.loadAsset();
+
 
         }
         init();

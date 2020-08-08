@@ -43,8 +43,9 @@ export default class AssetManager{
                 this.check();
             }
         });
-
     }
+
+
 
     check(){
         if(this.doneCount == this.ipaths.length){
