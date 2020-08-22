@@ -205,6 +205,10 @@ export default class SceneEngine {
         this.canvas.style.cursor = "default";
     }
 
+    injectDestroyedGameObject(gameObject: GameObject){
+        this.currentScene.destroyGameObject(gameObject);
+    }
+
 }
 
 function sleep(ms: number) {

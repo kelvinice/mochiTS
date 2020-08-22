@@ -1,5 +1,6 @@
 import Point from '../../../../script/game/model/point';
 import Guid from "../../../../script/general/guid";
+import SceneEngine from "../scene/sceneEngine";
 export default abstract class GameObject {
     get id(): string {
         return this._id;
@@ -70,10 +71,17 @@ export default abstract class GameObject {
         ctx.fillRect(h.x, h.y, h.width, h.height);
     }
 
+    /**
+     * @deprecated this method inject though sceneEngine, please use destroyGameObject from scene method
+     */
     destroy(){
         this._isDestroyed = true;
+        SceneEngine.getInstance().injectDestroyedGameObject(this);
     }
 
+    /**
+     * @deprecated deleted gameObject cannot restored anymore
+     */
     restore(){
         this._isDestroyed = false;
     }
