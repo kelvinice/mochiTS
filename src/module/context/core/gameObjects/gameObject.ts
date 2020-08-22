@@ -32,6 +32,7 @@ export default abstract class GameObject {
     /**
      * @param g: Gameobject
      * @deprecated this method compare real size of object instead of object hit box
+     * @author kelvin ice
      */
     isIntersect(g: IRectangle): boolean {
         return this.x <= g.x + g.width && this.x + this.width >= g.x
@@ -72,7 +73,8 @@ export default abstract class GameObject {
     }
 
     /**
-     * @deprecated this method inject though sceneEngine, please use destroyGameObject from scene method
+     * this method inject though sceneEngine, use destroyGameObject from scene method to direct inject to scene
+     * @author kelvin ice
      */
     destroy(){
         this._isDestroyed = true;
@@ -81,6 +83,7 @@ export default abstract class GameObject {
 
     /**
      * @deprecated deleted gameObject cannot restored anymore
+     * @author kelvin ice
      */
     restore(){
         this._isDestroyed = false;
