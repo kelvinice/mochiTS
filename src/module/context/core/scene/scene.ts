@@ -1,6 +1,7 @@
 import GameObject from '../gameObjects/gameObject';
 export default abstract class Scene{
     private gameObjects : GameObject[] = [];
+    private toDeletes: GameObject[] = [];
     lapseTime = 0;
     previousTime = -1;
     fps = 60;
@@ -61,23 +62,35 @@ export default abstract class Scene{
             go.update();
         });
         this.onUpdate();
-
         this.deleteTrash();
     }
 
     deleteTrash(): void{
-        let destroyeds = this.gameObjects.filter(value => {
-            return value.isDestroyed;
-        });
+        // let destroyeds = this.gameObjects.filter(value => {
+        //     return value.isDestroyed;
+        // });
+
+        let destroyeds = [...this.toDeletes];
 
         for (const gameObject of destroyeds) {
             this.noticeDelete(gameObject);
         }
 
-        this.gameObjects = this.gameObjects.filter(value => {
-            return !value.isDestroyed;
-        });
+        while(destroyeds.length > 0){
+            let curr = destroyeds.pop();
+            this.gameObjects.splice(this.gameObjects.indexOf(curr) , 1);
+            this.toDeletes.splice(this.toDeletes.indexOf(curr), 1);
+        }
+
+
+        // this.gameObjects = this.gameObjects.filter(value => {
+        //     return !value.isDestroyed;
+        // });
     }
 
     noticeDelete(gameObject: GameObject){}
+
+    destroyGameObject(gameObject: GameObject){
+        this.toDeletes.push(gameObject);
+    }
 }
