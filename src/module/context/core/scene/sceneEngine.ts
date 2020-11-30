@@ -1,6 +1,6 @@
 import Global from '../../generals/global';
 import Scene from './scene';
-import CanvasController from '../../../canvasController';
+import CanvasController from '../canvas/canvasController';
 import GameObject from '../gameObjects/gameObject';
 import TimeCounter from "../../../../script/handlers/timeCounter";
 

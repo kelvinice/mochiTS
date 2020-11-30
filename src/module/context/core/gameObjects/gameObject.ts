@@ -1,5 +1,5 @@
 import Point from '../../../../script/game/model/point';
-import Guid from "../../../../script/general/guid";
+import Guid from "../../generals/guid";
 import SceneEngine from "../scene/sceneEngine";
 export default abstract class GameObject {
     get id(): string {

@@ -3,33 +3,53 @@
 // }
 
 export default class AssetManager{
-    ipaths: any;
-    assetDone: Function;
-    images: any;
-    doneCount: number;
-    loadedImage: any;
+    private _ipaths: any;
+    private _assetDone: Function;
+    private _images: any;
+    private _doneCount: number;
+    private _loadedImage: any;
+
+    get ipaths(): any {
+        return this._ipaths;
+    }
+
+    get assetDone(): Function {
+        return this._assetDone;
+    }
+
+    get images(): any {
+        return this._images;
+    }
+
+    get doneCount(): number {
+        return this._doneCount;
+    }
+
+    get loadedImage(): any {
+        return this._loadedImage;
+    }
 
     constructor(){
-        this.ipaths = [];
-        this.assetDone = null;
-        this.images = [];
-        this.doneCount =0;
-        this.loadedImage = {};
+        this._ipaths = [];
+        this._assetDone = null;
+        this._images = [];
+        this._doneCount =0;
+        this._loadedImage = {};
     }
 
     addPath(name: string,path: string){
-        this.ipaths.push({
+        this._ipaths.push({
             "name":name,
             "path":path
         });
     }
 
     addAssetDoneListener(assetDone: Function){
-        this.assetDone = assetDone;
+        this._assetDone = assetDone;
     }
 
     loadAsset(){
-        let clonePaths = [...this.ipaths];
+        let clonePaths = [...this._ipaths];
         clonePaths.forEach(c => {
             let name = c["name"];
             let path = c["path"];
@@ -37,19 +57,18 @@ export default class AssetManager{
             let img = new Image();
             img.src = "./assets/images/"+path;
             img.onload = () =>{
-                this.loadedImage[name] = img;
-                this.doneCount++;
+                this._loadedImage[name] = img;
+                this._doneCount++;
 
                 this.check();
             }
         });
+        this.check();
     }
 
-
-
     check(){
-        if(this.doneCount == this.ipaths.length){
-            this.assetDone();
+        if(this._doneCount == this._ipaths.length){
+            this._assetDone();
         }
     }
 

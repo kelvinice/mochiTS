@@ -165,4 +165,10 @@ export default class MapCreator{
         return this.map;
     }
 
+    getMapRandomized(): Tile[][]
+    {
+        this.init();
+        return this.map;
+    }
+
 }
