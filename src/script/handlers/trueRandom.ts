@@ -16,7 +16,7 @@ export default class TrueRandom{
 
     randomNumber(min: number, max: number): number
     {
-        return Math.floor(this.random() * (max - min) + min);
+        return Math.floor(this.random() * (max - min) + min + 1);
     }
 
 }
