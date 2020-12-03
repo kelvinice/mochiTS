@@ -92,6 +92,9 @@ export default abstract class GameObject {
     get isDestroyed(): boolean {
         return this._isDestroyed;
     }
+    setDestroyed(status: boolean) {
+        this._isDestroyed = status;
+    }
 
     public getHitBox(): IRectangle{
         return <IRectangle>{

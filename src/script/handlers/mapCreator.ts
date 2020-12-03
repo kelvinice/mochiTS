@@ -50,16 +50,17 @@ export default class MapCreator{
     }
 
 
-    getMapRandomized(): Tile[][]
+    getMapRandomized(size: number): Tile[][]
     {
         this.init();
+
         for (let i = 0; i < this.HEIGHT; i++)
         {
             this.map[i] = [];
             for (let j = 0; j < this.WIDTH; j++)
             {
-                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile(0, j, i, 20);
-                else this.map[i][j] = new Tile(this.trueRandom.randomNumber(1,3), j, i,20);
+                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile(0, j, i, size);
+                else this.map[i][j] = new Tile(this.trueRandom.randomNumber(1,3), j, i,size);
             }
         }
 

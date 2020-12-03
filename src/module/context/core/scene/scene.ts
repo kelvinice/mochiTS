@@ -78,7 +78,13 @@ export default abstract class Scene{
 
         while(destroyeds.length > 0){
             let curr = destroyeds.pop();
-            this.gameObjects.splice(this.gameObjects.indexOf(curr) , 1);
+            let idx = this.gameObjects.indexOf(curr);
+            if(idx >= 0){
+                this.gameObjects.splice(this.gameObjects.indexOf(curr) , 1);
+            }else{
+                console.log("Object Not Found!")
+            }
+
             this.toDeletes.splice(this.toDeletes.indexOf(curr), 1);
         }
 
@@ -91,6 +97,7 @@ export default abstract class Scene{
     noticeDelete(gameObject: GameObject){}
 
     destroyGameObject(gameObject: GameObject){
+        gameObject.setDestroyed(true);
         this.toDeletes.push(gameObject);
     }
 }

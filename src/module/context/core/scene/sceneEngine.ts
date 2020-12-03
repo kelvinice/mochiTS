@@ -53,12 +53,12 @@ export default class SceneEngine {
         this.canvasController.setMaximize();
         Global.getInstance().width = this.canvasController.getWidthCanvas();
         Global.getInstance().height = this.canvasController.getHeightCanvas();
-        // canvas.addEventListener("click", (e)=>this.mouseClick(e));
-        canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
-        canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
-        canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
-        document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
-        window.addEventListener("keydown", (e)=>this.keyDown(e));
+        canvas.addEventListener("click", (e)=>this.mouseClick(e));
+        // canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
+        // canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
+        // canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
+        // document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
+        // window.addEventListener("keydown", (e)=>this.keyDown(e));
         this.renderTimeCounter = new TimeCounter(this.frameTime );
         this.clearTimeCounter = new TimeCounter(this.frameTime * 2);
     }
