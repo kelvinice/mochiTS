@@ -1,6 +1,5 @@
 import TrueRandom from './trueRandom';
 import Tile from '../game/model/tiles/tile';
-import Point from '../game/model/point';
 
 export default class MapCreator{
     HEIGHT: number = 20;
@@ -44,8 +43,8 @@ export default class MapCreator{
             this.map[i] = [];
             for (let j = 0; j < this.WIDTH; j++)
             {
-                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile(0, j, i);
-                else this.map[i][j] = new Tile(0, j, i);
+                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile(0, j, i, 20);
+                else this.map[i][j] = new Tile(0, j, i, 20);
             }
         }
     }
@@ -59,8 +58,8 @@ export default class MapCreator{
             this.map[i] = [];
             for (let j = 0; j < this.WIDTH; j++)
             {
-                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile(0, j, i);
-                else this.map[i][j] = new Tile(this.trueRandom.randomNumber(1,3), j, i);
+                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile(0, j, i, 20);
+                else this.map[i][j] = new Tile(this.trueRandom.randomNumber(1,3), j, i,20);
             }
         }
 
