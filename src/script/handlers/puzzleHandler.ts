@@ -2,14 +2,7 @@ import Tile from "../game/model/tiles/tile";
 import SceneEngine from "../../module/context/core/scene/sceneEngine";
 
 export default class PuzzleHandler {
-
-
     constructor() {}
-
-    private getAllSameNumberRecursive(x: number, y: number){
-
-
-    }
 
     checkOn(maps: Tile[][], currentTile: Tile){
         let leftMost = currentTile;
@@ -36,7 +29,6 @@ export default class PuzzleHandler {
             verticalList.push(topMost);
         }
 
-
         if(horizontalList.length >=3){
             for (let tile of horizontalList) {
                 SceneEngine.getInstance().injectDestroyedGameObject(tile);
@@ -48,9 +40,6 @@ export default class PuzzleHandler {
             }
         }
 
-
-
-        // SceneEngine.getInstance().injectDestroyedGameObject(maps[x][y]);
 
     }
 

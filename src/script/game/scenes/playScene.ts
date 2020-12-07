@@ -4,6 +4,7 @@ import Tile from "../model/tiles/tile";
 import Global from "../../../module/context/generals/global";
 import puzzleHandler from "../../handlers/puzzleHandler";
 import PuzzleHandler from "../../handlers/puzzleHandler";
+import GameObject from "../../../module/context/core/gameObjects/gameObject";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -55,8 +56,6 @@ export default class PlayScene extends Scene{
                 currentTile.point = temp;
                 this.puzzleHandler.checkOn(this.maps,this.firstTarget );
                 this.puzzleHandler.checkOn(this.maps,currentTile);
-
-                // console.log(this.firstTarget.xMap)
                 this.firstTarget = null;
 
             }
@@ -65,8 +64,13 @@ export default class PlayScene extends Scene{
 
     }
 
+    noticeDelete(gameObject: GameObject) {
+        super.noticeDelete(gameObject);
+
+        console.log(gameObject);
 
 
+    }
 
 
 }
