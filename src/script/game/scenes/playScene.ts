@@ -5,6 +5,9 @@ import Global from "../../../module/context/generals/global";
 import puzzleHandler from "../../handlers/puzzleHandler";
 import PuzzleHandler from "../../handlers/puzzleHandler";
 import GameObject from "../../../module/context/core/gameObjects/gameObject";
+import GameObjectMovementActivity from "../../general/GameObjectMovementActivity";
+import MultipleActivities from "../../../module/context/core/activities/multipleActivities";
+import Point from "../model/point";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -40,6 +43,8 @@ export default class PlayScene extends Scene{
     }
 
     mouseClick(e: MouseEvent) {
+        if(this.activities.length > 0)return;
+
         let y = Math.floor(e.y / this.TILE_SIZE);
         let x = Math.floor(e.x /this.TILE_SIZE);
 
@@ -51,12 +56,39 @@ export default class PlayScene extends Scene{
             if(this.firstTarget === currentTile){
                 this.firstTarget = null;
             }else{
-                let temp = this.firstTarget.point;
-                this.firstTarget.point = currentTile.point;
-                currentTile.point = temp;
-                this.puzzleHandler.checkOn(this.maps,this.firstTarget );
-                this.puzzleHandler.checkOn(this.maps,currentTile);
-                this.firstTarget = null;
+                let mov1 = new GameObjectMovementActivity(this.firstTarget, new Point(currentTile.x, currentTile.y), this.TILE_SIZE * 3);
+                let mov2 = new GameObjectMovementActivity(currentTile, new Point(this.firstTarget.x, this.firstTarget.y), this.TILE_SIZE * 3);
+                let multipleActivities = new MultipleActivities();
+                multipleActivities.addActivity(mov1);
+                multipleActivities.addActivity(mov2);
+
+                multipleActivities.then(function () {
+                    let puzzleHandler = this.puzzleHandler;
+                    let firstTarget = this.firstTarget;
+                    let temp = firstTarget.point;
+                    firstTarget.point = currentTile.point;
+                    currentTile.point = temp;
+                    this.puzzleHandler.swapTilePosition(firstTarget, currentTile);
+                    let unchanged1: boolean = !this.puzzleHandler.checkOn(this.maps,this.firstTarget)
+                    let unchanged2: boolean = !this.puzzleHandler.checkOn(this.maps,currentTile);
+
+                    if(unchanged1 && unchanged2){
+                        let multipleActivities = new MultipleActivities();
+                        multipleActivities.addActivity(mov1);
+                        multipleActivities.addActivity(mov2);
+                        multipleActivities.then(function () {
+                            let temp = firstTarget.point;
+                            firstTarget.point = currentTile.point;
+                            currentTile.point = temp;
+                            puzzleHandler.swapTilePosition(firstTarget, currentTile);
+                        }.bind(firstTarget, currentTile, puzzleHandler));
+                        this.addActivity(multipleActivities);
+                    }
+
+                    this.firstTarget = null;
+                }.bind(this));
+
+                this.addActivity(multipleActivities);
 
             }
 
@@ -66,8 +98,9 @@ export default class PlayScene extends Scene{
 
     noticeDelete(gameObject: GameObject) {
         super.noticeDelete(gameObject);
+        // this.addGameObject(gameObject);
+        
 
-        console.log(gameObject);
 
 
     }

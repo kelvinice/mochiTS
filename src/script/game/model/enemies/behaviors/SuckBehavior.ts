@@ -33,7 +33,7 @@ export default class SuckBehavior extends BossBehavior{
     onBehaviorUpdate() {
         super.onBehaviorUpdate();
 
-        if(this.timeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMili())){
+        if(this.timeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMilli())){
             let player = this.behaviorHandler.boss.player;
             let size = this.trueRandom.randomNumber(Math.round(GameScene.TILE_SIZE/ 10), Math.round(GameScene.TILE_SIZE/3));
             let xPosition = this.trueRandom.randomNumber(player.x, player.x + player.width);

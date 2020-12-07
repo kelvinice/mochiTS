@@ -1,6 +1,6 @@
-import GameObject from "./context/core/gameObjects/gameObject";
-import Global from "./context/generals/global";
-import { IRectangle } from './context/core/gameObjects/gameObject';
+import GameObject from "../../../module/context/core/gameObjects/gameObject";
+import Global from "../../../module/context/generals/global";
+import { IRectangle } from '../../../module/context/core/gameObjects/gameObject';
 
 
 export default class Ball extends GameObject{

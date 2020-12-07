@@ -15,7 +15,7 @@ export default class TextEffect extends GameText{
 
     update(): void {
         this.y += this.verticalMovSpeed;
-        if(this.timeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMili())){
+        if(this.timeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMilli())){
             this.destroy();
         }
     }

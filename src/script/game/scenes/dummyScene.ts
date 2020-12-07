@@ -1,4 +1,4 @@
-import Ball from '../../../module/ball';
+import Ball from '../model/ball';
 import Scene from "../../../module/context/core/scene/scene";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 

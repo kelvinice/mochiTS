@@ -1,7 +1,6 @@
-import GameObject from "../../../../module/context/core/gameObjects/gameObject";
 import RectangleGameObject from "../../../../module/context/core/gameObjects/rectangleGameObject";
 
-export default class Tile extends RectangleGameObject{
+export default class Tile extends RectangleGameObject {
     point: number;
     xMap: number;
     yMap: number;

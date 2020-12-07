@@ -26,7 +26,7 @@ export default class SunStrikeBehavior extends BossBehavior{
     }
 
     onBehaviorUpdate() {
-        if(this.sunStrikeTimer.updateTimeCounter(SceneEngine.getInstance().deltaTimeMili())){
+        if(this.sunStrikeTimer.updateTimeCounter(SceneEngine.getInstance().deltaTimeMilli())){
             let player = this.behaviorHandler.boss.player;
             let posX = this.trueRandom.randomNumber(player.x - (GameScene.TILE_SIZE * 3), player.x + (GameScene.TILE_SIZE * 3));
             let posY = this.trueRandom.randomNumber(player.y - (GameScene.TILE_SIZE * 3), player.y + (GameScene.TILE_SIZE * 3));

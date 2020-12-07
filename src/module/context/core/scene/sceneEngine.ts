@@ -35,7 +35,7 @@ export default class SceneEngine {
         return ((time - this.last_time) / 1000);
     }
 
-    public deltaTimeMili(): number{
+    public deltaTimeMilli(): number{
         let time = this.getTime();
         return ((time - this.last_time));
     }
@@ -118,7 +118,6 @@ export default class SceneEngine {
 
     start(){
         this.canvasController.setMaximize();
-        // setInterval(()=>this.update(), this.frameTime);
         this.recurrentUpdate();
 
         requestAnimationFrame((time: Number)=>this.render(time));
@@ -126,8 +125,6 @@ export default class SceneEngine {
 
     render(time: Number) {
         if(this.readyStatus == true){
-            // this.renderTimeCounter.setTargetTime(1000/this.getFPSRealization());
-            // if(!Global.getInstance().fpsCap || this.renderTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
             if(!Global.getInstance().fpsCap || this.willRender){
                 if(!Global.getInstance().clearCap || this.clearTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
                     this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
@@ -135,7 +132,6 @@ export default class SceneEngine {
                 this.currentScene.processRender(this.ctx, time);
                 this.willRender = false;
             }
-            // }
         }
 
         requestAnimationFrame((time: Number)=>this.render(time));
