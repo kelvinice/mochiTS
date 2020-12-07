@@ -24,7 +24,7 @@ export default class PuzzleHandler {
             topMost = maps[topMost.xMap][topMost.yMap-1];
         }
         verticalList.push(topMost);
-        while (maps[leftMost.xMap][topMost.yMap+1].point === topMost.point){
+        while (maps[topMost.xMap][topMost.yMap+1].point === topMost.point){
             topMost = maps[topMost.xMap][topMost.yMap+1];
             verticalList.push(topMost);
         }
