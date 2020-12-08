@@ -187,7 +187,7 @@ export default class PlayScene extends Scene{
         }
         if(isChanged == false){
             this.substituteCount = 0;
-            console.log("clear");
+            // console.log("clear");
         }
 
 
