@@ -6,7 +6,6 @@ import GameObject from "../../../module/context/core/gameObjects/gameObject";
 import GameObjectMovementActivity from "../../general/GameObjectMovementActivity";
 import MultipleActivities from "../../../module/context/core/activities/multipleActivities";
 import Point from "../model/point";
-import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import Global from "../../../module/context/generals/global";
 
 export default class PlayScene extends Scene{
@@ -125,7 +124,7 @@ export default class PlayScene extends Scene{
         let isCreatedNew: boolean = false;
         this.substituteCount++;
         let currY = yMap;
-        let currTile: Tile = null;
+        let currTile: Tile;
         currY--;
         while((this.maps[xMap][currY] == null || this.maps[xMap][currY].isDestroyed)){
             currY--;
