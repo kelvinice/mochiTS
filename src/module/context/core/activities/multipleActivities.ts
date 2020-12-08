@@ -31,7 +31,7 @@ export default class MultipleActivities implements Activity{
         }
 
         if(this._activities.length === 0){
-            this._finishFunction();
+            this._finishFunction && this._finishFunction();
             return true;
         }
 

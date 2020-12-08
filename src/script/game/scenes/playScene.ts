@@ -1,13 +1,13 @@
 import Scene from "../../../module/context/core/scene/scene";
 import MapCreator from "../../handlers/mapCreator";
 import Tile from "../model/tiles/tile";
-import Global from "../../../module/context/generals/global";
-import puzzleHandler from "../../handlers/puzzleHandler";
 import PuzzleHandler from "../../handlers/puzzleHandler";
 import GameObject from "../../../module/context/core/gameObjects/gameObject";
 import GameObjectMovementActivity from "../../general/GameObjectMovementActivity";
 import MultipleActivities from "../../../module/context/core/activities/multipleActivities";
 import Point from "../model/point";
+import SceneEngine from "../../../module/context/core/scene/sceneEngine";
+import Global from "../../../module/context/generals/global";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -15,12 +15,22 @@ export default class PlayScene extends Scene{
     maps: Tile[][];
     firstTarget: Tile = null;
     TILE_SIZE = 40;
+    substituteCount: number = -1;
 
-    onCreated(): void {
-        this.puzzleHandler = new PuzzleHandler();
-        let mapCreator: MapCreator= new MapCreator(10,10);
+    calculate(){
+        this.TILE_SIZE = Math.min(Global.getInstance().width, Global.getInstance().height)/10;
+
+        let vCount = 10;
+        let hCount = 10;
+
+        if(Global.getInstance().width > Global.getInstance().height){
+            hCount = Math.round(Global.getInstance().width/this.TILE_SIZE);
+        }else{
+            vCount = Math.round(Global.getInstance().height/this.TILE_SIZE);
+        }
+        let mapCreator: MapCreator= new MapCreator(vCount,hCount);
+
         this.maps = mapCreator.getMapRandomized(this.TILE_SIZE);
-        mapCreator.print(this.maps);
         for (let i = 0; i < this.maps.length; i++)
         {
             for (let j = 0; j < this.maps[i].length; j++)
@@ -28,6 +38,13 @@ export default class PlayScene extends Scene{
                 this.addGameObject(this.maps[i][j]);
             }
         }
+    }
+
+    onCreated(): void {
+        this.puzzleHandler = new PuzzleHandler();
+        this.calculate();
+
+        // this.checkAll();
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
@@ -40,6 +57,9 @@ export default class PlayScene extends Scene{
     }
 
     onUpdate(): void {
+        if(this.substituteCount <= -1){
+            this.checkAll();
+        }
     }
 
     mouseClick(e: MouseEvent) {
@@ -69,40 +89,114 @@ export default class PlayScene extends Scene{
                     firstTarget.point = currentTile.point;
                     currentTile.point = temp;
                     this.puzzleHandler.swapTilePosition(firstTarget, currentTile);
-                    let unchanged1: boolean = !this.puzzleHandler.checkOn(this.maps,this.firstTarget)
-                    let unchanged2: boolean = !this.puzzleHandler.checkOn(this.maps,currentTile);
+                    let changingList = this.puzzleHandler.checkOn(this.maps,this.firstTarget);
+                    for (let point of this.puzzleHandler.checkOn(this.maps, currentTile)) {
+                        changingList = puzzleHandler.getBottomChangingPointList(changingList, point);
+                    }
 
-                    if(unchanged1 && unchanged2){
+                    if(changingList.length === 0){ //Change Back
                         let multipleActivities = new MultipleActivities();
                         multipleActivities.addActivity(mov1);
                         multipleActivities.addActivity(mov2);
-                        multipleActivities.then(function () {
+                        multipleActivities.then(()=>{
                             let temp = firstTarget.point;
                             firstTarget.point = currentTile.point;
                             currentTile.point = temp;
                             puzzleHandler.swapTilePosition(firstTarget, currentTile);
-                        }.bind(firstTarget, currentTile, puzzleHandler));
+                        });
                         this.addActivity(multipleActivities);
+                    }else{
+                        for (let point of changingList) {
+                            this.getSubstitute(point.x, point.y);
+                        }
+                        
                     }
-
+                    this.substituteCount = -1;
                     this.firstTarget = null;
                 }.bind(this));
 
                 this.addActivity(multipleActivities);
 
             }
-
         }
+    }
+
+    getSubstitute(xMap: number, yMap: number, level:number = 0, then: Function = null){
+        let isCreatedNew: boolean = false;
+        this.substituteCount++;
+        let currY = yMap;
+        let currTile: Tile = null;
+        currY--;
+        while((this.maps[xMap][currY] == null || this.maps[xMap][currY].isDestroyed)){
+            currY--;
+            if(currY == 0)break;
+        }
+        if(this.maps[xMap][currY] != null && !this.maps[xMap][currY].isDestroyed && this.maps[xMap][currY].point > 0){
+            currTile = this.maps[xMap][currY];
+        }else{
+            currTile = this.puzzleHandler.createNewTile(this.TILE_SIZE, 0 - level, xMap, 3);
+            this.addGameObject(currTile);
+            isCreatedNew = true;
+        }
+        if(!isCreatedNew && this.maps[xMap][currY].point > 0){
+            this.maps[xMap][currY] = null;
+        }
+
+        currTile.xMap = xMap;
+        currTile.yMap = yMap;
+
+        this.maps[xMap][yMap] = currTile;
+
+        let mov1 = new GameObjectMovementActivity(currTile, new Point(xMap * this.TILE_SIZE, yMap * this.TILE_SIZE), this.TILE_SIZE * 3);
+        let multipleActivities = new MultipleActivities();
+        multipleActivities.addActivity(mov1);
+        multipleActivities.then(()=>{
+            this.substituteCount--;
+        });
+        if(this.maps[xMap][yMap-1] == null || this.maps[xMap][yMap-1].isDestroyed){
+            this.maps[xMap][yMap-1] = null;
+            level += (isCreatedNew) ? 1: 0;
+
+            this.getSubstitute(xMap, yMap-1, level, then);
+        }else{
+            if(then != null){
+                then();
+            }
+        }
+        this.addActivity(multipleActivities);
+    }
+    
+    checkAll(){
+        this.substituteCount = -1;
+        let changingList: Point[] = [];
+        let isChanged: boolean = false;
+        for (let i = 1; i < MapCreator.HEIGHT-1; i++)
+        {
+            for (let j = 1; j < MapCreator.WIDTH-1; j++)
+            {
+                let nextChangingList = this.puzzleHandler.checkOn(this.maps, this.maps[i][j]);
+                for (let point of nextChangingList) {
+                    changingList = this.puzzleHandler.getBottomChangingPointList(changingList, point);
+                }
+
+            }
+        }
+
+        for (let point of changingList) {
+            isChanged = true;
+            this.getSubstitute(point.x, point.y);
+        }
+        if(isChanged == false){
+            this.substituteCount = 0;
+            console.log("clear");
+        }
+
 
     }
 
+
     noticeDelete(gameObject: GameObject) {
         super.noticeDelete(gameObject);
-        // this.addGameObject(gameObject);
-        
-
-
-
     }
 
 

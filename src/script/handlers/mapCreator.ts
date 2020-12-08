@@ -1,15 +1,16 @@
 import TrueRandom from './trueRandom';
 import Tile from '../game/model/tiles/tile';
+import Global from "../../module/context/generals/global";
 
 export default class MapCreator{
-    HEIGHT: number = 20;
-    WIDTH: number = 20;
+    static HEIGHT: number = 20;
+    static WIDTH: number = 20;
     map: Tile[][];
     trueRandom: TrueRandom;
 
     constructor(WIDTH: number, HEIGHT: number){
-        this.WIDTH = WIDTH;
-        this.HEIGHT = HEIGHT;
+        MapCreator.WIDTH = WIDTH;
+        MapCreator.HEIGHT = HEIGHT;
         this.trueRandom = new TrueRandom();
         this.trueRandom.randSeed();
         this.init();
@@ -21,10 +22,10 @@ export default class MapCreator{
     }
 
     print(map: Tile[][]){
-        for (let i = 0; i < this.HEIGHT; i++)
+        for (let i = 0; i < MapCreator.HEIGHT; i++)
         {
             let temp: string = "";
-            for (let j = 0; j < this.WIDTH; j++)
+            for (let j = 0; j < MapCreator.WIDTH; j++)
             {
                 temp= temp + map[i][j].point;
             }
@@ -38,12 +39,12 @@ export default class MapCreator{
     {
         this.map = [];
 
-        for (let i = 0; i < this.HEIGHT; i++)
+        for (let i = 0; i < MapCreator.HEIGHT; i++)
         {
             this.map[i] = [];
-            for (let j = 0; j < this.WIDTH; j++)
+            for (let j = 0; j < MapCreator.WIDTH; j++)
             {
-                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile(0, j, i, 20);
+                if (i == 0 || j == 0 || i == MapCreator.HEIGHT - 1 || j == MapCreator.WIDTH - 1) this.map[i][j] = new Tile(0, j, i, 20);
                 else this.map[i][j] = new Tile(0, j, i, 20);
             }
         }
@@ -54,13 +55,17 @@ export default class MapCreator{
     {
         this.init();
 
-        for (let i = 0; i < this.HEIGHT; i++)
+        for (let i = 0; i < MapCreator.HEIGHT; i++)
         {
             this.map[i] = [];
-            for (let j = 0; j < this.WIDTH; j++)
+            for (let j = 0; j < MapCreator.WIDTH; j++)
             {
-                if (i == 0 || j == 0 || i == this.HEIGHT - 1 || j == this.WIDTH - 1) this.map[i][j] = new Tile(0, j, i, size);
-                else this.map[i][j] = new Tile(this.trueRandom.randomNumber(1,3), j, i,size);
+                if (i == 0 || j == 0 || i == MapCreator.HEIGHT - 1 || j == MapCreator.WIDTH - 1) {
+                    this.map[i][j] = new Tile(0, j, i, size);
+                    this.map[i][j].setZIndex(100);
+                }
+
+                else this.map[i][j] = new Tile(this.trueRandom.randomNumber(1,Global.getInstance().maxTileCount), j, i,size);
             }
         }
 
