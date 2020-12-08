@@ -20,6 +20,8 @@ window.onload = () =>{
         assetManager.addPath("4","Logo 20-1.png");
         assetManager.addPath("5","Logo 19-1.png");
         assetManager.addPath("6","Logo 17-1.png");
+        assetManager.addPath("circuit","circuit.jpg");
+        assetManager.addPath("hit","hit.png");
 
         // assetManager.addPath("stone","stone.png");
         // assetManager.addPath("brick","brick.png");

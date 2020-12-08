@@ -7,6 +7,8 @@ import GameObjectMovementActivity from "../../general/GameObjectMovementActivity
 import MultipleActivities from "../../../module/context/core/activities/multipleActivities";
 import Point from "../model/point";
 import Global from "../../../module/context/generals/global";
+import HitEffect from "../model/hitEffect";
+import BackTile from "../model/tiles/backTile";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -34,6 +36,7 @@ export default class PlayScene extends Scene{
         {
             for (let j = 0; j < this.maps[i].length; j++)
             {
+                this.addGameObject(new BackTile(this.maps[i][j], this.maps[i][j].point));
                 this.addGameObject(this.maps[i][j]);
             }
         }
@@ -56,7 +59,7 @@ export default class PlayScene extends Scene{
     }
 
     onUpdate(): void {
-        if(this.substituteCount <= -1){
+        if(this.substituteCount <= -1 && this.activities.length === 0){
             this.checkAll();
         }
     }
@@ -72,6 +75,11 @@ export default class PlayScene extends Scene{
         if(this.firstTarget === null){
             this.firstTarget = currentTile;
         }else{
+            let xDif = this.firstTarget.xMap - currentTile.xMap;
+            let yDif = this.firstTarget.yMap - currentTile.yMap;
+            if(Math.abs(xDif) + Math.abs(yDif) > 1){
+                return;
+            }
             if(this.firstTarget === currentTile){
                 this.firstTarget = null;
             }else{
@@ -120,7 +128,7 @@ export default class PlayScene extends Scene{
         }
     }
 
-    getSubstitute(xMap: number, yMap: number, level:number = 0, then: Function = null){
+    getSubstitute(xMap: number, yMap: number, level: number = 0, then: Function = null){
         let isCreatedNew: boolean = false;
         this.substituteCount++;
         let currY = yMap;
@@ -196,6 +204,10 @@ export default class PlayScene extends Scene{
 
     noticeDelete(gameObject: GameObject) {
         super.noticeDelete(gameObject);
+        if(gameObject instanceof Tile){
+            this.addGameObject(new HitEffect(gameObject));
+        }
+
     }
 
 
