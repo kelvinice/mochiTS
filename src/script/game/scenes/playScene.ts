@@ -10,11 +10,9 @@ import Global from "../../../module/context/generals/global";
 import HitEffect from "../model/hitEffect";
 import BackTile from "../model/tiles/backTile";
 import SoundPlayer from "../../handlers/soundPlayer";
-import soundPlayer from "../../handlers/soundPlayer";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
-
     maps: Tile[][];
     firstTarget: Tile = null;
     TILE_SIZE = 40;
@@ -23,7 +21,6 @@ export default class PlayScene extends Scene{
 
     calculate(){
         this.TILE_SIZE = Math.min(Global.getInstance().width, Global.getInstance().height)/10;
-
         let vCount = 10;
         let hCount = 10;
 
@@ -49,8 +46,6 @@ export default class PlayScene extends Scene{
         this.puzzleHandler = new PuzzleHandler();
         this.soundPlayer = new SoundPlayer();
         this.calculate();
-
-        // this.checkAll();
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
@@ -191,7 +186,6 @@ export default class PlayScene extends Scene{
                 for (let point of nextChangingList) {
                     changingList = this.puzzleHandler.getBottomChangingPointList(changingList, point);
                 }
-
             }
         }
 
@@ -201,13 +195,11 @@ export default class PlayScene extends Scene{
         }
         if(isChanged == false){
             this.substituteCount = 0;
-            // console.log("clear");
         }else{
             this.soundPlayer.playRandomHitSound();
         }
 
     }
-
 
     noticeDelete(gameObject: GameObject) {
         super.noticeDelete(gameObject);
