@@ -9,6 +9,8 @@ import Point from "../model/point";
 import Global from "../../../module/context/generals/global";
 import HitEffect from "../model/hitEffect";
 import BackTile from "../model/tiles/backTile";
+import SoundPlayer from "../../handlers/soundPlayer";
+import soundPlayer from "../../handlers/soundPlayer";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -17,6 +19,7 @@ export default class PlayScene extends Scene{
     firstTarget: Tile = null;
     TILE_SIZE = 40;
     substituteCount: number = -1;
+    soundPlayer: SoundPlayer;
 
     calculate(){
         this.TILE_SIZE = Math.min(Global.getInstance().width, Global.getInstance().height)/10;
@@ -44,6 +47,7 @@ export default class PlayScene extends Scene{
 
     onCreated(): void {
         this.puzzleHandler = new PuzzleHandler();
+        this.soundPlayer = new SoundPlayer();
         this.calculate();
 
         // this.checkAll();
@@ -113,6 +117,8 @@ export default class PlayScene extends Scene{
                         });
                         this.addActivity(multipleActivities);
                     }else{
+                        this.soundPlayer.playRandomHitSound();
+
                         for (let point of changingList) {
                             this.getSubstitute(point.x, point.y);
                         }
@@ -196,8 +202,9 @@ export default class PlayScene extends Scene{
         if(isChanged == false){
             this.substituteCount = 0;
             // console.log("clear");
+        }else{
+            this.soundPlayer.playRandomHitSound();
         }
-
 
     }
 
