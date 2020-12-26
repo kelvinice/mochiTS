@@ -3,6 +3,7 @@ import AssetManager from './module/context/generals/asset';
 import Global from "./module/context/generals/global";
 import LoadingScene from "./script/game/scenes/loadingScene";
 import PlayScene from "./script/game/scenes/playScene";
+import MenuScene from "./script/game/scenes/MenuScene";
 
 window.onload = () =>{
     	function init() {
@@ -22,6 +23,7 @@ window.onload = () =>{
         assetManager.addPath("6","Logo 17-1.png");
         assetManager.addPath("circuit","circuit.jpg");
         assetManager.addPath("hit","hit.png");
+        assetManager.addPath("bluejack","bluejack.png");
 
         // assetManager.addPath("stone","stone.png");
         // assetManager.addPath("brick","brick.png");
@@ -43,15 +45,17 @@ window.onload = () =>{
         // assetManager.addPath("dark-arrow","dark-arrow.png");
         // assetManager.addPath("dark-sunStrike","dark-sunStrike.png");
 
+        for (let i = 0; i < 10; i++) {
+                assetManager.addPath("hud"+i,"hud"+i+".png");
+        }
 
         sceneEngine.updateScene(new LoadingScene());
         sceneEngine.start();
 
         assetManager.addAssetDoneListener(()=>{
                 // sceneEngine.updateScene(new GameOverScene(90));
-                // sceneEngine.updateScene(new MenuScene());
-                // sceneEngine.updateScene(new GameScene());
-                sceneEngine.updateScene(new PlayScene())
+                sceneEngine.updateScene(new MenuScene());
+                // sceneEngine.updateScene(new PlayScene());
 
         });
 

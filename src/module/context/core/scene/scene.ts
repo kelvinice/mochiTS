@@ -80,14 +80,15 @@ export default abstract class Scene{
     deleteTrash(): void{
         let destroyeds = [...this.toDeletes];
 
-        for (const gameObject of destroyeds) {
-            this.noticeDelete(gameObject);
-        }
+        // for (const gameObject of destroyeds) {
+        //     this.noticeDelete(gameObject);
+        // }
 
         while(destroyeds.length > 0){
             let curr = destroyeds.pop();
             let idx = this.gameObjects.indexOf(curr);
             if(idx >= 0){
+                this.noticeDelete(curr);
                 this.gameObjects.splice(this.gameObjects.indexOf(curr) , 1);
             }else{
                 console.log("Object Not Found!")

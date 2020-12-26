@@ -2,7 +2,7 @@ import Scene from "../../../module/context/core/scene/scene";
 import MapCreator from "../../handlers/mapCreator";
 import Tile from "../model/tiles/tile";
 import PuzzleHandler from "../../handlers/puzzleHandler";
-import GameObject from "../../../module/context/core/gameObjects/gameObject";
+import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import GameObjectMovementActivity from "../../general/GameObjectMovementActivity";
 import MultipleActivities from "../../../module/context/core/activities/multipleActivities";
 import Point from "../model/point";
@@ -10,6 +10,8 @@ import Global from "../../../module/context/generals/global";
 import HitEffect from "../model/hitEffect";
 import BackTile from "../model/tiles/backTile";
 import SoundPlayer from "../../handlers/soundPlayer";
+import NumberHUD from "../model/huds/numberHUD";
+import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -18,6 +20,8 @@ export default class PlayScene extends Scene{
     TILE_SIZE = 40;
     substituteCount: number = -1;
     soundPlayer: SoundPlayer;
+    numbers: NumberHUD[];
+    score: number;
 
     calculate(){
         this.TILE_SIZE = Math.min(Global.getInstance().width, Global.getInstance().height)/10;
@@ -46,9 +50,24 @@ export default class PlayScene extends Scene{
         this.puzzleHandler = new PuzzleHandler();
         this.soundPlayer = new SoundPlayer();
         this.calculate();
+        this.score = 0;
+        this.numbers = [];
+        for (let i = 0; i < 3; i++) {
+            let number = new NumberHUD(<IRectangle>{
+                x:(this.TILE_SIZE * i),
+                y: 0,
+                width: this.TILE_SIZE,
+                height: this.TILE_SIZE
+            });
+            this.numbers[i] = number;
+            number.setZIndex(200+1);
+            SceneEngine.getInstance().injectGameObject(number);
+        }
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
+
+
         if(this.firstTarget !== null){
             ctx.fillStyle = "black";
             ctx.globalAlpha = 0.3;
@@ -205,6 +224,21 @@ export default class PlayScene extends Scene{
         super.noticeDelete(gameObject);
         if(gameObject instanceof Tile){
             this.addGameObject(new HitEffect(gameObject));
+            this.score++;
+            this.setScore(this.score);
+        }
+
+    }
+
+    setScore(number: number){
+        let pad = "";
+        for (let i = 0; i < 3-1; i++) {
+            pad+="0";
+        }
+        let score = (pad + number).slice(-1 * 3);
+        this.score = number;
+        for(let i=0;i<score.length;i++){
+            this.numbers[i].setNumber(+score[i]);
         }
 
     }
