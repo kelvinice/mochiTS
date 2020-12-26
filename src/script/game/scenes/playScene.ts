@@ -225,6 +225,8 @@ export default class PlayScene extends Scene{
         if(gameObject instanceof Tile){
             this.addGameObject(new HitEffect(gameObject));
             this.score++;
+            // console.log(this.score);
+            // console.log(gameObject)
             this.setScore(this.score);
         }
 
