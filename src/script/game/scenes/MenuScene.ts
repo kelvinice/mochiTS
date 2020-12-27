@@ -3,18 +3,19 @@ import Global from "../../../module/context/generals/global";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import PlayScene from "./playScene";
 import TimeCounter from "../../handlers/timeCounter";
-import timeCounter from "../../handlers/timeCounter";
+import NumberCounter from "../../general/numberCounter";
 
 export default class MenuScene extends Scene{
     private logo: ImageBitmap;
     private blinkCounter: TimeCounter;
     private blinkNum = 0;
     private isBlink = true;
+    private numberCounter: NumberCounter;
 
     onCreated(): void {
         this.logo = Global.getInstance().assetManager.loadedImage["bluejack"];
-        this.blinkCounter = new TimeCounter(300);
-
+        this.blinkCounter = new TimeCounter(30);
+        this.numberCounter = new NumberCounter(10, 30,10);
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
@@ -25,8 +26,8 @@ export default class MenuScene extends Scene{
         let height = 304;
         let winWidth = Global.getInstance().width;
         let winHeight = Global.getInstance().height;
-        let xGap = 0;
-        let yGap = 0;
+        let xGap: number;
+        let yGap: number;
 
         if(!(width <= winWidth && height <= winHeight)){
             if(width > winWidth){
@@ -44,31 +45,39 @@ export default class MenuScene extends Scene{
         xGap = (winWidth - width) / 2;
         yGap = (winHeight - height) / 2;
 
-        ctx.drawImage(this.logo, xGap,yGap, width, height);
         ctx.fillStyle = "white";
         ctx.font = "5em Agency FB";
         ctx.textAlign = "center";
 
+        var blur = this.numberCounter.get();
+
+        ctx.textBaseline = "top";
+        ctx.shadowColor = "yellow";
+        ctx.shadowOffsetX = 1;
+
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = blur;
+        ctx.drawImage(this.logo, xGap,yGap, width, height);
         if(this.isBlink){
             ctx.globalAlpha = 0.2;
         }
-
-        ctx.fillText("Click To Play", xGap+width/2,yGap+height + 100, winWidth);
+        ctx.fillText("Click To Play", (xGap+width/2),yGap+height + 100, winWidth);
         ctx.globalAlpha = 1;
+        ctx.shadowColor = "transparent";
     }
 
     onUpdate(): void {
         if(this.blinkCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMilli())){
             this.blinkNum++;
+            this.numberCounter.update(0.4);
         }
 
-        if(this.blinkNum > 3){
+        if(this.blinkNum > 30){
             this.isBlink = true;
             this.blinkNum = 0;
-        }else if(this.blinkNum == 1){
+        }else if(this.blinkNum == 10){
             this.isBlink = false;
         }
-
     }
 
     mouseClick(e: MouseEvent) {

@@ -12,6 +12,7 @@ import BackTile from "../model/tiles/backTile";
 import SoundPlayer from "../../handlers/soundPlayer";
 import NumberHUD from "../model/huds/numberHUD";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
+import TimeCounter from "../../handlers/timeCounter";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -22,6 +23,7 @@ export default class PlayScene extends Scene{
     soundPlayer: SoundPlayer;
     numbers: NumberHUD[];
     score: number;
+    flipCounter: TimeCounter;
 
     calculate(){
         this.TILE_SIZE = Math.min(Global.getInstance().width, Global.getInstance().height)/10;
@@ -63,11 +65,10 @@ export default class PlayScene extends Scene{
             number.setZIndex(200+1);
             SceneEngine.getInstance().injectGameObject(number);
         }
+        this.flipCounter = new TimeCounter(1000/120);
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
-
-
         if(this.firstTarget !== null){
             ctx.fillStyle = "black";
             ctx.globalAlpha = 0.3;
@@ -77,6 +78,10 @@ export default class PlayScene extends Scene{
     }
 
     onUpdate(): void {
+        if(this.flipCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMilli())){
+            Global.getInstance().flipNum++;
+            if(Global.getInstance().flipNum > 149)Global.getInstance().flipNum = 0;
+        }
         if(this.substituteCount <= -1 && this.activities.length === 0){
             this.checkAll();
         }
@@ -230,7 +235,6 @@ export default class PlayScene extends Scene{
             }
             this.setScore(this.score);
         }
-
     }
 
     setScore(number: number){
@@ -243,8 +247,6 @@ export default class PlayScene extends Scene{
         for(let i=0;i<score.length;i++){
             this.numbers[i].setNumber(+score[i]);
         }
-
     }
-
 
 }

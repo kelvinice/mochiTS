@@ -13,6 +13,7 @@ export default class Global{
     clearCap: boolean;
 
     maxTileCount: number;
+    flipNum = 0;
 
     private constructor(){
         this.width = 0;
@@ -24,6 +25,7 @@ export default class Global{
         this.fpsCap = true;
         this.clearCap = false;
         this.maxTileCount = 5;
+        this.flipNum = 0;
     }
 
     public static getInstance(): Global{
