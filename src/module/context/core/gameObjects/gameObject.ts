@@ -10,8 +10,17 @@ export default abstract class GameObject {
     width: number;
     height: number;
     zIndex: number = 0;
+    private _isVisible: boolean;
     private _isDestroyed: boolean;
     private readonly _id: string;
+
+    get isVisible(): boolean {
+        return this._isVisible;
+    }
+
+    setVisible(value: boolean) {
+        this._isVisible = value;
+    }
 
     protected constructor(iRectangle: IRectangle) {
         this.x = iRectangle.x;
@@ -20,6 +29,7 @@ export default abstract class GameObject {
         this.height = iRectangle.height;
         this._isDestroyed = false;
         this._id = Guid.newGuid();
+        this._isVisible = true;
     }
     abstract draw(ctx: CanvasRenderingContext2D, time: Number): void;
     abstract update(): void;

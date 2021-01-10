@@ -33,7 +33,6 @@ export default class GameObjectMovementActivity implements Activity{
             this._gameObject.y = this.finishPoint.y;
             return true;
         }
-
         let xPortion = xDistance / remainDistance;
         let yPortion = yDistance / remainDistance;
 

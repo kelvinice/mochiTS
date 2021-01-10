@@ -54,8 +54,8 @@ window.onload = () =>{
 
         assetManager.addAssetDoneListener(()=>{
                 // sceneEngine.updateScene(new GameOverScene(90));
-                sceneEngine.updateScene(new MenuScene());
-                // sceneEngine.updateScene(new PlayScene());
+                // sceneEngine.updateScene(new MenuScene());
+                sceneEngine.updateScene(new PlayScene());
 
         });
 

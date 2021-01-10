@@ -62,7 +62,9 @@ export default abstract class Scene{
         let gameObjects = [...this.gameObjects];
 
         gameObjects.forEach(go => {
-            go.draw(ctx, time);
+            if(go.isVisible){
+                go.draw(ctx, time);
+            }
         });
         this.onRender(ctx);
     }

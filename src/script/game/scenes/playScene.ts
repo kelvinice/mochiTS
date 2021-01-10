@@ -13,6 +13,8 @@ import SoundPlayer from "../../handlers/soundPlayer";
 import NumberHUD from "../model/huds/numberHUD";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import TimeCounter from "../../handlers/timeCounter";
+import HealthHandler from "../../handlers/healthHandler";
+import MenuScene from "./MenuScene";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -24,6 +26,8 @@ export default class PlayScene extends Scene{
     numbers: NumberHUD[];
     score: number;
     flipCounter: TimeCounter;
+    heartHandler: HealthHandler;
+    hpCounter: number;
 
     calculate(){
         this.TILE_SIZE = Math.min(Global.getInstance().width, Global.getInstance().height)/10;
@@ -46,6 +50,8 @@ export default class PlayScene extends Scene{
                 this.addGameObject(this.maps[i][j]);
             }
         }
+        this.heartHandler = new HealthHandler({x:this.TILE_SIZE * hCount,y:0, width:this.TILE_SIZE, height:this.TILE_SIZE});
+        this.addGameObject(this.heartHandler);
     }
 
     onCreated(): void {
@@ -53,6 +59,7 @@ export default class PlayScene extends Scene{
         this.soundPlayer = new SoundPlayer();
         this.calculate();
         this.score = 0;
+        this.hpCounter = 0;
         this.numbers = [];
         for (let i = 0; i < 3; i++) {
             let number = new NumberHUD(<IRectangle>{
@@ -66,6 +73,7 @@ export default class PlayScene extends Scene{
             SceneEngine.getInstance().injectGameObject(number);
         }
         this.flipCounter = new TimeCounter(1000/120);
+
     }
 
     onRender(ctx: CanvasRenderingContext2D): void {
@@ -80,10 +88,16 @@ export default class PlayScene extends Scene{
     onUpdate(): void {
         if(this.flipCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMilli())){
             Global.getInstance().flipNum++;
-            if(Global.getInstance().flipNum > 149)Global.getInstance().flipNum = 0;
+            if(Global.getInstance().flipNum > 110)Global.getInstance().flipNum = 0;
         }
         if(this.substituteCount <= -1 && this.activities.length === 0){
             this.checkAll();
+        }
+        if(this.substituteCount > -1){
+            if(this.heartHandler.maxHP <=0){
+                alert("Game Over, Score: "+this.score);
+                SceneEngine.getInstance().updateScene(new MenuScene());
+            }
         }
     }
 
@@ -141,7 +155,9 @@ export default class PlayScene extends Scene{
                         for (let point of changingList) {
                             this.getSubstitute(point.x, point.y);
                         }
-                        
+
+                        this.heartHandler.maxHP--;
+                        this.heartHandler.getHeartNo(this.heartHandler.maxHP).setVisible(false);
                     }
                     this.substituteCount = -1;
                     this.firstTarget = null;
@@ -230,8 +246,30 @@ export default class PlayScene extends Scene{
         if(gameObject instanceof Tile){
             this.addGameObject(new HitEffect(gameObject));
             this.score++;
-            if(gameObject.point == 3){
+            if(gameObject.point == 3 && gameObject.zIndex != 300){
                 this.score++;
+                this.hpCounter++;
+                if(this.hpCounter >= 3){
+                    if(this.heartHandler.maxHP <3){
+                        this.hpCounter--;
+                        this.addGameObject(gameObject.setZIndex(300));
+                        let n =this.heartHandler.maxHP;
+                        this.heartHandler.maxHP++;
+                        this.hpCounter-=3;
+
+                        let mov1 = new GameObjectMovementActivity(gameObject, new Point(this.heartHandler.getHeartNo(n).x + 1, 0), this.TILE_SIZE * 10);
+                        let multipleActivities = new MultipleActivities();
+                        multipleActivities.addActivity(mov1);
+                        multipleActivities.then(()=>{
+                            this.heartHandler.getHeartNo(n).setVisible(true);
+                            this.destroyGameObject(gameObject);
+                        });
+                        this.addActivity(multipleActivities);
+
+                    }
+
+                }
+
             }
             this.setScore(this.score);
         }
