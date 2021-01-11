@@ -15,6 +15,7 @@ import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 import TimeCounter from "../../handlers/timeCounter";
 import HealthHandler from "../../handlers/healthHandler";
 import MenuScene from "./MenuScene";
+import ScoreScene from "./ScoreScene";
 
 export default class PlayScene extends Scene{
     puzzleHandler: PuzzleHandler;
@@ -93,10 +94,10 @@ export default class PlayScene extends Scene{
         if(this.substituteCount <= -1 && this.activities.length === 0){
             this.checkAll();
         }
-        if(this.substituteCount > -1){
+        if(this.substituteCount > -1 && this.activities.length === 0){
             if(this.heartHandler.maxHP <=0){
-                alert("Game Over, Score: "+this.score);
-                SceneEngine.getInstance().updateScene(new MenuScene());
+                // alert("Game Over, Score: "+this.score);
+                SceneEngine.getInstance().updateScene(new ScoreScene(this.score));
             }
         }
     }
@@ -248,21 +249,28 @@ export default class PlayScene extends Scene{
             this.score++;
             if(gameObject.point == 3 && gameObject.zIndex != 300){
                 this.score++;
+
                 this.hpCounter++;
+                console.log(this.hpCounter)
                 if(this.hpCounter >= 3){
                     if(this.heartHandler.maxHP <3){
-                        this.hpCounter--;
-                        this.addGameObject(gameObject.setZIndex(300));
+                        console.log(this.TILE_SIZE)
+                        console.log(gameObject.yMap)
+                        let temp: GameObject = new Tile(3, gameObject.yMap , gameObject.xMap, gameObject.width);
+                        console.log(temp);
+                        this.addGameObject(temp.setZIndex(300));
                         let n =this.heartHandler.maxHP;
                         this.heartHandler.maxHP++;
-                        this.hpCounter-=3;
+                        this.hpCounter%=3;
 
-                        let mov1 = new GameObjectMovementActivity(gameObject, new Point(this.heartHandler.getHeartNo(n).x + 1, 0), this.TILE_SIZE * 10);
+                        console.log("Claim : "+this.hpCounter);
+
+                        let mov1 = new GameObjectMovementActivity(temp, new Point(this.heartHandler.getHeartNo(n).x + 1, 0), this.TILE_SIZE * 10);
                         let multipleActivities = new MultipleActivities();
                         multipleActivities.addActivity(mov1);
                         multipleActivities.then(()=>{
                             this.heartHandler.getHeartNo(n).setVisible(true);
-                            this.destroyGameObject(gameObject);
+                            this.destroyGameObject(temp);
                         });
                         this.addActivity(multipleActivities);
 
