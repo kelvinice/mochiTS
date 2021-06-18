@@ -13,6 +13,7 @@ export default class CanvasController {
     setMaximize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
+
     }
 
     resizeCanvas() {
@@ -42,3 +43,4 @@ export default class CanvasController {
         return this.canvas.height;
     }
 }
+
