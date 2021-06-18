@@ -24,6 +24,8 @@ window.onload = () =>{
         assetManager.addPath("circuit","circuit.jpg");
         assetManager.addPath("hit","hit.png");
         assetManager.addPath("bluejack","bluejack.png");
+		
+		console.log("test");
 
         // assetManager.addPath("stone","stone.png");
         // assetManager.addPath("brick","brick.png");
