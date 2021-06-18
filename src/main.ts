@@ -26,6 +26,7 @@ window.onload = () =>{
         assetManager.addPath("bluejack","bluejack.png");
 		
 		console.log("test456");
+		console.log("test123");
 
         // assetManager.addPath("stone","stone.png");
         // assetManager.addPath("brick","brick.png");
