@@ -1,59 +1,62 @@
-export default class Tile{
-    static readonly WALL: number = 99999;
-    static readonly PATH: number = 1;
-    static readonly SPAWNER: number = 10;
-    static readonly GRASS: number = 9999;
+import RectangleGameObject from "../../../../module/context/core/gameObjects/rectangleGameObject";
+import Global from "../../../../module/context/generals/global";
 
-    char: String;
+export default class Tile extends RectangleGameObject {
     point: number;
-
-    x: number;
-    y: number;
-
-    parentX: number;
-    parentY: number;
-
-    totalWeight: number;
-    baseWeight: number;
-    isOpen: boolean;
-
-    // modifierWeight: number;
-
-
+    xMap: number;
+    yMap: number;
 
     init(): void{
-        this.totalWeight = 99999;
-        this.parentX = -1;
-        this.parentY = -1;
-        this.isOpen = false;
+
     }
 
-    constructor(char: String, y: number, x: number){
+    constructor(point: number, y: number, x: number, size: number){
+        super({
+            x: x * size,
+            y: y * size,
+            width: size,
+            height: size
+        });
+
         this.init();
-        this.setChar(char);
-        this.x = x;
-        this.y = y;
+        this.point = point;
+        this.xMap = x;
+        this.yMap = y;
     }
 
-    setChar(char: String){
-        this.char = char;
-        if(char=="#" || char== "S")this.point = 1;
-        else this.point = 0;
-
-        if(char === "#" || char === "H"){
-            this.baseWeight = Tile.PATH;
-        }else if(char === "S"){
-            this.baseWeight = Tile.SPAWNER;
-        }else if(char === " "){
-            this.baseWeight = Tile.GRASS;
-        }else if(char === "W"){
-            this.baseWeight = Tile.WALL;
+    draw(ctx: CanvasRenderingContext2D, time: Number): void {
+        let image = null;
+        super.draw(ctx, time);
+        if(this.point > 0){
+            image = Global.getInstance().assetManager.loadedImage[this.point];
         }
+
+        // draw image
+        if(image != null){
+            // ctx.drawImage(image, this.x, this.y, this.width, this.height);
+            let xGap = 0;
+            if(this.point == 3){
+                xGap = this.width * (Global.getInstance().flipNum%100)/100;
+                if(Global.getInstance().flipNum > 100){
+                    ctx.drawImage(image, this.x+ this.width, this.y, -this.width, this.height);
+                }else {
+                    ctx.drawImage(image, this.x+ xGap, this.y, this.width - xGap*2, this.height);
+                }
+            }else{
+                ctx.drawImage(image, this.x+ xGap, this.y, this.width - xGap*2, this.height);
+            }
+
+
+        }
+
     }
 
-    getChar() : String{
-        return this.char;
+    update(): void {
+
+
+
     }
+
 
 
 }

@@ -1,7 +1,6 @@
 import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import TimeCounter from "../../handlers/timeCounter";
 import SceneEngine from "../../../module/context/core/scene/sceneEngine";
-import GameScene from "../scenes/gameScene";
 import Point from "./point";
 import GameText from "./gameText";
 
@@ -15,7 +14,7 @@ export default class TextEffect extends GameText{
 
     update(): void {
         this.y += this.verticalMovSpeed;
-        if(this.timeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMili())){
+        if(this.timeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMilli())){
             this.destroy();
         }
     }

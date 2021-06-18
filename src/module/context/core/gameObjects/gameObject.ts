@@ -1,5 +1,6 @@
 import Point from '../../../../script/game/model/point';
-import Guid from "../../../../script/general/guid";
+import Guid from "../../generals/guid";
+import SceneEngine from "../scene/sceneEngine";
 export default abstract class GameObject {
     get id(): string {
         return this._id;
@@ -9,8 +10,17 @@ export default abstract class GameObject {
     width: number;
     height: number;
     zIndex: number = 0;
+    private _isVisible: boolean;
     private _isDestroyed: boolean;
     private readonly _id: string;
+
+    get isVisible(): boolean {
+        return this._isVisible;
+    }
+
+    setVisible(value: boolean) {
+        this._isVisible = value;
+    }
 
     protected constructor(iRectangle: IRectangle) {
         this.x = iRectangle.x;
@@ -19,6 +29,7 @@ export default abstract class GameObject {
         this.height = iRectangle.height;
         this._isDestroyed = false;
         this._id = Guid.newGuid();
+        this._isVisible = true;
     }
     abstract draw(ctx: CanvasRenderingContext2D, time: Number): void;
     abstract update(): void;
@@ -31,6 +42,7 @@ export default abstract class GameObject {
     /**
      * @param g: Gameobject
      * @deprecated this method compare real size of object instead of object hit box
+     * @author kelvin ice
      */
     isIntersect(g: IRectangle): boolean {
         return this.x <= g.x + g.width && this.x + this.width >= g.x
@@ -70,16 +82,28 @@ export default abstract class GameObject {
         ctx.fillRect(h.x, h.y, h.width, h.height);
     }
 
+    /**
+     * this method inject though sceneEngine, use destroyGameObject from scene method to direct inject to scene
+     * @author kelvin ice
+     */
     destroy(){
         this._isDestroyed = true;
+        SceneEngine.getInstance().injectDestroyedGameObject(this);
     }
 
+    /**
+     * @deprecated deleted gameObject cannot restored anymore
+     * @author kelvin ice
+     */
     restore(){
         this._isDestroyed = false;
     }
 
     get isDestroyed(): boolean {
         return this._isDestroyed;
+    }
+    setDestroyed(status: boolean) {
+        this._isDestroyed = status;
     }
 
     public getHitBox(): IRectangle{

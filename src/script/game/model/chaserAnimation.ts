@@ -1,12 +1,11 @@
-import {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
+import GameObject, {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
 import Point from "./point";
-import Boss from "./enemies/boss";
 import ImageGameObject from "../../../module/context/core/gameObjects/imageGameObject";
 import Global from "../../../module/context/generals/global";
 import global from "../../../module/context/generals/global";
 
 export default class ChaserAnimation extends ImageGameObject{
-    target: Boss;
+    target: GameObject;
     rotation: number;
 
     draw(ctx: CanvasRenderingContext2D, time: Number): void {
@@ -58,7 +57,7 @@ export default class ChaserAnimation extends ImageGameObject{
     }
 
 
-    constructor(iRectangle: IRectangle, target: Boss) {
+    constructor(iRectangle: IRectangle, target: GameObject) {
         super(iRectangle, Global.getInstance().assetManager.loadedImage["energy"]);
         this.target = target;
         this.setZIndex(20);

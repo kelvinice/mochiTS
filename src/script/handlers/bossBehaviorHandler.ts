@@ -19,7 +19,7 @@ export default class BossBehaviorHandler {
 
     update(){
         this.bossBehavior.onBehaviorUpdate();
-        if(this.timeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMili())){
+        if(this.timeCounter.updateTimeCounter(SceneEngine.getInstance().deltaTimeMilli())){
             this.bossBehavior.onBehaviorComplete();
             this.boss.blink();
             this.updateBehavior(this.bossBehavior.getNextBehavior());

@@ -10,13 +10,13 @@ export default class TrueRandom{
     }
 
     random() {
-        var x = Math.sin(this.seed++) * 10000;
+        let x = Math.sin(this.seed++) * 10000;
         return x - Math.floor(x);
     }
 
     randomNumber(min: number, max: number): number
     {
-        return Math.floor(this.random() * (max - min) + min);
+        return Math.floor(this.random() * (max - min + 1) + min );
     }
 
 }

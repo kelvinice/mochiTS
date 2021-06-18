@@ -7,3 +7,7 @@ export default class Point{
         this.y = y;
     };
 }
+
+export interface IPoint{
+    x: number, y: number;
+}

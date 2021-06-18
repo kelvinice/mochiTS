@@ -1,6 +1,6 @@
 import Global from '../../generals/global';
 import Scene from './scene';
-import CanvasController from '../../../canvasController';
+import CanvasController from '../canvas/canvasController';
 import GameObject from '../gameObjects/gameObject';
 import TimeCounter from "../../../../script/handlers/timeCounter";
 
@@ -35,7 +35,7 @@ export default class SceneEngine {
         return ((time - this.last_time) / 1000);
     }
 
-    public deltaTimeMili(): number{
+    public deltaTimeMilli(): number{
         let time = this.getTime();
         return ((time - this.last_time));
     }
@@ -53,12 +53,12 @@ export default class SceneEngine {
         this.canvasController.setMaximize();
         Global.getInstance().width = this.canvasController.getWidthCanvas();
         Global.getInstance().height = this.canvasController.getHeightCanvas();
-        // canvas.addEventListener("click", (e)=>this.mouseClick(e));
-        canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
-        canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
-        canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
-        document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
-        window.addEventListener("keydown", (e)=>this.keyDown(e));
+        canvas.addEventListener("click", (e)=>this.mouseClick(e));
+        // canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
+        // canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
+        // canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
+        // document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
+        // window.addEventListener("keydown", (e)=>this.keyDown(e));
         this.renderTimeCounter = new TimeCounter(this.frameTime );
         this.clearTimeCounter = new TimeCounter(this.frameTime * 2);
     }
@@ -118,7 +118,6 @@ export default class SceneEngine {
 
     start(){
         this.canvasController.setMaximize();
-        // setInterval(()=>this.update(), this.frameTime);
         this.recurrentUpdate();
 
         requestAnimationFrame((time: Number)=>this.render(time));
@@ -126,8 +125,6 @@ export default class SceneEngine {
 
     render(time: Number) {
         if(this.readyStatus == true){
-            // this.renderTimeCounter.setTargetTime(1000/this.getFPSRealization());
-            // if(!Global.getInstance().fpsCap || this.renderTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
             if(!Global.getInstance().fpsCap || this.willRender){
                 if(!Global.getInstance().clearCap || this.clearTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
                     this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
@@ -135,7 +132,6 @@ export default class SceneEngine {
                 this.currentScene.processRender(this.ctx, time);
                 this.willRender = false;
             }
-            // }
         }
 
         requestAnimationFrame((time: Number)=>this.render(time));
@@ -203,6 +199,10 @@ export default class SceneEngine {
 
     showCursor(){
         this.canvas.style.cursor = "default";
+    }
+
+    injectDestroyedGameObject(gameObject: GameObject){
+        this.currentScene.destroyGameObject(gameObject);
     }
 
 }

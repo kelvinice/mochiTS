@@ -1,10 +1,22 @@
 import GameObject from '../gameObjects/gameObject';
+import Activity from "../activities/activity";
+import SceneEngine from "./sceneEngine";
 export default abstract class Scene{
     private gameObjects : GameObject[] = [];
+    private toDeletes: GameObject[] = [];
+    private _activities: Activity[];
     lapseTime = 0;
     previousTime = -1;
     fps = 60;
     frameTime = 1000/this.fps;
+
+    constructor() {
+        this._activities = [];
+    }
+
+    get activities(): Activity[] {
+        return this._activities;
+    }
 
     /**
      * Called before render and update start
@@ -50,7 +62,9 @@ export default abstract class Scene{
         let gameObjects = [...this.gameObjects];
 
         gameObjects.forEach(go => {
-            go.draw(ctx, time);
+            if(go.isVisible){
+                go.draw(ctx, time);
+            }
         });
         this.onRender(ctx);
     }
@@ -60,24 +74,57 @@ export default abstract class Scene{
         gameObjects.forEach(go => {
             go.update();
         });
+        this.updateActivity(SceneEngine.getInstance().deltaTimeMilli())
         this.onUpdate();
-
         this.deleteTrash();
     }
 
     deleteTrash(): void{
-        let destroyeds = this.gameObjects.filter(value => {
-            return value.isDestroyed;
-        });
+        let destroyeds = [...this.toDeletes];
 
-        for (const gameObject of destroyeds) {
-            this.noticeDelete(gameObject);
+        // for (const gameObject of destroyeds) {
+        //     this.noticeDelete(gameObject);
+        // }
+
+        while(destroyeds.length > 0){
+            let curr = destroyeds.pop();
+            let idx = this.gameObjects.indexOf(curr);
+            if(idx >= 0){
+                this.noticeDelete(curr);
+                this.gameObjects.splice(this.gameObjects.indexOf(curr) , 1);
+            }else{
+                console.log("Object Not Found!")
+            }
+
+            this.toDeletes.splice(this.toDeletes.indexOf(curr), 1);
         }
 
-        this.gameObjects = this.gameObjects.filter(value => {
-            return !value.isDestroyed;
-        });
     }
 
     noticeDelete(gameObject: GameObject){}
+
+    destroyGameObject(gameObject: GameObject){
+        gameObject.setDestroyed(true);
+        this.toDeletes.push(gameObject);
+    }
+
+    updateActivity(timeInMilliSeconds: number): boolean {
+        let finish_activities: Activity[] = [];
+
+        for (let activity of this._activities) {
+            if(activity.updateActivity(timeInMilliSeconds)){
+                finish_activities.push(activity);
+            }
+        }
+
+        for (let finishActivity of finish_activities) {
+            this._activities.splice(this._activities.indexOf(finishActivity), 1);
+        }
+
+        return this._activities.length === 0;
+    }
+
+    addActivity(activity: Activity){
+        this._activities.push(activity);
+    }
 }
