@@ -1,6 +1,6 @@
-import {IRectangle} from "./gameObject";
-import ImageGameObject from "./imageGameObject";
-import AnimationController from "../animations/animationController";
+import {IRectangle} from "./game-object";
+import ImageGameObject from "./image-game-object";
+import AnimationController from "../animations/animation-controller";
 
 export default class AnimateGameObject extends ImageGameObject{
     protected animationController: AnimationController;

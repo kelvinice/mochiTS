@@ -1,6 +1,7 @@
-import Point from '../../../../script/game/model/point';
+import Point from '../../generals/point';
 import Guid from "../../generals/guid";
 import SceneEngine from "../scene/sceneEngine";
+import LineSegment from '../../generals/line-segment';
 export default abstract class GameObject {
     get id(): string {
         return this._id;
@@ -121,6 +122,19 @@ export default abstract class GameObject {
 
         return a.x < g.x + g.width && a.x + a.width > g.x
             && a.y < g.y + g.height && a.y + a.height > g.y;
+    }
+
+    public getSegments(): LineSegment[]{
+        let segments = [];
+        let x0y0 = new Point(this.x, this.y);
+        let x0y1 = new Point(this.x+this.width, this.y);
+        let x1y0 = new Point(this.x, this.y+this.height);
+        let x1y1 = new Point(this.x+this.width, this.y+this.height);
+        segments.push(new LineSegment(x0y0, x1y0));
+        segments.push(new LineSegment(x1y0, x1y1));
+        segments.push(new LineSegment(x1y1, x0y1));
+        segments.push(new LineSegment(x0y1, x0y0));
+        return segments;
     }
 }
 

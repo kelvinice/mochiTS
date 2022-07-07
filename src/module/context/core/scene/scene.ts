@@ -1,4 +1,4 @@
-import GameObject from '../gameObjects/gameObject';
+import GameObject from '../gameObjects/game-object';
 import Activity from "../activities/activity";
 import SceneEngine from "./sceneEngine";
 export default abstract class Scene{

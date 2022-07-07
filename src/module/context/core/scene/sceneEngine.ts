@@ -1,13 +1,15 @@
 import Global from '../../generals/global';
 import Scene from './scene';
-import CanvasController from '../canvas/canvasController';
-import GameObject from '../gameObjects/gameObject';
+import CanvasController from '../canvas/canvas-controller';
+import GameObject from '../gameObjects/game-object';
 import TimeCounter from "../../../../script/handlers/timeCounter";
 
 export default class SceneEngine {
     canvas: HTMLCanvasElement;
+    private renderCanvas: HTMLCanvasElement;
     canvasController: CanvasController;
     ctx: CanvasRenderingContext2D;
+    private ctxR: CanvasRenderingContext2D;
     currentScene: Scene;
     private readyStatus: boolean;
     private static instance: SceneEngine = null;
@@ -21,6 +23,7 @@ export default class SceneEngine {
     private renderTimeCounter: TimeCounter;
     private clearTimeCounter: TimeCounter;
     private willRender: boolean;
+    
 
     private constructor(){
         this.willRender = true;
@@ -53,13 +56,17 @@ export default class SceneEngine {
         this.canvasController.setMaximize();
         Global.getInstance().width = this.canvasController.getWidthCanvas();
         Global.getInstance().height = this.canvasController.getHeightCanvas();
+        this.renderCanvas = document.createElement("canvas");
+        this.renderCanvas.width = this.canvas.width;
+        this.renderCanvas.height = this.canvas.height;
+        this.ctxR = this.renderCanvas.getContext("2d");
         canvas.addEventListener("click", (e)=>this.mouseClick(e));
         // canvas.addEventListener("mousemove", (e)=>this.mouseMove(e));
         // canvas.addEventListener("mousedown", (e)=>this.mouseDown(e));
         // canvas.addEventListener("mouseup", (e)=>this.mouseUp(e));
         // document.addEventListener('contextmenu', (e)=>this.mouseContextMenu(e));
         // window.addEventListener("keydown", (e)=>this.keyDown(e));
-        this.renderTimeCounter = new TimeCounter(this.frameTime );
+        this.renderTimeCounter = new TimeCounter(this.frameTime);
         this.clearTimeCounter = new TimeCounter(this.frameTime * 2);
     }
 
@@ -128,8 +135,10 @@ export default class SceneEngine {
             if(!Global.getInstance().fpsCap || this.willRender){
                 if(!Global.getInstance().clearCap || this.clearTimeCounter.updateTimeByCurrentTimeMili(time.valueOf())){
                     this.ctx.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
+                    this.ctxR.clearRect(0,0,Global.getInstance().width, Global.getInstance().height);
                 }
-                this.currentScene.processRender(this.ctx, time);
+                this.currentScene.processRender(this.ctxR, time);
+                this.ctx.drawImage(this.renderCanvas, 0, 0, Global.getInstance().width, Global.getInstance().height);
                 this.willRender = false;
             }
         }
@@ -138,12 +147,11 @@ export default class SceneEngine {
     }
 
     async recurrentUpdate(){
-        this.previousTime = await new Date().getTime();
+        this.previousTime = new Date().getTime();
         while(true){
-            await this.update();
-
-            let currentTime = await new Date().getTime();
-            let delta = await (currentTime- this.previousTime);
+            this.update();
+            let currentTime = new Date().getTime();
+            let delta = (currentTime- this.previousTime);
 
             let sleepTime = (this.frameTime) - delta;
 
@@ -153,7 +161,7 @@ export default class SceneEngine {
             }else{
                 this.fpsRealization = 1000/delta;
             }
-            this.previousTime = await currentTime;
+            this.previousTime = currentTime;
             this.willRender = true;
         }
     }

@@ -1,4 +1,4 @@
-import RectangleGameObject from "../../../../module/context/core/gameObjects/rectangleGameObject";
+import RectangleGameObject from "../../../../module/context/core/gameObjects/rectangle-game-object";
 import Global from "../../../../module/context/generals/global";
 
 export default class Tile extends RectangleGameObject {

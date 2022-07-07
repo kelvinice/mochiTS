@@ -4,22 +4,19 @@ import SceneEngine from "../../../module/context/core/scene/sceneEngine";
 
 
 export default class DummyScene extends Scene{
+    private balls: Ball[];
+
     onCreated(): void {
+        this.balls = [];
+        this.addBall(new Ball({
+            x:0,y:0,width:100,height:100
+        }))
     }
     onRender(ctx: CanvasRenderingContext2D): void {
     }
     onUpdate(): void {
     }
-    balls: Ball[];
     
-    constructor(){
-        super();
-       this.addBall(new Ball({
-           x:0,y:0,width:100,height:100
-       }))
-
-    }
-
     addBall(ball: Ball): void{
         this.balls.push(ball);
         SceneEngine.getInstance().injectGameObject(ball);
@@ -30,7 +27,6 @@ export default class DummyScene extends Scene{
     }
     update(): void {
         // console.log(Global.getInstance().height);
-        
     }
     
 

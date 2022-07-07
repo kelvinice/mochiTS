@@ -1,4 +1,4 @@
-import {IRectangle} from "../../module/context/core/gameObjects/gameObject";
+import {IRectangle} from "../../module/context/core/gameObjects/game-object";
 
 export function splitSprite(image : ImageBitmap, horizontalCount: number, verticalCount: number){
     let spriteDatas = [];

@@ -23,7 +23,6 @@ export default class TimeCounter{
                 return true;
             }
         }
-
         this.previousTime = time;
         return false;
     }
@@ -44,9 +43,5 @@ export default class TimeCounter{
     setTargetTime(time: number){
         this.targetTime = time;
     }
-
-
-
-
 
 }

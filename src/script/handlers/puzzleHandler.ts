@@ -1,7 +1,7 @@
 import Tile from "../game/model/tiles/tile";
 import SceneEngine from "../../module/context/core/scene/sceneEngine";
 import TrueRandom from "./trueRandom";
-import Point from "../game/model/point";
+import Point from "../../module/context/generals/point";
 import Global from "../../module/context/generals/global";
 
 export default class PuzzleHandler {

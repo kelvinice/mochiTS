@@ -1,6 +1,6 @@
 import Activity from "../../module/context/core/activities/activity";
-import Point, {IPoint} from "../game/model/point";
-import GameObject from "../../module/context/core/gameObjects/gameObject";
+import Point, {IPoint} from "../../module/context/generals/point";
+import GameObject from "../../module/context/core/gameObjects/game-object";
 
 export default class GameObjectMovementActivity implements Activity{
     constructor(gameObject: GameObject, finishPoint: IPoint, speed: number) {

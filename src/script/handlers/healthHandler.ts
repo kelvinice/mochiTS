@@ -1,4 +1,4 @@
-import GameObject, {IRectangle} from "../../module/context/core/gameObjects/gameObject";
+import GameObject, {IRectangle} from "../../module/context/core/gameObjects/game-object";
 import Guid from "../../module/context/generals/guid";
 import Tile from "../game/model/tiles/tile";
 

@@ -1,9 +1,8 @@
-import GameObject, {IRectangle} from "./gameObject";
+import GameObject, {IRectangle} from "./game-object";
 
 export default class ImageGameObject extends GameObject{
     private _image: ImageBitmap;
     horizontalPadding: number;
-
     topPadding:number;
     bottomPadding: number;
     leftPadding: number;

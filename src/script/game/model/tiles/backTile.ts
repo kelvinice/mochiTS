@@ -1,6 +1,6 @@
-import GameObject from '../../../../module/context/core/gameObjects/gameObject';
-import { IRectangle } from '../../../../module/context/core/gameObjects/gameObject';
-import ImageGameObject from "../../../../module/context/core/gameObjects/imageGameObject";
+import GameObject from '../../../../module/context/core/gameObjects/game-object';
+import { IRectangle } from '../../../../module/context/core/gameObjects/game-object';
+import ImageGameObject from "../../../../module/context/core/gameObjects/image-game-object";
 import Global from "../../../../module/context/generals/global";
 
 

@@ -1,7 +1,6 @@
 import SceneEngine from "./module/context/core/scene/sceneEngine";
-import AssetManager from './module/context/generals/asset';
-import Global from "./module/context/generals/global";
 import MenuScene from "./script/game/scenes/MenuScene";
+import DummyScene from './script/game/scenes/dummy-scene';
 
 window.onload = () =>{
     	function init() {
@@ -10,10 +9,8 @@ window.onload = () =>{
                 let sceneEngine = SceneEngine.getInstance();
                 sceneEngine.initCanvas(canvas);
                 sceneEngine.makeWindowReactive();
-                let assetManager: AssetManager = Global.getInstance().assetManager;
                 
-                sceneEngine.updateScene(new MenuScene());
-                assetManager.loadAsset();
+                sceneEngine.updateScene(new DummyScene());
                 sceneEngine.start();
         }
         init();

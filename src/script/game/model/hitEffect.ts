@@ -1,7 +1,7 @@
-import AnimateGameObject from "../../../module/context/core/gameObjects/animateGameObject";
-import {IRectangle} from "../../../module/context/core/gameObjects/gameObject";
+import AnimateGameObject from "../../../module/context/core/gameObjects/animate-game-object";
+import {IRectangle} from "../../../module/context/core/gameObjects/game-object";
 import {splitSprite} from "../../handlers/imageHandler";
-import {FrameListener} from "../../../module/context/core/animations/animationController";
+import {FrameListener} from "../../../module/context/core/animations/animation-controller";
 import global from "../../../module/context/generals/global";
 import TrueRandom from "../../handlers/trueRandom";
 

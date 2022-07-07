@@ -1,5 +1,5 @@
-import ImageGameObject from "../../../../module/context/core/gameObjects/imageGameObject";
-import {IRectangle} from "../../../../module/context/core/gameObjects/gameObject";
+import ImageGameObject from "../../../../module/context/core/gameObjects/image-game-object";
+import {IRectangle} from "../../../../module/context/core/gameObjects/game-object";
 import global from "../../../../module/context/generals/global";
 
 export default class NumberHUD extends ImageGameObject{
