@@ -35,7 +35,6 @@ export default class TimeCounter{
             return true;
         }
         return false;
-
     }
 
     setPreviousTime(time: number){
